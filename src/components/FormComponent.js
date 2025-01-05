@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function FormComponent({ isOpen, onClose, onSubmit, fields, title }) {
+export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText }) {
   const [formData, setFormData] = useState(
     // Create initial state dynamically from fields
     fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
@@ -62,7 +62,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              Create
+              {submitButtonText}
             </button>
           </div>
         </form>
@@ -70,4 +70,3 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
     </div>
   );
 }
-

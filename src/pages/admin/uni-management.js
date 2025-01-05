@@ -8,39 +8,40 @@ import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function UniversityAccountsManagement() {
   const [universityAccounts, setUniversityAccounts] = useState([])
-  const [showForm, setShowForm] = useState(false)
+  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [showEditForm, setShowEditForm] = useState(false)
   const [filteredAccounts, setFilteredAccounts] = useState([])
   const [formData, setFormData] = useState({})
-  const [isEditMode, setIsEditMode] = useState(false)
-  const [editAccountId, setEditAccountId] = useState(null)
+  const [editAccountId, setEditAccountId] = useState(0)
 
   const router = useRouter()
   const handleLogout = () => {
     router.push('/')
   }
 
-  const columns = ['name', 'nom', "prenom", "telephone", "email"]
+  const columns = ['id', 'name', 'nom', "prenom", "telephone", "email"]
   const buttons = ['Edit', 'Disable']
 
-  useEffect(() => {
-    const fetchAccounts = async () => {
-      try {
-        const response = await axiosInstance.get('/compte-ecoles')
-        console.log("Reponse")
-        console.log(response)
-        const accounts = await Promise.all(response.data.map(async (compteEcole) => {
-          const ecoleResponse = await axiosInstance.get(`/api/ecoles/${compteEcole.ecoleId}`)
-          return {
-            ...compteEcole,
-            name: ecoleResponse.data.nomEcole
-          }
-        }))
-        setUniversityAccounts(accounts)
-        setFilteredAccounts(accounts)
-      } catch (error) {
-        console.error('Error fetching accounts:', error)
-      }
+  const fetchAccounts = async () => {
+    try {
+      const response = await axiosInstance.get('/compte-ecoles')
+      console.log("Reponse")
+      console.log(response)
+      const accounts = await Promise.all(response.data.map(async (compteEcole) => {
+        const ecoleResponse = await axiosInstance.get(`/api/ecoles/${compteEcole.ecoleId}`)
+        return {
+          ...compteEcole,
+          name: ecoleResponse.data.nomEcole
+        }
+      }))
+      setUniversityAccounts(accounts)
+      setFilteredAccounts(accounts)
+    } catch (error) {
+      console.error('Error fetching accounts:', error)
     }
+  }
+
+  useEffect(() => {
     fetchAccounts()
   }, [])
 
@@ -74,33 +75,38 @@ export default function UniversityAccountsManagement() {
         role: 'ROLE_ECOLE'
       })
 
-      setShowForm(false)
+      setShowCreateForm(false)
       setFormData({})
       fetchAccounts() // Refresh the list
     } catch (error) {
       console.error('Error creating account:', error)
     }
+    useEffect(() => {
+      fetchAccounts()
+    }, [])
   }
 
   const handleEdit = (id) => {
     const accountToEdit = universityAccounts.find(account => account.idCompte === id)
     setFormData(accountToEdit)
-    setIsEditMode(true)
     setEditAccountId(id)
-    setShowForm(true)
+    setShowEditForm(true)
   }
 
   const handleSaveEdit = async (formData) => {
     try {
+      console.log(`Edit element id: ${editAccountId}`)
       await axiosInstance.put(`/compte-ecoles/${editAccountId}`, formData)
-      setShowForm(false)
+      setShowEditForm(false)
       setFormData({})
-      setIsEditMode(false)
       setEditAccountId(null)
       fetchAccounts() // Refresh the list
     } catch (error) {
       console.error('Error updating account:', error)
     }
+    useEffect(() => {
+      fetchAccounts()
+    }, [])
   }
 
   const handleDisable = async (id) => {
@@ -114,6 +120,9 @@ export default function UniversityAccountsManagement() {
 
   const formFields = [
     { name: 'name', placeholder: 'University Name' },
+    { name: 'nom', placeholder: 'Nom' },
+    { name: 'prenom', placeholder: 'Prenom' },
+    { name: 'telephone', placeholder: 'Telephone' },
     { name: 'email', placeholder: 'Email' },
     { name: 'password', type: 'password', placeholder: 'Password' }
   ]
@@ -127,8 +136,7 @@ export default function UniversityAccountsManagement() {
           <button
             className="bg-black text-white px-4 py-2 rounded"
             onClick={() => {
-              setShowForm(true)
-              setIsEditMode(false)
+              setShowCreateForm(true)
               setFormData({})
             }}
           >
@@ -144,12 +152,21 @@ export default function UniversityAccountsManagement() {
         />
 
         <FormComponent 
-          isOpen={showForm}
-          onClose={() => setShowForm(false)}
-          onSubmit={isEditMode ? handleSaveEdit : handleCreate}
+          isOpen={showCreateForm}
+          onClose={() => setShowCreateForm(false)}
+          onSubmit={handleCreate}
           fields={formFields}
-          title={isEditMode ? "Edit University Account" : "Create New University Account"}
-          initialData={formData}
+          title="Create New University Account"
+          submitButtonText="Create"
+        />
+
+        <FormComponent 
+          isOpen={showEditForm}
+          onClose={() => setShowEditForm(false)}
+          onSubmit={handleSaveEdit}
+          fields={formFields}
+          title="Edit University Account"
+          submitButtonText="Save"
         />
       </div>
     </Layout>
