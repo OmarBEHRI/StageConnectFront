@@ -6,7 +6,6 @@ import Table from '@/components/Table';
 
 export default function CoordinatorInternships() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const internships = [
@@ -38,10 +37,9 @@ export default function CoordinatorInternships() {
     // Implement search logic here
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="coordinator" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="coordinator" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internship Validations</h1>
         

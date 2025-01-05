@@ -1,12 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export default function Navbar({ links, userId, onLogout }) {
-  // Function to replace [id] with actual userId in links
-  const getProcessedHref = (href) => {
-    return href.replace('[id]', userId);
-  };
-
+export default function Navbar({ links, onLogout }) {
   return (
     <nav className="w-full bg-white shadow-sm font-['Roboto'] text-black shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,7 +16,7 @@ export default function Navbar({ links, userId, onLogout }) {
             {links.map((link, index) => (
               <Link 
                 key={index}
-                href={getProcessedHref(link.href)}
+                href={link.href}
                 className={`
                   inline-flex items-center px-2 pt-1
                   text-lg font-bold text-black

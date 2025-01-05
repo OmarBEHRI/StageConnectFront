@@ -3,19 +3,15 @@ import Layout from '@/components/Layout';
 
 export default function StudentProfile() {
   const router = useRouter();
-  const { id } = router.query;
-
   const handleLogout = () => {
     // Add logout logic here
     router.push('/');
   };
 
-  if (!id) return null;
 
   return (
     <Layout
       role="student"
-      userId={id}
       onLogout={handleLogout}
     >
       <div className="p-6">

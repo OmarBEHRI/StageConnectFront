@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function HRDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   const handleLogout = () => {
     // Add logout logic here
@@ -19,12 +18,9 @@ export default function HRDashboard() {
     { title: "Total Internships", value: "28" }
   ];
 
-  if (!id) return null;
-
   return (
     <Layout
       role="hr"
-      userId={id}
       onLogout={handleLogout}
     >
       <h1 className="text-2xl font-bold mb-6">HR Dashboard</h1>

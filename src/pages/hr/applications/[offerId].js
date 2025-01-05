@@ -7,7 +7,7 @@ import FormComponent from '@/components/FormComponent';
 
 export default function HRApplicationManagement() {
   const router = useRouter();
-  const { id, offerId } = router.query;
+  const { offerId } = router.query;
   const [isInterviewFormOpen, setIsInterviewFormOpen] = useState(false);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);
 
@@ -63,10 +63,10 @@ export default function HRApplicationManagement() {
     // Implement interview creation logic here
   };
 
-  if (!id || !offerId) return null;
+  if (!offerId) return null;
 
   return (
-    <Layout role="hr" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="hr" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Applications Management</h1>
         <div className="mb-6">

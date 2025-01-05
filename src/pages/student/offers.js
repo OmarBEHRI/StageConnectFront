@@ -7,7 +7,6 @@ import Card from '@/components/Card';
 
 export default function StudentOffers() {
   const router = useRouter();
-  const { id } = router.query;
   const [offers, setOffers] = useState([ // Sample data
     {
       id: 1,
@@ -31,10 +30,9 @@ export default function StudentOffers() {
     console.log("Applied to offer:", offerId);
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="student" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="student" onLogout={() => router.push('/')}>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">Available Offers</h1>
         <div className="mb-6">

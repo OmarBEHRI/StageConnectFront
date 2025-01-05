@@ -17,7 +17,6 @@ export default function CompanyAccountsManagement() {
   const handleLogout = () => {
     router.push('/')
   }
-  const id = 1
 
   const columns = ['ID', 'Name', 'Username', 'Password']
   const buttons = ['Edit', 'Delete']
@@ -58,7 +57,7 @@ export default function CompanyAccountsManagement() {
   ]
 
   return (
-    <Layout role="admin" userId={id} onLogout={handleLogout}>
+    <Layout role="admin" onLogout={handleLogout}>
       <div className="p-6">
         <h1 className="text-3xl font-bold mb-8">Company Accounts Management</h1>
         <div className="mb-4 flex justify-between items-center">

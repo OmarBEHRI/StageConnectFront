@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function StudentDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Sample data - replace with actual API calls
   const stats = {
@@ -20,12 +19,10 @@ export default function StudentDashboard() {
     router.push('/');
   };
 
-  if (!id) return null;
 
   return (
     <Layout
       role="student"
-      userId={id}
       onLogout={handleLogout}
     >
       <div className="p-6">

@@ -6,7 +6,6 @@ import DescriptionSection from '@/components/university/DescriptionSection';
 
 export default function UniversityProfile() {
   const router = useRouter();
-  const { id } = router.query;
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ export default function UniversityProfile() {
   };
 
   return (
-    <Layout role="university" userId={id} onLogout={handleLogout}>
+    <Layout role="university" onLogout={handleLogout}>
       <h1 className="text-3xl font-bold mb-6">University Profile</h1>
       {profileData && (
         <div className="space-y-6">

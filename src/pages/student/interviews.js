@@ -6,7 +6,6 @@ import Card from '@/components/Card';
 
 export default function StudentInterviews() {
   const router = useRouter();
-  const { id } = router.query;
 
   const [interviews] = useState([ // Sample data
     {
@@ -37,10 +36,8 @@ export default function StudentInterviews() {
     router.push('/');
   };
 
-  if (!id) return null;
-
   return (
-    <Layout role="student" userId={id} onLogout={handleLogout}>
+    <Layout role="student" onLogout={handleLogout}>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Interviews</h1>
         <div className="mb-6">

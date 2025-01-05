@@ -8,7 +8,6 @@ export default function Dashboard() {
       router.push('/');
     };
     
-    const id = 1;
   // In a real application, you'd fetch this data from an API
   const stats = {
     universityAccounts: 50,
@@ -23,7 +22,6 @@ export default function Dashboard() {
   return (
     <Layout
         role="admin"
-        userId={id}
         onLogout={handleLogout}
     >
       <div>

@@ -7,7 +7,6 @@ import FormComponent from '@/components/FormComponent';
 
 export default function ComAccManagement() {
   const router = useRouter();
-  const { id } = router.query;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -42,10 +41,9 @@ export default function ComAccManagement() {
     console.log('Delete account:', accountId);
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="company" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="company" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Company Accounts Management</h1>
         

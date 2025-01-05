@@ -5,7 +5,6 @@ import Table from '@/components/Table';
 
 export default function ComOffers() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const offers = [
@@ -20,10 +19,9 @@ export default function ComOffers() {
     // Add more offers...
   ];
 
-  if (!id) return null;
 
   return (
-    <Layout role="company" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="company" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Company Offers</h1>
         
