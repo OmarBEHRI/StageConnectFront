@@ -167,6 +167,7 @@ export default function UniversityAccountsManagement() {
           items={filteredAccounts}
           buttons={buttons}
           actions={[handleEdit, handleDisable]}
+          idParam={"idCompte"}
         />
 
         <FormComponent 

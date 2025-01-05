@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Table({ columns, items, buttons, actions }) {
+export default function Table({ columns, items, buttons, actions, idParam }) {
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'ascending'
@@ -99,7 +99,7 @@ export default function Table({ columns, items, buttons, actions }) {
                 {buttons.map((button, buttonIndex) => (
                   <button
                     key={button}
-                    onClick={() => {actions[buttonIndex](item.idCompte); console.log(item.idCompte)}}
+                    onClick={() => {actions[buttonIndex](item[idParam]); console.log(item[idParam])}}
                     className={`${
                       button.toLowerCase() === 'delete' 
                         ? 'text-red-600 hover:text-red-800' 

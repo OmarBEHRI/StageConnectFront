@@ -23,32 +23,33 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
         <form onSubmit={handleSubmit}>
           {fields.map((field) => (
-            field.type === 'select' ? (
-              <select
-                key={field.name}
-                name={field.name}
-                value={formData[field.name]}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2 mb-4 w-full"
-              >
-                <option value="">Select {field.placeholder}</option>
-                {field.options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                key={field.name}
-                type={field.type || 'text'}
-                name={field.name}
-                value={formData[field.name]}
-                onChange={handleChange}
-                placeholder={field.placeholder}
-                className="border border-gray-300 rounded px-4 py-2 mb-4 w-full"
-              />
-            )
+            <div key={field.name} className="mb-4">
+              <label className="block text-gray-700 mb-2">{field.placeholder}</label>
+              {field.type === 'select' ? (
+                <select
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded px-4 py-2 w-full"
+                >
+                  <option value="">Select {field.placeholder}</option>
+                  {field.options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={field.type || 'text'}
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  placeholder={field.placeholder}
+                  className="border border-gray-300 rounded px-4 py-2 w-full"
+                />
+              )}
+            </div>
           ))}
           <div className="flex justify-end">
             <button
