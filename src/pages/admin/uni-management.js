@@ -100,6 +100,7 @@ export default function UniversityAccountsManagement() {
       console.log(`Edit element id: ${editAccountId}`)
       await axiosInstance.put(`/compte-ecoles/${editAccountId}`, 
         {
+          idCompte: editAccountId,
           email: formData.email,
           motDePasse: formData.password,
           nom: formData.nom,
