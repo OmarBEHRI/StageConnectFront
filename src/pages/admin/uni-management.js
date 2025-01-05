@@ -72,7 +72,9 @@ export default function UniversityAccountsManagement() {
         email: formData.email,
         motDePasse: formData.password,
         ecoleId: newEcoleId,
-        role: 'ROLE_ECOLE'
+        nom: formData.nom,
+        prenom: formData.prenom,
+        telephone: formData.telephone,
       })
 
       setShowCreateForm(false)
@@ -96,7 +98,15 @@ export default function UniversityAccountsManagement() {
   const handleSaveEdit = async (formData) => {
     try {
       console.log(`Edit element id: ${editAccountId}`)
-      await axiosInstance.put(`/compte-ecoles/${editAccountId}`, formData)
+      await axiosInstance.put(`/compte-ecoles/${editAccountId}`, 
+        {
+          email: formData.email,
+          motDePasse: formData.password,
+          ecoleId: newEcoleId,
+          nom: formData.nom,
+          prenom: formData.prenom,
+          telephone: formData.telephone,
+      })
       setShowEditForm(false)
       setFormData({})
       setEditAccountId(null)
