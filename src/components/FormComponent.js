@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = {} }) {
-  const [formData, setFormData] = useState(
-    // Create initial state dynamically from fields, using prefillData if available
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {})
+  const initialFormData = useMemo(() => 
+    fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}), 
+    [fields, prefillData]
   );
 
+  const [formData, setFormData] = useState(initialFormData);
+
   useEffect(() => {
-    // Update formData if prefillData changes
-    setFormData(fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}));
-  }, [prefillData, fields]);
+    setFormData(initialFormData);
+  }, [initialFormData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
