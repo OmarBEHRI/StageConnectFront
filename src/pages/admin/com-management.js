@@ -89,9 +89,6 @@ export default function CompanyAccountsManagement() {
     } catch (error) {
       console.error('Error creating account:', error)
     }
-    useEffect(() => {
-      fetchAccounts()
-    }, [])
   }
 
   const handleEdit = (id) => {
