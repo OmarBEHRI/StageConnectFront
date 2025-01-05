@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText }) {
+export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = {} }) {
   const [formData, setFormData] = useState(
-    // Create initial state dynamically from fields
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+    // Create initial state dynamically from fields, using prefillData if available
+    fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {})
   );
+
+  useEffect(() => {
+    // Update formData if prefillData changes
+    setFormData(fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}));
+  }, [prefillData, fields]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

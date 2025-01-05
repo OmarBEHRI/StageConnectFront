@@ -90,9 +90,6 @@ export default function UniversityAccountsManagement() {
     } catch (error) {
       console.error('Error creating account:', error)
     }
-    useEffect(() => {
-      fetchAccounts()
-    }, [])
   }
 
   const handleEdit = (id) => {
@@ -186,6 +183,7 @@ export default function UniversityAccountsManagement() {
           fields={formFields}
           title="Edit University Account"
           submitButtonText="Save"
+          prefillData={universityAccounts.filter(account => account.idCompte = editAccountId)}
         />
       </div>
     </Layout>

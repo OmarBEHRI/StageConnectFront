@@ -19,7 +19,7 @@ export default function CompanyAccountsManagement() {
     router.push('/')
   }
 
-  const columns = ['idCompte', 'nom', 'prenom', 'telephone']
+  const columns = ['idCompte','name', 'nom', 'prenom', 'telephone', 'email']
   const buttons = ['Edit', 'Disable']
 
   const fetchAccounts = async () => {
@@ -126,7 +126,7 @@ export default function CompanyAccountsManagement() {
     { name: 'prenom', placeholder: 'Prenom' },
     { name: 'telephone', placeholder: 'Telephone' },
     { name: 'email', placeholder: 'Email' },
-    { name: 'password', type: 'password', placeholder: 'Password' }
+    { name: 'motDePasse', type: 'password', placeholder: 'Password' }
   ]
 
   return (
@@ -170,6 +170,7 @@ export default function CompanyAccountsManagement() {
           fields={formFields}
           title="Edit Company Account"
           submitButtonText="Save"
+          prefillData={companyAccounts.filter(account => account.idCompte = editAccountId)}
         />
       </div>
     </Layout>
