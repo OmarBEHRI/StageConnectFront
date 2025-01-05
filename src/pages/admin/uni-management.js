@@ -19,7 +19,7 @@ export default function UniversityAccountsManagement() {
     router.push('/')
   }
 
-  const columns = ['id', 'name', 'nom', "prenom", "telephone", "email"]
+  const columns = ['idCompte', 'name', 'nom', "prenom", "telephone", "email"]
   const buttons = ['Edit', 'Disable']
 
   const fetchAccounts = async () => {
