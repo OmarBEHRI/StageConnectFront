@@ -47,10 +47,13 @@ export default function UniversityAccountsManagement() {
 
   const handleSearch = (query) => {
     const filtered = universityAccounts.filter(account => 
-      account.name.toLowerCase().includes(query.toLowerCase()) ||
-      account.idCompte.toString().includes(query.toLowerCase())||
-      account.nom.toLowerCase().includes(query.toLowerCase()) ||
-      account.prenom.toLowerCase().includes(query.toLowerCase())
+      account &&
+      (
+        (account.name && account.name.toLowerCase().includes(query.toLowerCase())) ||
+        (account.idCompte && account.idCompte.toString().includes(query.toLowerCase())) ||
+        (account.nom && account.nom.toLowerCase().includes(query.toLowerCase())) ||
+        (account.prenom && account.prenom.toLowerCase().includes(query.toLowerCase()))
+      )
     )
     setFilteredAccounts(filtered)
   }
@@ -121,7 +124,7 @@ export default function UniversityAccountsManagement() {
 
   const handleDisable = async (id) => {
     try {
-      await axiosInstance.put(`/compte-ecoles/${id}/disable`, { id, newPassword: null })
+      await axiosInstance.put(`/compte-ecoles/${id}/disable`, "AMAMAMA" )
       fetchAccounts() // Refresh the list
     } catch (error) {
       console.error('Error disabling account:', error)
