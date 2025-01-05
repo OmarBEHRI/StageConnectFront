@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import axiosInstance from '../axiosInstance/axiosInstance';
+import axiosInstance from '@/axiosInstance/axiosInstance';
 import { useRouter } from 'next/router';
+import axios from 'axios'
+
 
 export default function SignInModal({ onClose }) {
   const [email, setEmail] = useState('');
@@ -14,9 +16,9 @@ export default function SignInModal({ onClose }) {
     
     try {
       // Send login request
-      const response = await axiosInstance.post('/api/auth/signin', {
-        email,
-        password
+      const response = await axios.post('http://localhost:8085/api/auth/signin', {
+        email: email,
+        password : password,
       });
 
       // Store auth data in localStorage
@@ -27,6 +29,8 @@ export default function SignInModal({ onClose }) {
       // Update axios instance header with new token
       axiosInstance.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
+      console.log(axiosInstance.defaults);
+      console.log(response);
       // Get role-specific ID based on user role
       const role = response.data.roles[0];
       let roleEndpoint = '';
