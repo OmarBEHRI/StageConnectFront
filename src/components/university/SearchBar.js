@@ -3,6 +3,12 @@ import { useState } from 'react';
 export default function SearchBar({ onSearch }) {
   const [query, setQuery] = useState('');
 
+  const handleInputChange = (e) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    onSearch(newQuery);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(query);
@@ -13,7 +19,7 @@ export default function SearchBar({ onSearch }) {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleInputChange}
         placeholder="Search by name, last name, or role"
         className="border border-gray-300 rounded-full px-4 py-2 w-96"
       />

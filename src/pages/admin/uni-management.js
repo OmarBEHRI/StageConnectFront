@@ -46,6 +46,10 @@ export default function UniversityAccountsManagement() {
   }, [])
 
   const handleSearch = (query) => {
+    if (query.trim() === '') {
+      setFilteredAccounts(universityAccounts);
+      return;
+    }
     const filtered = universityAccounts.filter(account => 
       account &&
       (
@@ -54,8 +58,8 @@ export default function UniversityAccountsManagement() {
         (account.nom && account.nom.toLowerCase().includes(query.toLowerCase())) ||
         (account.prenom && account.prenom.toLowerCase().includes(query.toLowerCase()))
       )
-    )
-    setFilteredAccounts(filtered)
+    );
+    setFilteredAccounts(filtered);
   }
 
   const handleCreate = async (formData) => {
