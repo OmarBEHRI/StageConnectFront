@@ -84,12 +84,12 @@ export default function SignInModal({ onClose }) {
 
       
       console.log(`http://localhost:8085${roleEndpoint}/${response.data.id}`);
-      console.log(`Bearer ${localStorage.getItem(token)}`);
+      console.log(`Bearer ${localStorage.getItem('token')}`);
 
       const roleResponseId = await axios.get(`http://localhost:8085${roleEndpoint}/${response.data.id}`, 
         {
           headers: {
-            'Authrorization' : `Bearer ${localStorage.getItem(token)}`,
+            'Authrorization' : `Bearer ${localStorage.getItem('token')}`,
             'Content-Type' : `application/json`
           }
         });
