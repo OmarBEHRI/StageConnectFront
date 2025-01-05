@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import axiosInstance from '../axiosInstance/axiosInstance';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 export default function SignInModal({ onClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,7 +83,7 @@ export default function SignInModal({ onClose }) {
       localStorage.setItem(idVariableReturnName, roleResponse.data[idVariableReturnName]);
 
       // Redirect based on role
-      navigate(navigationRoute);
+      router.push(navigationRoute);
 
       onClose(); // Close the modal after successful login
     } catch (err) {
