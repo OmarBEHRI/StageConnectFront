@@ -83,8 +83,10 @@ export default function SignInModal({ onClose }) {
       }
 
       // Get role-specific details
-      const roleResponse = await axiosInstance.get(`${roleEndpoint}/${response.data.id}`);
-      localStorage.setItem(idVariableReturnName, roleResponse.data[idVariableReturnName]);
+      const roleResponseId = await axiosInstance.get(`${roleEndpoint}/${response.data.id}`);
+      localStorage.setItem("id", roleResponseId);
+
+      console.log(roleResponseId);
 
       // Redirect based on role
       router.push(navigationRoute);
