@@ -91,7 +91,7 @@ export default function Table({ columns, items, buttons, actions }) {
                 key={column}
                 className="px-6 py-4 whitespace-nowrap text-center"
               >
-                {item[column.toLowerCase().replace(/\s+/g, '')]}
+                {item[column]}
               </td>
             ))}
             {buttons && buttons.length > 0 && (

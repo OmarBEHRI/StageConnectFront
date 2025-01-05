@@ -19,13 +19,15 @@ export default function UniversityAccountsManagement() {
     router.push('/')
   }
 
-  const columns = ['ID', 'Name', "Last Name", "Phone", 'Email']
+  const columns = ['name', 'nom', "prenom", "telephone", "email"]
   const buttons = ['Edit', 'Disable']
 
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
         const response = await axiosInstance.get('/compte-ecoles')
+        console.log("Reponse")
+        console.log(response)
         const accounts = await Promise.all(response.data.map(async (compteEcole) => {
           const ecoleResponse = await axiosInstance.get(`/api/ecoles/${compteEcole.ecoleId}`)
           return {
