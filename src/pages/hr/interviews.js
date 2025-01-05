@@ -7,7 +7,6 @@ import FormComponent from '@/components/FormComponent';
 
 export default function HRInterviews() {
   const router = useRouter();
-  const { id } = router.query;
   const [isInternshipFormOpen, setIsInternshipFormOpen] = useState(false);
 
   // Mock data - replace with actual data
@@ -36,10 +35,9 @@ export default function HRInterviews() {
     setIsInternshipFormOpen(false);
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="hr" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="hr" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Interviews Management</h1>
         

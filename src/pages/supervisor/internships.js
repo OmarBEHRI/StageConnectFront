@@ -7,7 +7,6 @@ import FormComponent from '@/components/FormComponent';
 
 export default function SupervisorInternships() {
   const router = useRouter();
-  const { id } = router.query;
   const [isEvaluationFormOpen, setIsEvaluationFormOpen] = useState(false);
   const [selectedInternshipId, setSelectedInternshipId] = useState(null);
 
@@ -57,10 +56,9 @@ export default function SupervisorInternships() {
     setIsEvaluationFormOpen(false);
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="supervisor" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="supervisor" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internships Management</h1>
         

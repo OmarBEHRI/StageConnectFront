@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import axiosInstance from '../axiosInstance/axiosInstance';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 export default function SignInModal({ onClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,42 +34,42 @@ export default function SignInModal({ onClose }) {
       let navigationRoute = '';
 
       switch (role) {
-        case 'ADMIN':
+        case 'ROLE_ADMIN':
           roleEndpoint = '/api/admins/user';
           idVariableReturnName = 'id';
           navigationRoute = '/admin';
           break;
-        case 'CHEF_DE_FILIERE':
+        case 'ROLE_CHEF_DE_FILIERE':
           roleEndpoint = '/chefs-de-filiere/user';
           idVariableReturnName = 'idCf';
           navigationRoute = '/cf';
           break;
-        case 'ECOLE':
+        case 'ROLE_ECOLE':
           roleEndpoint = '/compte-ecoles/user';
           idVariableReturnName = 'idCompte';
           navigationRoute = '/university';
           break;
-        case 'ENTREPRISE':
+        case 'ROLE_ENTREPRISE':
           roleEndpoint = '/compte-entreprises/user';
           idVariableReturnName = 'idCompte';
           navigationRoute = '/company';
           break;
-        case 'COORDINATEUR_DE_STAGE':
+        case 'ROLE_COORDINATEUR_DE_STAGE':
           roleEndpoint = '/api/coordinateurs/user';
           idVariableReturnName = 'idCs';
           navigationRoute = '/coordinator';
           break;
-        case 'RH':
+        case 'ROLE_RH':
           roleEndpoint = '/api/rh/user';
           idVariableReturnName = 'idRh';
           navigationRoute = '/hr';
           break;
-        case 'ENCADRANT':
+        case 'ROLE_ENCADRANT':
           roleEndpoint = '/api/encadrants/user';
           idVariableReturnName = 'idEncadrant';
           navigationRoute = '/supervisor';
           break;
-        case 'ETUDIANT':
+        case 'ROLE_ETUDIANT':
           roleEndpoint = '/api/etudiants/user';
           idVariableReturnName = 'idEtu';
           navigationRoute = '/student';
@@ -83,7 +83,7 @@ export default function SignInModal({ onClose }) {
       localStorage.setItem(idVariableReturnName, roleResponse.data[idVariableReturnName]);
 
       // Redirect based on role
-      navigate(navigationRoute);
+      router.push(navigationRoute);
 
       onClose(); // Close the modal after successful login
     } catch (err) {

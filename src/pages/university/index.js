@@ -5,7 +5,6 @@ import StatisticsSection from '@/components/university/StatisticsSection';
 
 export default function UniversityDashboard() {
   const router = useRouter();
-  const { id } = router.query;
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function UniversityDashboard() {
   };
 
   return (
-    <Layout role="university" userId={id} onLogout={handleLogout}>
+    <Layout role="university" onLogout={handleLogout}>
       <h1 className="text-3xl font-bold mb-6">University Dashboard</h1>
       {stats && <StatisticsSection stats={stats} />}
     </Layout>

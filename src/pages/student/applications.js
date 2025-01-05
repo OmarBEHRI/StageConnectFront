@@ -6,7 +6,6 @@ import Table from '@/components/Table';
 
 export default function StudentApplications() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Sample data
   const [applications] = useState({
@@ -81,10 +80,9 @@ export default function StudentApplications() {
     router.push('/');
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="student" userId={id} onLogout={handleLogout}>
+    <Layout role="student" onLogout={handleLogout}>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Applications</h1>
         <div className="mb-6">

@@ -6,7 +6,6 @@ import Card from '@/components/Card';
 
 export default function StudentInternships() {
   const router = useRouter();
-  const { id } = router.query;
 
   const [internships, setInternships] = useState([ // Sample data
     {
@@ -60,10 +59,9 @@ export default function StudentInternships() {
     router.push('/');
   };
 
-  if (!id) return null;
 
   return (
-    <Layout role="student" userId={id} onLogout={handleLogout}>
+    <Layout role="student" onLogout={handleLogout}>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Internships</h1>
         <div className="mb-6">

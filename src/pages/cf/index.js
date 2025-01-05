@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function CFDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const stats = [
@@ -14,12 +13,10 @@ export default function CFDashboard() {
     { title: "Internships Found", value: "52" }
   ];
 
-  if (!id) return null;
 
   return (
     <Layout
       role="cf"
-      userId={id}
       onLogout={() => router.push('/')}
     >
       <div className="space-y-6">

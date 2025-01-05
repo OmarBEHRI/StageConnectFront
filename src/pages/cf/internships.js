@@ -6,7 +6,6 @@ import Card from '@/components/Card';
 
 export default function CFInternships() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const internships = [
@@ -38,10 +37,8 @@ export default function CFInternships() {
     console.log('Refusing internship:', internshipId);
   };
 
-  if (!id) return null;
-
   return (
-    <Layout role="cf" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="cf" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internship Validation Requests</h1>
         

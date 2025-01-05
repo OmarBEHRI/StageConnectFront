@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function SupervisorDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const stats = [
@@ -16,12 +15,9 @@ export default function SupervisorDashboard() {
     { title: "Company Active Internships", value: "12" }
   ];
 
-  if (!id) return null;
-
   return (
     <Layout
       role="supervisor"
-      userId={id}
       onLogout={() => router.push('/')}
     >
       <div className="space-y-6">

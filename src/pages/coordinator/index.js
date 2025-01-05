@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function CoordinatorDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const stats = [
@@ -13,12 +12,9 @@ export default function CoordinatorDashboard() {
     { title: "Total Students", value: "450" }
   ];
 
-  if (!id) return null;
-
   return (
     <Layout
       role="coordinator"
-      userId={id}
       onLogout={() => router.push('/')}
     >
       <div className="space-y-6">

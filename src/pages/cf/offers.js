@@ -6,7 +6,6 @@ import Card from '@/components/Card';
 
 export default function CFOffers() {
   const router = useRouter();
-  const { id } = router.query;
   const [selectedOffers, setSelectedOffers] = useState(new Set());
 
   // Mock data - replace with actual data
@@ -49,10 +48,8 @@ export default function CFOffers() {
     setSelectedOffers(newSelected);
   };
 
-  if (!id) return null;
-
   return (
-    <Layout role="cf" userId={id} onLogout={() => router.push('/')}>
+    <Layout role="cf" onLogout={() => router.push('/')}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Available Offers</h1>
         

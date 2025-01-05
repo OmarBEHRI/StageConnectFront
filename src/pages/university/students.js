@@ -7,7 +7,6 @@ import Table from '@/components/Table';
 
 export default function StudentsManagement() {
   const router = useRouter();
-  const { id } = router.query;
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Sample data for testing
@@ -64,7 +63,7 @@ export default function StudentsManagement() {
   ];
 
   return (
-    <Layout role="university" userId={id} onLogout={handleLogout}>
+    <Layout role="university" onLogout={handleLogout}>
       <h1 className="text-3xl font-bold mb-12 mt-12">Students Management</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />

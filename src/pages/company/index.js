@@ -4,7 +4,6 @@ import StatCard from '@/components/StatCard';
 
 export default function CompanyDashboard() {
   const router = useRouter();
-  const { id } = router.query;
 
   // Mock data - replace with actual data
   const stats = [
@@ -16,12 +15,10 @@ export default function CompanyDashboard() {
     { title: "Scheduled Interviews", value: "25" }
   ];
 
-  if (!id) return null;
 
   return (
     <Layout
       role="company"
-      userId={id}
       onLogout={() => router.push('/')}
     >
       <div className="space-y-6">
