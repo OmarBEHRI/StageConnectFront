@@ -102,7 +102,6 @@ export default function UniversityAccountsManagement() {
         {
           email: formData.email,
           motDePasse: formData.password,
-          ecoleId: newEcoleId,
           nom: formData.nom,
           prenom: formData.prenom,
           telephone: formData.telephone,
