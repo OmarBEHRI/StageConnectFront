@@ -19,8 +19,13 @@ export default function UniversityAccountsManagement() {
     router.push('/')
   }
 
-  const columns = ['idCompte', 'name', 'nom', "prenom", "telephone", "email"]
-  const buttons = ['Edit', 'Disable']
+  // Define columnKeys (actual property keys in the items)
+  const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
+
+  // Define columns (display names in French with proper formatting)
+  const columns = ['ID Compte', 'Université', 'Nom', 'Prénom', 'Téléphone', 'Email']
+
+  const buttons = ['Modifier', 'Désactiver']
 
   const fetchAccounts = async () => {
     try {
@@ -131,18 +136,18 @@ export default function UniversityAccountsManagement() {
   }
 
   const formFields = [
-    { name: 'name', placeholder: 'University Name' },
+    { name: 'name', placeholder: 'Nom de l\'université' },
     { name: 'nom', placeholder: 'Nom' },
-    { name: 'prenom', placeholder: 'Prenom' },
-    { name: 'telephone', placeholder: 'Telephone' },
+    { name: 'prenom', placeholder: 'Prénom' },
+    { name: 'telephone', placeholder: 'Téléphone' },
     { name: 'email', placeholder: 'Email' },
-    { name: 'password', type: 'password', placeholder: 'Password' }
+    { name: 'password', type: 'password', placeholder: 'Mot de passe' }
   ]
 
   return (
     <Layout role="admin" onLogout={handleLogout}>
       <div className="p-6">
-        <h1 className="text-3xl font-bold mb-8">University Accounts Management</h1>
+        <h1 className="text-3xl font-bold mb-8">Gestion des comptes universitaires</h1>
         <div className="mb-4 flex justify-between items-center">
           <SearchBar onSearch={handleSearch} />
           <button
@@ -152,12 +157,13 @@ export default function UniversityAccountsManagement() {
               setFormData({})
             }}
           >
-            Create New Account
+            Créer un nouveau compte
           </button>
         </div>
         
         <Table 
-          columns={columns}
+          columns={columns} // Display names in French
+          columnKeys={columnKeys} // Property keys in the items
           items={filteredAccounts}
           buttons={buttons}
           actions={[handleEdit, handleDisable]}
@@ -169,8 +175,8 @@ export default function UniversityAccountsManagement() {
           onClose={() => setShowCreateForm(false)}
           onSubmit={handleCreate}
           fields={formFields}
-          title="Create New University Account"
-          submitButtonText="Create"
+          title="Créer un nouveau compte universitaire"
+          submitButtonText="Créer"
         />
 
         <FormComponent 
@@ -178,8 +184,8 @@ export default function UniversityAccountsManagement() {
           onClose={() => setShowEditForm(false)}
           onSubmit={handleSaveEdit}
           fields={formFields}
-          title="Edit University Account"
-          submitButtonText="Save"
+          title="Modifier le compte universitaire"
+          submitButtonText="Enregistrer"
           prefillData={universityAccounts.find(account => account.idCompte === editAccountId)}
         />
       </div>
