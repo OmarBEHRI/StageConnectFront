@@ -4,15 +4,21 @@ import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function HRInterviews() {
   const router = useRouter();
+  const [isInternshipFormOpen, setIsInternshipFormOpen] = useState(false);
+  const [interviews, setInterviews] = useState([]);
+  const [entrepriseId, setEntrepriseId] = useState(null);
+  const [selectedInterview, setSelectedInterview] = useState(null);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       if (token) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchCompteEntreprise();
       } else {
         router.push('/');
       }
@@ -20,34 +26,93 @@ export default function HRInterviews() {
       router.push('/');
     }
   }, [router]);
-  const [isInternshipFormOpen, setIsInternshipFormOpen] = useState(false);
 
-  // Mock data - replace with actual data
-  const interviews = [
-    { id: 1, studentname: "John Doe", offerid: "OFF001", role: "Software Engineer", date: "2024-03-15" },
-    // Add more interviews...
-  ];
+  const fetchCompteEntreprise = async () => {
+    try {
+      const rhId = localStorage.getItem('id');
+      const response = await axiosInstance.get(`/api/rh/${rhId}`);
+      setEntrepriseId(response.data.entrepriseId);
+      fetchInterviews(response.data.entrepriseId);
+    } catch (error) {
+      console.error('Error fetching CompteEntreprise:', error);
+      alert('Failed to fetch CompteEntreprise data.');
+    }
+  };
+
+  const fetchInterviews = async (entrepriseId) => {
+    try {
+      const response = await axiosInstance.get(`/entretiens/by-entreprise/${entrepriseId}`);
+      const filteredInterviews = response.data.filter(interview => interview.resultat === "nouveau");
+
+      // Fetch Etudiant details for each interview
+      const interviewsWithEtudiant = await Promise.all(
+        filteredInterviews.map(async (interview) => {
+          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${interview.etudiantId}`);
+          return {
+            ...interview,
+            etudiant: etudiantResponse.data, // Add Etudiant details to the interview object
+          };
+        })
+      );
+
+      setInterviews(interviewsWithEtudiant);
+    } catch (error) {
+      console.error('Error fetching interviews or Etudiant details:', error);
+      alert('Failed to fetch interviews or Etudiant details.');
+    }
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "N/A"; // Handle null or undefined dates
+    const dateObj = new Date(date);
+    return dateObj.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  };
 
   const internshipFormFields = [
-    { name: "startDate", type: "date", placeholder: "Start Date" },
-    { name: "endDate", type: "date", placeholder: "End Date" },
-    { name: "supervisor", placeholder: "Supervisor Name" },
-    { name: "department", placeholder: "Department" }
+    { name: "titre", placeholder: "Title" },
+    { name: "description", placeholder: "Description" },
+    { name: "dateDebut", placeholder: "Start Date", type: "date" },
+    { name: "dateFin", placeholder: "End Date", type: "date" },
+    { name: "duree", placeholder: "Duration" },
+    { name: "localisation", placeholder: "Location" },
+    { name: "montantRemuneration", placeholder: "Remuneration", type: "number" },
+    { name: "type", placeholder: "Type" },
+    { name: "encadrantId", placeholder: "Supervisor ID", type: "number" },
   ];
 
   const handleAccept = (interviewId) => {
+    const interview = interviews.find(int => int.idEntretien === interviewId);
+    setSelectedInterview(interview);
     setIsInternshipFormOpen(true);
   };
 
-  const handleRefuse = (interviewId) => {
-    console.log('Refuse interview:', interviewId);
+  const handleRefuse = async (interviewId) => {
+    try {
+      await axiosInstance.put(`/entretiens/${interviewId}`, { resultat: "refusé" });
+      fetchInterviews(entrepriseId);
+    } catch (error) {
+      console.error('Error refusing interview:', error);
+      alert('Failed to refuse interview.');
+    }
   };
 
-  const handleCreateInternship = (data) => {
-    console.log('Create internship:', data);
-    setIsInternshipFormOpen(false);
+  const handleCreateInternship = async (data) => {
+    try {
+      const stageDTO = {
+        ...data,
+        statut: "nouveau", // Set statut to "nouveau" by default
+        etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
+        offreId: selectedInterview.offreId, // Take offreId from selectedInterview
+      };
+      await axiosInstance.post('/stages', stageDTO); // Create the internship
+      await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, { resultat: "accepté" }); // Update interview result
+      fetchInterviews(entrepriseId); // Refresh the interviews list
+      setIsInternshipFormOpen(false); // Close the form
+    } catch (error) {
+      console.error('Error creating internship:', error);
+      alert('Failed to create internship.');
+    }
   };
-
 
   return (
     <Layout role="hr">
@@ -57,10 +122,24 @@ export default function HRInterviews() {
         <SearchBar onSearch={(query) => console.log('Search:', query)} />
 
         <Table 
-          columns={["Student Name", "Offer ID", "Role", "Date"]}
+          columns={["Student Name", "Email", "Phone", "Offer ID", "Date"]}
+          columnKeys={[
+            "etudiant.nom", 
+            "etudiant.email", 
+            "etudiant.tel", 
+            "offreId", 
+            "dateEntretien"
+          ]}
           items={interviews}
           buttons={["Accept", "Refuse"]}
           actions={[handleAccept, handleRefuse]}
+          idParam="idEntretien"
+          formatData={(key, value) => {
+            if (key === "dateEntretien") {
+              return formatDate(value); // Format dateEntretien
+            }
+            return value; // Return other values as-is
+          }}
         />
 
         <FormComponent 
@@ -69,6 +148,7 @@ export default function HRInterviews() {
           onSubmit={handleCreateInternship}
           fields={internshipFormFields}
           title="Create Internship"
+          submitButtonText="Create"
         />
       </div>
     </Layout>
