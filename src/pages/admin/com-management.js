@@ -76,7 +76,7 @@ export default function CompanyAccountsManagement() {
 
       await axiosInstance.post('/compte-entreprises', {
         email: formData.email,
-        motDePasse: formData.password,
+        motDePasse: formData.motDePasse,
         entrepriseId: newEntrepriseId,
         nom: formData.nom,
         prenom: formData.prenom,
