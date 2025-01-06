@@ -170,7 +170,7 @@ export default function CompanyAccountsManagement() {
           fields={formFields}
           title="Edit Company Account"
           submitButtonText="Save"
-          prefillData={companyAccounts.find(account => account.idCompte = editAccountId)}
+          prefillData={companyAccounts.find(account => account.idCompte === editAccountId)}
         />
       </div>
     </Layout>
