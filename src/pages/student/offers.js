@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'
 import Image from 'next/image';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';

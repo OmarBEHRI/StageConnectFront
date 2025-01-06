@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
 import Table from '@/components/Table';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import { useState, useEffect } from 'react'
 
 export default function StudentsManagement() {
   const router = useRouter();

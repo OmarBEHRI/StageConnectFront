@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
+import { useState, useEffect } from 'react'
 
 export default function CFDashboard() {
   useEffect(() => {

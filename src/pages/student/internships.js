@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
+import { useState, useEffect } from 'react'
 
 export default function StudentInternships() {
   useEffect(() => {

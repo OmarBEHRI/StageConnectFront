@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
+import { useState, useEffect } from 'react'
 
 export default function HRApplicationManagement() {
 

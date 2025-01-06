@@ -1,8 +1,9 @@
-import { useState } from 'react';
+
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
+import { useState, useEffect } from 'react'
 
 export default function ComSupervisorManagement() {
   const [isFormOpen, setIsFormOpen] = useState(false);
