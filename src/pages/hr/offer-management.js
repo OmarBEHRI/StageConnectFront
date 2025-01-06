@@ -169,6 +169,7 @@ export default function HROfferManagement() {
           onSubmit={isEditMode ? handleEditOffer : handleCreateOffer}
           fields={formFields}
           title={isEditMode ? "Edit Offer" : "Create New Offer"}
+          submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedOffer}
         />
       </div>
