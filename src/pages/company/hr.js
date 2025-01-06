@@ -1,20 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/components/axiosInstance';
 
 export default function ComHRManagement() {
   const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
+  const [accounts, setAccounts] = useState([]);
+  const [entrepriseId, setEntrepriseId] = useState(null);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       if (token) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchCompteEntreprise();
       } else {
         router.push('/');
       }
@@ -23,11 +28,27 @@ export default function ComHRManagement() {
     }
   }, [router]);
 
-  // Mock data - replace with actual data
-  const accounts = [
-    { id: 1, username: "jsmith", firstname: "John", lastname: "Smith" },
-    { id: 2, username: "mjohnson", firstname: "Mary", lastname: "Johnson"},
-  ];
+  const fetchCompteEntreprise = async () => {
+    try {
+      const compteEntrepriseId = localStorage.getItem("compteEntrepriseId");
+      const response = await axiosInstance.get(`/compte-entreprises/${compteEntrepriseId}`);
+      setEntrepriseId(response.data.entrepriseId);
+      fetchRHAccounts(response.data.entrepriseId);
+    } catch (error) {
+      console.error('Error fetching CompteEntreprise:', error);
+      alert('Failed to fetch CompteEntreprise data.');
+    }
+  };
+
+  const fetchRHAccounts = async (entrepriseId) => {
+    try {
+      const response = await axiosInstance.get(`/api/rh/entreprise/${entrepriseId}`);
+      setAccounts(response.data);
+    } catch (error) {
+      console.error('Error fetching RH accounts:', error);
+      alert('Failed to fetch RH accounts.');
+    }
+  };
 
   const formFields = [
     { name: "firstname", placeholder: "First Name" },
@@ -36,31 +57,68 @@ export default function ComHRManagement() {
     { name: "password", type: "password", placeholder: "Password" },
   ];
 
-  const handleCreateAccount = (data) => {
-    console.log('New account:', data);
-    setIsFormOpen(false);
+  const handleCreateAccount = async (data) => {
+    try {
+      const rhDTO = {
+        nom: data.firstname,
+        prenom: data.lastname,
+        email: data.username,
+        motDePasse: data.password,
+        entrepriseId: entrepriseId,
+      };
+      await axiosInstance.post('/api/rh', rhDTO);
+      fetchRHAccounts(entrepriseId);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Error creating RH account:', error);
+      alert('Failed to create RH account.');
+    }
   };
 
   const handleEdit = (accountId) => {
-    const account = accounts.find(acc => acc.id === accountId);
+    const account = accounts.find(acc => acc.idRh === accountId);
     setSelectedAccount(account);
     setIsEditMode(true);
     setIsFormOpen(true);
   };
 
-  const handleDelete = (accountId) => {
-    console.log('Delete account:', accountId);
+  const handleEditAccount = async (data) => {
+    try {
+      const rhDTO = {
+        idRh: selectedAccount.idRh,
+        nom: data.firstname,
+        prenom: data.lastname,
+        email: data.username,
+        motDePasse: data.password,
+        entrepriseId: entrepriseId,
+      };
+      await axiosInstance.put(`/api/rh/${selectedAccount.idRh}`, rhDTO);
+      fetchRHAccounts(entrepriseId);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Error updating RH account:', error);
+      alert('Failed to update RH account.');
+    }
   };
 
+  const handleDelete = async (accountId) => {
+    try {
+      await axiosInstance.delete(`/api/rh/${accountId}`);
+      fetchRHAccounts(entrepriseId);
+    } catch (error) {
+      console.error('Error deleting RH account:', error);
+      alert('Failed to delete RH account.');
+    }
+  };
 
   return (
     <Layout role="company">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Company Accounts Management</h1>
-        
+
         <div className="flex justify-between items-center">
           <SearchBar onSearch={(query) => console.log('Search:', query)} />
-          <button 
+          <button
             onClick={() => {
               setIsEditMode(false);
               setSelectedAccount(null);
@@ -72,23 +130,26 @@ export default function ComHRManagement() {
           </button>
         </div>
 
-        <Table 
-          columns={["Username", "First Name", "Last Name", "Role"]}
+        <Table
+          columns={["Username", "First Name", "Last Name"]}
+          columnKeys={["email", "nom", "prenom"]}
           items={accounts}
           buttons={["Edit", "Delete"]}
           actions={[handleEdit, handleDelete]}
+          idParam="idRh"
         />
 
-        <FormComponent 
+        <FormComponent
           isOpen={isFormOpen}
           onClose={() => {
             setIsFormOpen(false);
             setIsEditMode(false);
             setSelectedAccount(null);
           }}
-          onSubmit={handleCreateAccount}
+          onSubmit={isEditMode ? handleEditAccount : handleCreateAccount}
           fields={formFields}
           title={isEditMode ? "Edit Account" : "Create New Account"}
+          prefillData={selectedAccount}
         />
       </div>
     </Layout>
