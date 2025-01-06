@@ -113,11 +113,18 @@ export default function UniversityCFManagement() {
   const handleSaveEdit = async (formData) => {
     try {
       // Find the selected filiere by its name
+      console.log("editAccountId");
       const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === formData.filiere);
       if (!selectedFiliere) {
         console.error('Selected filiere not found');
         return;
       }
+      //Allo push
+      console.log(editAccountId);
+      console.log(editAccountId);
+
+      console.log("selectedFiliere.idFiliere");
+      console.log(selectedFiliere.idFiliere)
 
       const response = await axiosInstance.put(`/chefs-de-filiere/${editAccountId}`, {
         nom: formData.nom,
