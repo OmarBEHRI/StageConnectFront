@@ -118,9 +118,6 @@ export default function UniversityAccountsManagement() {
     } catch (error) {
       console.error('Error updating account:', error)
     }
-    useEffect(() => {
-      fetchAccounts()
-    }, [])
   }
 
   const handleDisable = async (id) => {
