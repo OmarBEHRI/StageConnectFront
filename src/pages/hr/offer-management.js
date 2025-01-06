@@ -50,6 +50,12 @@ export default function HROfferManagement() {
     }
   };
 
+  const formatDate = (date) => {
+    if (!date) return "N/A"; // Handle null or undefined dates
+    const dateObj = new Date(date);
+    return dateObj.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  };
+
   const formFields = [
     { name: "objetOffre", placeholder: "Title" },
     { name: "posteOffre", placeholder: "Position" },
@@ -179,6 +185,12 @@ export default function HROfferManagement() {
           buttons={["Edit", "Delete"]}
           actions={[handleEdit, handleDelete]}
           idParam="idOffre"
+          formatData={(key, value) => {
+            if (key === "dateLancement" || key === "dateLimite") {
+              return formatDate(value); // Format date fields
+            }
+            return value; // Return other values as-is
+          }}
         />
 
         <FormComponent
@@ -198,4 +210,3 @@ export default function HROfferManagement() {
     </Layout>
   );
 }
-
