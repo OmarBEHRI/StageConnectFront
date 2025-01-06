@@ -1,6 +1,7 @@
 import Navbar from '@/components/NavBar'
 import { getNavLinks } from '@/config/navigation';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function Layout({ children, role }) {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function Layout({ children, role }) {
       localStorage.removeItem('role');
       localStorage.removeItem('id');
     }
+    axiosInstance.defaults.headers.Authorization = null; // Set axiosInstance headers.Authorization to null
     console.log(localStorage.getItem('token'));
     setTimeout(() => {
       router.push('/');
@@ -31,4 +33,3 @@ export default function Layout({ children, role }) {
     </div>
   )
 }
-
