@@ -14,6 +14,8 @@ export default function CompanyAccountsManagement() {
   const [editAccountId, setEditAccountId] = useState(0)
   const [error, setError] = useState(null)
 
+  axiosInstance.defaults.headers.Authorization = localStorage.getItem("token")
+
 
   // Define columnKeys (actual property keys in the items)
   const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
