@@ -26,7 +26,8 @@ export const navConfigs = {
   
     company: [
       { label: 'Dashboard', href: '/company' },
-      { label: 'Company Management', href: '/company/com-management' },
+      { label: 'Supervisor Management', href: '/company/supervisor' },
+      { label: 'HR Management', href: '/company/hr' },
       { label: 'Offers Management', href: '/company/offers' },
       { label: 'Profile', href: '/company/profile' },
     ],

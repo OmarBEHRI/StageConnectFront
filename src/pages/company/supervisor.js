@@ -4,7 +4,7 @@ import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 
-export default function ComAccManagement() {
+export default function ComSupervisorManagement() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -23,8 +23,8 @@ export default function ComAccManagement() {
 
   // Mock data - replace with actual data
   const accounts = [
-    { id: 1, username: "jsmith", firstname: "John", lastname: "Smith", role: "HR" },
-    { id: 2, username: "mjohnson", firstname: "Mary", lastname: "Johnson", role: "Supervisor" },
+    { id: 1, username: "jsmith", firstname: "John", lastname: "Smith" },
+    { id: 2, username: "mjohnson", firstname: "Mary", lastname: "Johnson"},
   ];
 
   const formFields = [
@@ -32,7 +32,6 @@ export default function ComAccManagement() {
     { name: "lastname", placeholder: "Last Name" },
     { name: "username", placeholder: "Username" },
     { name: "password", type: "password", placeholder: "Password" },
-    { name: "role", type: "select", placeholder: "Role", options: ["HR", "Supervisor"] }
   ];
 
   const handleCreateAccount = (data) => {
