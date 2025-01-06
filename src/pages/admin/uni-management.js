@@ -183,7 +183,7 @@ export default function UniversityAccountsManagement() {
           fields={formFields}
           title="Edit University Account"
           submitButtonText="Save"
-          prefillData={universityAccounts.filter(account => account.idCompte = editAccountId)}
+          prefillData={universityAccounts.find(account => account.idCompte === editAccountId)}
         />
       </div>
     </Layout>
