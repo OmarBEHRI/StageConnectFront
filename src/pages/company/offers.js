@@ -149,8 +149,8 @@ export default function ComOffers() {
         </div>
 
         <Table
-          columns={["Title", "Position", "Start Date", "Status", "Applicants"]}
-          columnKeys={["objetOffre", "posteOffre", "dateLancement", "status", "applicants"]}
+          columns={["Title", "Position", "Start Date", "Status"]}
+          columnKeys={["objetOffre", "posteOffre", "dateLancement", "status"]}
           items={offers}
           buttons={["Edit", "Delete"]}
           actions={[handleEdit, handleDelete]}
