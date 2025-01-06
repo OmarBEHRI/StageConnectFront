@@ -43,7 +43,12 @@ export default function HROfferManagement() {
   const fetchOffers = async (entrepriseId) => {
     try {
       const response = await axiosInstance.get(`/api/offres/entreprise/${entrepriseId}`);
-      setOffers(response.data);
+      const formattedOffers = response.data.map(offer => ({
+        ...offer,
+        dateLancement: formatDate(offer.dateLancement),
+        dateLimite: formatDate(offer.dateLimite),
+      }));
+      setOffers(formattedOffers);
     } catch (error) {
       console.error('Error fetching offers:', error);
       alert('Failed to fetch offers.');
@@ -53,7 +58,7 @@ export default function HROfferManagement() {
   const formatDate = (date) => {
     if (!date) return "N/A"; // Handle null or undefined dates
     const dateObj = new Date(date);
-    return dateObj.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    return dateObj.toDateString(); // Format as a human-readable date string
   };
 
   const formFields = [
