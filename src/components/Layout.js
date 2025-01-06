@@ -6,8 +6,9 @@ export default function Layout({ children, role }) {
   const router = useRouter();
 
   const handleLogout = () => {
+    console.log("Current Item");
+    console.log(localStorage.getItem('token'));
     console.log("Removing Items");
-    
     if (typeof window !== 'undefined') { // Ensure localStorage is available
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
