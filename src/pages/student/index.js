@@ -13,6 +13,18 @@ export default function StudentDashboard() {
   };
 
   const handleLogout = () => {
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem("token");
+        if (token) {
+          axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        } else {
+          router.push('/');
+        }
+      } else {
+        router.push('/');
+      }
+    }, [router]);
     // Add logout logic here
     router.push('/');
   };

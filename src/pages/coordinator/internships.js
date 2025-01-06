@@ -4,7 +4,18 @@ import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function CoordinatorInternships() {
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   // Mock data - replace with actual data
   const internships = [
     {

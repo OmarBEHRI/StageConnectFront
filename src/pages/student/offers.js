@@ -5,6 +5,18 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 
 export default function StudentOffers() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   const [offers, setOffers] = useState([ // Sample data
     {
       id: 1,

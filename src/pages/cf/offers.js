@@ -4,6 +4,18 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 
 export default function CFOffers() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   const [selectedOffers, setSelectedOffers] = useState(new Set());
 
   // Mock data - replace with actual data

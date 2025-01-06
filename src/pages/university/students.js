@@ -15,6 +15,18 @@ export default function StudentsManagement() {
   const [ecoleId, setEcoleId] = useState(null);
   const [error, setError] = useState(null); // State to manage error messages
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
 

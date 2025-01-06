@@ -2,7 +2,18 @@ import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 
 export default function CoordinatorDashboard() {
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   // Mock data - replace with actual data
   const stats = [
     { title: "Pending Validations", value: "12" },

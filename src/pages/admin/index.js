@@ -2,7 +2,19 @@ import Layout from '@/components/Layout'
 import StatCard from '@/components/StatCard'
 
 export default function Dashboard() {
-    
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   // In a real application, you'd fetch this data from an API
   const stats = {
     universityAccounts: 50,

@@ -14,6 +14,18 @@ export default function UniversityAccountsManagement() {
   const [editAccountId, setEditAccountId] = useState(0)
   const [error, setError] = useState(null)
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   // Define columnKeys (actual property keys in the items)
   const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
 

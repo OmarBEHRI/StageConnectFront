@@ -5,6 +5,18 @@ import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 
 export default function HRInterviews() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   const [isInternshipFormOpen, setIsInternshipFormOpen] = useState(false);
 
   // Mock data - replace with actual data

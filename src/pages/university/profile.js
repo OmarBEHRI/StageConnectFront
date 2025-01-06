@@ -5,7 +5,18 @@ import DescriptionSection from '@/components/university/DescriptionSection';
 
 export default function UniversityProfile() {
   const [profileData, setProfileData] = useState(null);
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   useEffect(() => {
     // Fetch profile data
     // This is a placeholder. In a real application, you'd fetch this data from your API

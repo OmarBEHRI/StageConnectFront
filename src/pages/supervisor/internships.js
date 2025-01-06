@@ -5,6 +5,19 @@ import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
 
 export default function SupervisorInternships() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
+
   const [isEvaluationFormOpen, setIsEvaluationFormOpen] = useState(false);
   const [selectedInternshipId, setSelectedInternshipId] = useState(null);
 

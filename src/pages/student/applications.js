@@ -4,6 +4,18 @@ import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function StudentApplications() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
 
   // Sample data
   const [applications] = useState({

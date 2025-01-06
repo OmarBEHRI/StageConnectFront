@@ -5,6 +5,20 @@ import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
 
 export default function HRApplicationManagement() {
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
+  
   const router = useRouter();
   const { offerId } = router.query;
   const [isInterviewFormOpen, setIsInterviewFormOpen] = useState(false);

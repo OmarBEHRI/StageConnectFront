@@ -5,6 +5,19 @@ import StatisticsSection from '@/components/university/StatisticsSection';
 export default function UniversityDashboard() {
   const [stats, setStats] = useState(null);
 
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
   useEffect(() => {
     // Fetch statistics data
     // This is a placeholder. In a real application, you'd fetch this data from your API
