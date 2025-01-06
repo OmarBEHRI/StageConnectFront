@@ -3,9 +3,11 @@ import Table from '@/components/Table'
 import FormComponent from '@/components/FormComponent'
 import SearchBar from '@/components/university/SearchBar'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function CompanyAccountsManagement() {
+  const router = useRouter();
   const [companyAccounts, setCompanyAccounts] = useState([])
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
@@ -14,8 +16,18 @@ export default function CompanyAccountsManagement() {
   const [editAccountId, setEditAccountId] = useState(0)
   const [error, setError] = useState(null)
 
-  axiosInstance.defaults.headers.Authorization = localStorage.getItem("token")
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
+    }
+  }, [router]);
 
   // Define columnKeys (actual property keys in the items)
   const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
