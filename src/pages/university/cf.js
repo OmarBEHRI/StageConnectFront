@@ -120,8 +120,13 @@ export default function UniversityCFManagement() {
       }
 
       const response = await axiosInstance.put(`/chefs-de-filiere/${editAccountId}`, {
-        ...formData,
-        filiereId: selectedFiliere.idFiliere, // Include the filiereId
+        nom: formData.nom,
+        prenom: formData.prenom,
+        email: formData.email,
+        motDePasse: formData.motDePasse,
+        telephone: formData.telephone,
+        ecoleId: ecoleId,
+        filiereId: selectedFiliere.idFiliere,// Include the filiereId
       });
       const updatedAccounts = accounts.map(account =>
         account.idCf === editAccountId ? response.data : account
