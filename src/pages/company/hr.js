@@ -149,6 +149,7 @@ export default function ComHRManagement() {
           onSubmit={isEditMode ? handleEditAccount : handleCreateAccount}
           fields={formFields}
           title={isEditMode ? "Edit Account" : "Create New Account"}
+          submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedAccount}
         />
       </div>

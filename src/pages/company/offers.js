@@ -8,9 +8,6 @@ import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function ComOffers() {
   const router = useRouter();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState(null);
   const [offers, setOffers] = useState([]);
   const [entrepriseId, setEntrepriseId] = useState(null);
 
@@ -30,7 +27,7 @@ export default function ComOffers() {
 
   const fetchCompteEntreprise = async () => {
     try {
-      const compteEntrepriseId = localStorage.getItem("id");
+      const compteEntrepriseId = localStorage.getItem('id');
       const response = await axiosInstance.get(`/compte-entreprises/${compteEntrepriseId}`);
       setEntrepriseId(response.data.entrepriseId);
       fetchOffers(response.data.entrepriseId);
@@ -50,84 +47,7 @@ export default function ComOffers() {
     }
   };
 
-  const formFields = [
-    { name: "objetOffre", placeholder: "Title" },
-    { name: "posteOffre", placeholder: "Position" },
-    { name: "dateLancement", placeholder: "Start Date", type: "date" },
-    { name: "dateLimite", placeholder: "End Date", type: "date" },
-    { name: "descriptionOffre", placeholder: "Description" },
-    { name: "dureeStage", placeholder: "Duration" },
-    { name: "modeOffre", placeholder: "Mode" },
-    { name: "remuneration", placeholder: "Remuneration" },
-    { name: "typeStageOffre", placeholder: "Type" },
-    { name: "niveauRequisOffre", placeholder: "Required Level" },
-  ];
 
-  const handleCreateOffer = async (data) => {
-    try {
-      const offreDTO = {
-        objetOffre: data.objetOffre,
-        posteOffre: data.posteOffre,
-        dateLancement: data.dateLancement,
-        dateLimite: data.dateLimite,
-        descriptionOffre: data.descriptionOffre,
-        dureeStage: data.dureeStage,
-        modeOffre: data.modeOffre,
-        remuneration: data.remuneration,
-        typeStageOffre: data.typeStageOffre,
-        niveauRequisOffre: data.niveauRequisOffre,
-        entrepriseId: entrepriseId,
-      };
-      await axiosInstance.post('/api/offres', offreDTO);
-      fetchOffers(entrepriseId);
-      setIsFormOpen(false);
-    } catch (error) {
-      console.error('Error creating offer:', error);
-      alert('Failed to create offer.');
-    }
-  };
-
-  const handleEdit = (offerId) => {
-    const offer = offers.find(off => off.idOffre === offerId);
-    setSelectedOffer(offer);
-    setIsEditMode(true);
-    setIsFormOpen(true);
-  };
-
-  const handleEditOffer = async (data) => {
-    try {
-      const offreDTO = {
-        idOffre: selectedOffer.idOffre,
-        objetOffre: data.objetOffre,
-        posteOffre: data.posteOffre,
-        dateLancement: data.dateLancement,
-        dateLimite: data.dateLimite,
-        descriptionOffre: data.descriptionOffre,
-        dureeStage: data.dureeStage,
-        modeOffre: data.modeOffre,
-        remuneration: data.remuneration,
-        typeStageOffre: data.typeStageOffre,
-        niveauRequisOffre: data.niveauRequisOffre,
-        entrepriseId: entrepriseId,
-      };
-      await axiosInstance.put(`/api/offres/${selectedOffer.idOffre}`, offreDTO);
-      fetchOffers(entrepriseId);
-      setIsFormOpen(false);
-    } catch (error) {
-      console.error('Error updating offer:', error);
-      alert('Failed to update offer.');
-    }
-  };
-
-  const handleDelete = async (offerId) => {
-    try {
-      await axiosInstance.delete(`/api/offres/${offerId}`);
-      fetchOffers(entrepriseId);
-    } catch (error) {
-      console.error('Error deleting offer:', error);
-      alert('Failed to delete offer.');
-    }
-  };
 
   return (
     <Layout role="company">
@@ -136,38 +56,13 @@ export default function ComOffers() {
 
         <div className="flex justify-between items-center">
           <SearchBar onSearch={(query) => console.log('Search:', query)} />
-          <button
-            onClick={() => {
-              setIsEditMode(false);
-              setSelectedOffer(null);
-              setIsFormOpen(true);
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Create New Offer
-          </button>
         </div>
 
         <Table
           columns={["Title", "Position", "Start Date", "Status"]}
           columnKeys={["objetOffre", "posteOffre", "dateLancement", "status"]}
           items={offers}
-          buttons={["Edit", "Delete"]}
-          actions={[handleEdit, handleDelete]}
           idParam="idOffre"
-        />
-
-        <FormComponent
-          isOpen={isFormOpen}
-          onClose={() => {
-            setIsFormOpen(false);
-            setIsEditMode(false);
-            setSelectedOffer(null);
-          }}
-          onSubmit={isEditMode ? handleEditOffer : handleCreateOffer}
-          fields={formFields}
-          title={isEditMode ? "Edit Offer" : "Create New Offer"}
-          prefillData={selectedOffer}
         />
       </div>
     </Layout>

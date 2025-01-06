@@ -153,6 +153,7 @@ export default function ComSupervisorManagement() {
           onSubmit={isEditMode ? handleEditAccount : handleCreateAccount}
           fields={formFields}
           title={isEditMode ? "Edit Supervisor" : "Create New Supervisor"}
+          submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedAccount}
         />
       </div>
