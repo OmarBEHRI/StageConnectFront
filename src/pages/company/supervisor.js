@@ -44,6 +44,7 @@ export default function ComSupervisorManagement() {
 
   const fetchEncadrantAccounts = async (entrepriseId) => {
     try {
+      console.log(`EntrepriseId: ${entrepriseId}`);
       const response = await axiosInstance.get(`/api/encadrants/by-entreprise/${entrepriseId}`);
       console.log('Encadrant Accounts:', response.data); // Debugging
       setAccounts(response.data);
