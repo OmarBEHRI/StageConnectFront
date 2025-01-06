@@ -7,10 +7,13 @@ export default function Layout({ children, role }) {
 
   const handleLogout = () => {
     console.log("Removing Items");
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('role');
-    localStorage.removeItem('id');
+    
+    if (typeof window !== 'undefined') { // Ensure localStorage is available
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('role');
+      localStorage.removeItem('id');
+    }
     console.log(localStorage.getItem('token'));
     setTimeout(() => {
       router.push('/');
