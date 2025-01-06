@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 
 export default function ComAccManagement() {
-  const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -43,7 +41,7 @@ export default function ComAccManagement() {
 
 
   return (
-    <Layout role="company" onLogout={() => router.push('/')}>
+    <Layout role="company">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Company Accounts Management</h1>
         

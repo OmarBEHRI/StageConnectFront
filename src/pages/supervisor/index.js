@@ -1,9 +1,7 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 
 export default function SupervisorDashboard() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const stats = [
@@ -18,7 +16,6 @@ export default function SupervisorDashboard() {
   return (
     <Layout
       role="supervisor"
-      onLogout={() => router.push('/')}
     >
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Supervisor Dashboard</h1>

@@ -1,9 +1,7 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 
 export default function CompanyDashboard() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const stats = [
@@ -19,7 +17,6 @@ export default function CompanyDashboard() {
   return (
     <Layout
       role="company"
-      onLogout={() => router.push('/')}
     >
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Company Dashboard</h1>

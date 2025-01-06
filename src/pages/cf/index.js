@@ -1,9 +1,7 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 
 export default function CFDashboard() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const stats = [
@@ -17,10 +15,6 @@ export default function CFDashboard() {
   return (
     <Layout
       role="cf"
-      onLogout={() => {
-        localStorage.clear();
-        router.push('/');
-      }}
     >
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Career Fair Dashboard</h1>

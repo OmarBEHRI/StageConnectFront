@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
@@ -31,13 +30,9 @@ export default function StudentInterviews() {
     window.open(meetingLink, '_blank');
   };
 
-  const handleLogout = () => {
-    // Add logout logic here
-    router.push('/');
-  };
 
   return (
-    <Layout role="student" onLogout={handleLogout}>
+    <Layout role="student">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Interviews</h1>
         <div className="mb-6">

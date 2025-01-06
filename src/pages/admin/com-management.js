@@ -3,7 +3,6 @@ import Table from '@/components/Table'
 import FormComponent from '@/components/FormComponent'
 import SearchBar from '@/components/university/SearchBar'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function CompanyAccountsManagement() {
@@ -15,11 +14,6 @@ export default function CompanyAccountsManagement() {
   const [editAccountId, setEditAccountId] = useState(0)
   const [error, setError] = useState(null)
 
-  const router = useRouter()
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push('/');
-  }
 
   // Define columnKeys (actual property keys in the items)
   const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
@@ -145,7 +139,7 @@ export default function CompanyAccountsManagement() {
   ]
 
   return (
-    <Layout role="admin" onLogout={handleLogout}>
+    <Layout role="admin">
       <div className="p-6">
         <h1 className="text-3xl font-bold mb-8">Gestion des comptes entreprises</h1>
         <div className="mb-4 flex justify-between items-center">

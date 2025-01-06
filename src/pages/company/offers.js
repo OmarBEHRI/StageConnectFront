@@ -1,10 +1,8 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function ComOffers() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const offers = [
@@ -21,7 +19,7 @@ export default function ComOffers() {
 
 
   return (
-    <Layout role="company" onLogout={() => router.push('/')}>
+    <Layout role="company">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Company Offers</h1>
         

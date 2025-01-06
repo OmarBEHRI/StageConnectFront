@@ -1,10 +1,8 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function HRInternships() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const internships = [
@@ -20,7 +18,7 @@ export default function HRInternships() {
   ];
 
   return (
-    <Layout role="hr" onLogout={() => router.push('/')}>
+    <Layout role="hr">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internships Management</h1>
         

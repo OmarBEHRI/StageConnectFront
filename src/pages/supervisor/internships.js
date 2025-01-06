@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
 
 export default function SupervisorInternships() {
-  const router = useRouter();
   const [isEvaluationFormOpen, setIsEvaluationFormOpen] = useState(false);
   const [selectedInternshipId, setSelectedInternshipId] = useState(null);
 
@@ -58,7 +56,7 @@ export default function SupervisorInternships() {
 
 
   return (
-    <Layout role="supervisor" onLogout={() => router.push('/')}>
+    <Layout role="supervisor">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internships Management</h1>
         

@@ -1,11 +1,9 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 
 export default function StudentInternships() {
-  const router = useRouter();
 
   const [internships, setInternships] = useState([ // Sample data
     {
@@ -54,10 +52,6 @@ export default function StudentInternships() {
     return labels[status] || 'Validate';
   };
 
-  const handleLogout = () => {
-    // Add logout logic here
-    router.push('/');
-  };
 
 
   return (

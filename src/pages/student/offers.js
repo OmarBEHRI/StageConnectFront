@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Image from 'next/image';
 import Layout from '@/components/Layout';
@@ -6,7 +5,6 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 
 export default function StudentOffers() {
-  const router = useRouter();
   const [offers, setOffers] = useState([ // Sample data
     {
       id: 1,
@@ -32,7 +30,7 @@ export default function StudentOffers() {
 
 
   return (
-    <Layout role="student" onLogout={() => router.push('/')}>
+    <Layout role="student">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">Available Offers</h1>
         <div className="mb-6">

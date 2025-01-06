@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
@@ -7,7 +6,6 @@ import Table from '@/components/Table';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function UniversityCFManagement() {
-  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
@@ -59,11 +57,6 @@ export default function UniversityCFManagement() {
       console.error('Error fetching filieres:', error);
       setError('Erreur lors de la récupération des filières. Veuillez réessayer.');
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push('/');
   };
 
   const handleSearch = (query) => {
@@ -165,7 +158,7 @@ export default function UniversityCFManagement() {
   ];
 
   return (
-    <Layout role="university" onLogout={handleLogout}>
+    <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">Gestion des Chefs de Filière</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />

@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 
 export default function CFOffers() {
-  const router = useRouter();
   const [selectedOffers, setSelectedOffers] = useState(new Set());
 
   // Mock data - replace with actual data
@@ -49,7 +47,7 @@ export default function CFOffers() {
   };
 
   return (
-    <Layout role="cf" onLogout={() => { localStorage.clear(); router.push('/'); }}>
+    <Layout role="cf">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Available Offers</h1>
         

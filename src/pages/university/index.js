@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import StatisticsSection from '@/components/university/StatisticsSection';
 
 export default function UniversityDashboard() {
-  const router = useRouter();
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
@@ -27,13 +25,9 @@ export default function UniversityDashboard() {
     });
   }, []);
 
-  const handleLogout = () => {
-    // Implement logout logic here
-    router.push('/');
-  };
 
   return (
-    <Layout role="university" onLogout={handleLogout}>
+    <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">University Dashboard</h1>
       {stats && <StatisticsSection stats={stats} />}
     </Layout>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
@@ -47,11 +46,6 @@ export default function UniversityCoordinatorsManagement() {
       console.error('Error fetching CoordinateurDeStage accounts:', error);
       setError('Erreur lors de la récupération des comptes des coordinateurs de stage. Veuillez réessayer.');
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push('/');
   };
 
   const handleSearch = (query) => {
@@ -121,7 +115,7 @@ export default function UniversityCoordinatorsManagement() {
   ];
 
   return (
-    <Layout role="university" onLogout={handleLogout}>
+    <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">Gestion des Coordinateurs de Stage</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />

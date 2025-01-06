@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function CoordinatorInternships() {
-  const router = useRouter();
 
   // Mock data - replace with actual data
   const internships = [
@@ -39,7 +37,7 @@ export default function CoordinatorInternships() {
 
 
   return (
-    <Layout role="coordinator" onLogout={() => router.push('/')}>
+    <Layout role="coordinator">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internship Validations</h1>
         

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
@@ -66,7 +65,7 @@ export default function HRApplicationManagement() {
   if (!offerId) return null;
 
   return (
-    <Layout role="hr" onLogout={() => router.push('/')}>
+    <Layout role="hr">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Applications Management</h1>
         <div className="mb-6">

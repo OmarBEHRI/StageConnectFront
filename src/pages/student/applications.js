@@ -1,11 +1,9 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 
 export default function StudentApplications() {
-  const router = useRouter();
 
   // Sample data
   const [applications] = useState({
@@ -82,7 +80,7 @@ export default function StudentApplications() {
 
 
   return (
-    <Layout role="student" onLogout={handleLogout}>
+    <Layout role="student">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Applications</h1>
         <div className="mb-6">

@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import ProfilePicture from '@/components/university/ProfilePicture';
 import DescriptionSection from '@/components/university/DescriptionSection';
 
 export default function UniversityProfile() {
-  const router = useRouter();
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
@@ -22,9 +20,6 @@ export default function UniversityProfile() {
     });
   }, []);
 
-  const handleLogout = () => {
-    router.push('/');
-  };
 
   const handleUpdateProfile = (updatedData) => {
     // Implement profile update logic here
@@ -37,7 +32,7 @@ export default function UniversityProfile() {
   };
 
   return (
-    <Layout role="university" onLogout={handleLogout}>
+    <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">University Profile</h1>
       {profileData && (
         <div className="space-y-6">

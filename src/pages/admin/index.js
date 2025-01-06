@@ -1,13 +1,7 @@
 import Layout from '@/components/Layout'
 import StatCard from '@/components/StatCard'
-import { useRouter } from 'next/router';
 
 export default function Dashboard() {
-   const router = useRouter();
-    const handleLogout = () => {
-      localStorage.clear();
-      router.push('/');
-    };
     
   // In a real application, you'd fetch this data from an API
   const stats = {
@@ -23,7 +17,6 @@ export default function Dashboard() {
   return (
     <Layout
         role="admin"
-        onLogout={handleLogout}
     >
       <div>
         <h1 className="text-3xl font-bold mb-12 mt-8">Admin Dashboard</h1>

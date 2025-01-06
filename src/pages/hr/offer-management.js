@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 
 export default function HROfferManagement() {
-  const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Mock data - replace with actual data
@@ -37,7 +35,7 @@ export default function HROfferManagement() {
 
 
   return (
-    <Layout role="hr" onLogout={() => router.push('/')}>
+    <Layout role="hr">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Offers Management</h1>
         

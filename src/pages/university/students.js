@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
@@ -49,10 +48,6 @@ export default function StudentsManagement() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push('/');
-  };
 
   const handleSearch = (query) => {
     if (query.trim() === '') {
@@ -127,7 +122,7 @@ export default function StudentsManagement() {
   ];
 
   return (
-    <Layout role="university" onLogout={handleLogout}>
+    <Layout role="university">
       <h1 className="text-3xl font-bold mb-12 mt-12">Gestion des Étudiants</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />

@@ -1,9 +1,7 @@
-import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 
 export default function StudentDashboard() {
-  const router = useRouter();
 
   // Sample data - replace with actual API calls
   const stats = {
@@ -23,7 +21,6 @@ export default function StudentDashboard() {
   return (
     <Layout
       role="student"
-      onLogout={handleLogout}
     >
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
