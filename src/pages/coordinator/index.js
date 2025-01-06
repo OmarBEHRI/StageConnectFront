@@ -2,6 +2,7 @@ import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function CoordinatorDashboard() {
   const router = useRouter();

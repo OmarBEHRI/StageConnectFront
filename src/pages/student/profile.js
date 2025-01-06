@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function StudentProfile() {
   const router = useRouter();

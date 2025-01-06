@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function StudentOffers() {
   const router = useRouter();

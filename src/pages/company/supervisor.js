@@ -30,7 +30,7 @@ export default function ComSupervisorManagement() {
 
   const fetchCompteEntreprise = async () => {
     try {
-      const compteEntrepriseId = localStorage.getItem("compteEntrepriseId");
+      const compteEntrepriseId = localStorage.getItem("id");
       const response = await axiosInstance.get(`/compte-entreprises/${compteEntrepriseId}`);
       setEntrepriseId(response.data.entrepriseId);
       fetchEncadrantAccounts(response.data.entrepriseId);

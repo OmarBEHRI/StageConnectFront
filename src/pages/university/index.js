@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import StatisticsSection from '@/components/university/StatisticsSection';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function UniversityDashboard() {
   const router = useRouter();

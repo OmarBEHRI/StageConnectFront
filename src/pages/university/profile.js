@@ -3,6 +3,7 @@ import Layout from '@/components/Layout';
 import ProfilePicture from '@/components/university/ProfilePicture';
 import { useRouter } from 'next/router';
 import DescriptionSection from '@/components/university/DescriptionSection';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function UniversityProfile() {
   const router = useRouter();

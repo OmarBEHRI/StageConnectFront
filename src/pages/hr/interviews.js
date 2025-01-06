@@ -4,6 +4,7 @@ import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function HRInterviews() {
   const router = useRouter();
