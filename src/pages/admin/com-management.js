@@ -13,10 +13,12 @@ export default function CompanyAccountsManagement() {
   const [filteredAccounts, setFilteredAccounts] = useState([])
   const [formData, setFormData] = useState({})
   const [editAccountId, setEditAccountId] = useState(0)
+  const [error, setError] = useState(null)
 
   const router = useRouter()
   const handleLogout = () => {
-    router.push('/')
+    localStorage.clear();
+    router.push('/');
   }
 
   // Define columnKeys (actual property keys in the items)
@@ -43,6 +45,7 @@ export default function CompanyAccountsManagement() {
       setFilteredAccounts(accounts)
     } catch (error) {
       console.error('Error fetching accounts:', error)
+      setError('Erreur lors de la récupération des comptes. Veuillez réessayer.')
     }
   }
 
@@ -90,9 +93,11 @@ export default function CompanyAccountsManagement() {
 
       setShowCreateForm(false)
       setFormData({})
+      setError(null) // Clear any previous errors
       fetchAccounts() // Refresh the list
     } catch (error) {
       console.error('Error creating account:', error)
+      setError('Erreur lors de la création du compte. Veuillez réessayer.')
     }
   }
 
@@ -101,6 +106,7 @@ export default function CompanyAccountsManagement() {
     setFormData(accountToEdit)
     setEditAccountId(id)
     setShowEditForm(true)
+    setError(null) // Clear any previous errors
   }
 
   const handleSaveEdit = async (formData) => {
@@ -109,9 +115,11 @@ export default function CompanyAccountsManagement() {
       setShowEditForm(false)
       setFormData({})
       setEditAccountId(null)
+      setError(null) // Clear any previous errors
       fetchAccounts() // Refresh the list
     } catch (error) {
       console.error('Error updating account:', error)
+      setError('Erreur lors de la mise à jour du compte. Veuillez réessayer.')
     }
   }
 
@@ -120,8 +128,10 @@ export default function CompanyAccountsManagement() {
       await axiosInstance.put(`/compte-entreprises/${id}/disable`, "AMAMAMA" )
       fetchAccounts() // Refresh the list
       console.log("Account Disabled")
+      setError(null) // Clear any previous errors
     } catch (error) {
       console.error('Error disabling account:', error)
+      setError('Erreur lors de la désactivation du compte. Veuillez réessayer.')
     }
   }
 
@@ -150,6 +160,12 @@ export default function CompanyAccountsManagement() {
             Créer un nouveau compte
           </button>
         </div>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
         
         <Table 
           columns={columns} // Display names in French

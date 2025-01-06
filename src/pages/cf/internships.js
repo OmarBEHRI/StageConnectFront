@@ -38,7 +38,7 @@ export default function CFInternships() {
   };
 
   return (
-    <Layout role="cf" onLogout={() => router.push('/')}>
+    <Layout role="cf" onLogout={() => { localStorage.clear(); router.push('/'); }}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internship Validation Requests</h1>
         

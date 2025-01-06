@@ -14,6 +14,7 @@ export default function UniversityCoordinatorsManagement() {
   const [formData, setFormData] = useState({});
   const [editAccountId, setEditAccountId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
+  const [error, setError] = useState(null); // State to manage error messages
 
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
@@ -33,6 +34,7 @@ export default function UniversityCoordinatorsManagement() {
       fetchCoordinateurDeStageAccounts(ecoleId);
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
+      setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
     }
   };
 
@@ -43,10 +45,12 @@ export default function UniversityCoordinatorsManagement() {
       setFilteredAccounts(response.data);
     } catch (error) {
       console.error('Error fetching CoordinateurDeStage accounts:', error);
+      setError('Erreur lors de la récupération des comptes des coordinateurs de stage. Veuillez réessayer.');
     }
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     router.push('/');
   };
 
@@ -76,8 +80,10 @@ export default function UniversityCoordinatorsManagement() {
       setAccounts([...accounts, response.data]);
       setFilteredAccounts([...filteredAccounts, response.data]);
       setIsModalOpen(false);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error creating CoordinateurDeStage account:', error);
+      setError('Erreur lors de la création du compte. Veuillez réessayer.');
     }
   };
 
@@ -86,6 +92,7 @@ export default function UniversityCoordinatorsManagement() {
     setFormData(accountToEdit);
     setEditAccountId(id);
     setIsModalOpen(true);
+    setError(null); // Clear any previous errors
   };
 
   const handleSaveEdit = async (formData) => {
@@ -98,8 +105,10 @@ export default function UniversityCoordinatorsManagement() {
       setFilteredAccounts(updatedAccounts);
       setIsModalOpen(false);
       setEditAccountId(null);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error updating CoordinateurDeStage account:', error);
+      setError('Erreur lors de la mise à jour du compte. Veuillez réessayer.');
     }
   };
 
@@ -126,6 +135,12 @@ export default function UniversityCoordinatorsManagement() {
           Créer un compte
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
       
       <Table 
         columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone']}

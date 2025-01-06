@@ -49,7 +49,7 @@ export default function CFOffers() {
   };
 
   return (
-    <Layout role="cf" onLogout={() => router.push('/')}>
+    <Layout role="cf" onLogout={() => { localStorage.clear(); router.push('/'); }}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Available Offers</h1>
         

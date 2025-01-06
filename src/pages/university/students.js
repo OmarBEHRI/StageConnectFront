@@ -14,6 +14,7 @@ export default function StudentsManagement() {
   const [formData, setFormData] = useState({});
   const [editStudentId, setEditStudentId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
+  const [error, setError] = useState(null); // State to manage error messages
 
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
@@ -33,6 +34,7 @@ export default function StudentsManagement() {
       fetchStudentsByEcoleId(ecoleId); // Fetch students for the ecole
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
+      setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
     }
   };
 
@@ -43,10 +45,12 @@ export default function StudentsManagement() {
       setFilteredStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
+      setError('Erreur lors de la récupération des étudiants. Veuillez réessayer.');
     }
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     router.push('/');
   };
 
@@ -79,8 +83,10 @@ export default function StudentsManagement() {
       setStudents([...students, response.data]);
       setFilteredStudents([...filteredStudents, response.data]);
       setIsModalOpen(false);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error creating student:', error);
+      setError('Erreur lors de la création de l\'étudiant. Veuillez réessayer.');
     }
   };
 
@@ -89,6 +95,7 @@ export default function StudentsManagement() {
     setFormData(studentToEdit);
     setEditStudentId(id);
     setIsModalOpen(true);
+    setError(null); // Clear any previous errors
   };
 
   const handleSaveEdit = async (studentData) => {
@@ -101,8 +108,10 @@ export default function StudentsManagement() {
       setFilteredStudents(updatedStudents);
       setIsModalOpen(false);
       setEditStudentId(null);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error updating student:', error);
+      setError('Erreur lors de la mise à jour de l\'étudiant. Veuillez réessayer.');
     }
   };
 
@@ -132,6 +141,13 @@ export default function StudentsManagement() {
           Créer un étudiant
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
+
       <Table
         columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut']}
         columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant']}
@@ -140,6 +156,7 @@ export default function StudentsManagement() {
         actions={[handleEditStudent]} // Only the edit action is passed
         idParam="idEtu"
       />
+
       <FormComponent
         isOpen={isModalOpen}
         onClose={() => {

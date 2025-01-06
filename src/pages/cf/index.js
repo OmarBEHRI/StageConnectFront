@@ -17,7 +17,10 @@ export default function CFDashboard() {
   return (
     <Layout
       role="cf"
-      onLogout={() => router.push('/')}
+      onLogout={() => {
+        localStorage.clear();
+        router.push('/');
+      }}
     >
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Career Fair Dashboard</h1>

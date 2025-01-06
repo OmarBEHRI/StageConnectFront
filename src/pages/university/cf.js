@@ -15,6 +15,7 @@ export default function UniversityCFManagement() {
   const [editAccountId, setEditAccountId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
   const [filieres, setFilieres] = useState([]); // State to store filieres
+  const [error, setError] = useState(null); // State to manage error messages
 
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
@@ -35,6 +36,7 @@ export default function UniversityCFManagement() {
       fetchFilieresByEcoleId(ecoleId); // Fetch filieres for the ecole
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
+      setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
     }
   };
 
@@ -45,6 +47,7 @@ export default function UniversityCFManagement() {
       setFilteredAccounts(response.data);
     } catch (error) {
       console.error('Error fetching ChefDeFiliere accounts:', error);
+      setError('Erreur lors de la récupération des comptes des chefs de filière. Veuillez réessayer.');
     }
   };
 
@@ -54,10 +57,12 @@ export default function UniversityCFManagement() {
       setFilieres(response.data); // Set the list of filieres
     } catch (error) {
       console.error('Error fetching filieres:', error);
+      setError('Erreur lors de la récupération des filières. Veuillez réessayer.');
     }
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     router.push('/');
   };
 
@@ -79,7 +84,7 @@ export default function UniversityCFManagement() {
       // Find the selected filiere by its name
       const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === formData.filiere);
       if (!selectedFiliere) {
-        console.error('Selected filiere not found');
+        setError('Filière sélectionnée introuvable.');
         return;
       }
 
@@ -95,8 +100,10 @@ export default function UniversityCFManagement() {
       setAccounts([...accounts, response.data]);
       setFilteredAccounts([...filteredAccounts, response.data]);
       setIsModalOpen(false);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error creating ChefDeFiliere account:', error);
+      setError('Erreur lors de la création du compte. Veuillez réessayer.');
     }
   };
 
@@ -108,23 +115,17 @@ export default function UniversityCFManagement() {
     });
     setEditAccountId(id);
     setIsModalOpen(true);
+    setError(null); // Clear any previous errors
   };
 
   const handleSaveEdit = async (formData) => {
     try {
       // Find the selected filiere by its name
-      console.log("editAccountId");
       const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === formData.filiere);
       if (!selectedFiliere) {
-        console.error('Selected filiere not found');
+        setError('Filière sélectionnée introuvable.');
         return;
       }
-      //Allo push
-      console.log(editAccountId);
-      console.log(editAccountId);
-
-      console.log("selectedFiliere.idFiliere");
-      console.log(selectedFiliere.idFiliere)
 
       const response = await axiosInstance.put(`/chefs-de-filiere/${editAccountId}`, {
         nom: formData.nom,
@@ -133,7 +134,7 @@ export default function UniversityCFManagement() {
         motDePasse: formData.motDePasse,
         telephone: formData.telephone,
         ecoleId: ecoleId,
-        filiereId: selectedFiliere.idFiliere,// Include the filiereId
+        filiereId: selectedFiliere.idFiliere, // Include the filiereId
       });
       const updatedAccounts = accounts.map(account =>
         account.idCf === editAccountId ? response.data : account
@@ -142,8 +143,10 @@ export default function UniversityCFManagement() {
       setFilteredAccounts(updatedAccounts);
       setIsModalOpen(false);
       setEditAccountId(null);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error updating ChefDeFiliere account:', error);
+      setError('Erreur lors de la mise à jour du compte. Veuillez réessayer.');
     }
   };
 
@@ -176,6 +179,12 @@ export default function UniversityCFManagement() {
           Créer un compte
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
       
       <Table 
         columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Filière']}
