@@ -1,21 +1,17 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = {} }) {
-  // const initialFormData = useMemo(() => 
-  //   fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}), 
-  //   [fields, prefillData]
-  // );
+  // Initialize formData state with prefillData or default values
+  const [formData, setFormData] = useState({});
 
-  // const [formData, setFormData] = useState(initialFormData);
-  console.log("GET PREFILLED DATA:");
-  console.log(prefillData);
-  const [formData, setFormData] = useState(
-    prefillData || Object.fromEntries(fields.map((field) => [field.name, ""]))
-  );
-
-  // useEffect(() => {
-  //   setFormData(initialFormData);
-  // }, [initialFormData]);
+  // Effect to update formData when prefillData or fields change
+  useEffect(() => {
+    const initialFormData = fields.reduce((acc, field) => {
+      acc[field.name] = prefillData[field.name] || '';
+      return acc;
+    }, {});
+    setFormData(initialFormData);
+  }, [fields, prefillData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,7 +35,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
               {field.type === 'select' ? (
                 <select
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] || ''}
                   onChange={handleChange}
                   className="border border-gray-300 rounded px-4 py-2 w-full"
                 >
@@ -54,7 +50,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
                 <input
                   type={field.type || 'text'}
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] || ''}
                   onChange={handleChange}
                   placeholder={field.placeholder}
                   className="border border-gray-300 rounded px-4 py-2 w-full"
