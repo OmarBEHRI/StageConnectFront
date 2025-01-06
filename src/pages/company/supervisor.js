@@ -35,8 +35,7 @@ export default function ComSupervisorManagement() {
       const response = await axiosInstance.get(`/compte-entreprises/${compteEntrepriseId}`);
       const entreId = response.data.entrepriseId;
       setEntrepriseId(entreId);
-      console.log(`EntrepriseId: ${entreId}`);
-      fetchEncadrantAccounts(response.data.entrepriseId);
+      fetchEncadrantAccounts(entreId);
     } catch (error) {
       console.error('Error fetching CompteEntreprise:', error);
       alert('Failed to fetch CompteEntreprise data.');
