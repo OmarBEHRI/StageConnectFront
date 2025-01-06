@@ -40,15 +40,39 @@ const Card = ({ image, title, specifications, buttons }) => {
         </div>
         {buttons && buttons.length > 0 && (
           <div className="flex justify-center space-x-4 mt-auto">
-            {buttons.map((button, index) => (
-              <button
-                key={index}
-                onClick={button.onClick}
-                className={`${getButtonColor(button.label)} text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out`}
-              >
-                {button.label}
-              </button>
-            ))}
+            {buttons.map((button, index) => {
+              const lowerLabel = button.label.toLowerCase();
+              let buttonColor;
+              switch (lowerLabel) {
+                case 'postuler':
+                case 'valider':
+                case 'rejoindre réunion':
+                case 'évaluer':
+                  buttonColor = 'bg-green-500 hover:bg-green-600';
+                  break;
+                case 'postulé':
+                case 'annuler':
+                  buttonColor = 'bg-gray-500 hover:bg-gray-600';
+                  break;
+                case 'demande en attente':
+                  buttonColor = 'bg-orange-500 hover:bg-orange-600';
+                  break;
+                case 'refuser':
+                  buttonColor = 'bg-red-500 hover:bg-red-600';
+                  break;
+                default:
+                  buttonColor = 'bg-blue-500 hover:bg-blue-600'; // Default color
+              }
+              return (
+                <button
+                  key={index}
+                  onClick={button.onClick}
+                  className={`${buttonColor} text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out`}
+                >
+                  {button.label}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
