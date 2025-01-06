@@ -41,55 +41,61 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">{title}</h2>
-        <form onSubmit={handleSubmit}>
-          {fields.map((field) => (
-            <div key={field.name} className="mb-4">
-              <label className="block text-gray-700 mb-2">{field.placeholder}</label>
-              {field.type === 'select' ? (
-                <select
-                  name={field.name}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  className="border border-gray-300 rounded px-4 py-2 w-full"
-                >
-                  <option value="">Select {field.placeholder}</option>
-                  {field.options.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={field.type || 'text'}
-                  name={field.name}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  className="border border-gray-300 rounded px-4 py-2 w-full"
-                />
-              )}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <h2 className="text-2xl font-bold mb-6">{title}</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              {fields.map((field) => (
+                <div key={field.name}>
+                  <label className="block text-gray-700 text-sm font-medium mb-2">
+                    {field.placeholder}
+                  </label>
+                  {field.type === 'select' ? (
+                    <select
+                      name={field.name}
+                      value={formData[field.name] || ''}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select {field.placeholder}</option>
+                      {field.options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={field.type || 'text'}
+                      name={field.name}
+                      value={formData[field.name] || ''}
+                      onChange={handleChange}
+                      placeholder={field.placeholder}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-300 text-black px-4 py-2 rounded mr-2 hover:bg-gray-400"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              {submitButtonText}
-            </button>
-          </div>
-        </form>
+            <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {submitButtonText}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
