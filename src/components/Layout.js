@@ -6,10 +6,12 @@ export default function Layout({ children, role }) {
   const router = useRouter();
 
   const handleLogout = () => {
+    console.log("Removing Items");
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
+    console.log(localStorage.getItem('id'));
     router.push('/');
   };
 
