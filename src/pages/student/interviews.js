@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
+import { useRouter } from 'next/router';
 
 export default function StudentInterviews() {
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
@@ -16,7 +18,6 @@ export default function StudentInterviews() {
       router.push('/');
     }
   }, [router]);
-  const router = useRouter();
 
   const [interviews] = useState([ // Sample data
     {

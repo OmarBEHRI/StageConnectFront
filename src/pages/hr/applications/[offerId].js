@@ -2,9 +2,11 @@ import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function HRApplicationManagement() {
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -19,7 +21,6 @@ export default function HRApplicationManagement() {
     }
   }, [router]);
   
-  const router = useRouter();
   const { offerId } = router.query;
   const [isInterviewFormOpen, setIsInterviewFormOpen] = useState(false);
   const [selectedApplicantId, setSelectedApplicantId] = useState(null);

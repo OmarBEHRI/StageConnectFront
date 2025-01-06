@@ -3,9 +3,11 @@ import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
 import Table from '@/components/Table';
 import axiosInstance from '@/axiosInstance/axiosInstance';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function UniversityCFManagement() {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import ProfilePicture from '@/components/university/ProfilePicture';
+import { useRouter } from 'next/router';
 import DescriptionSection from '@/components/university/DescriptionSection';
 
 export default function UniversityProfile() {
+  const router = useRouter();
   const [profileData, setProfileData] = useState(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {

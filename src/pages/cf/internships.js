@@ -1,9 +1,11 @@
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function CFInternships() {
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");

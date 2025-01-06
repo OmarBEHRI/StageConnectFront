@@ -1,8 +1,10 @@
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function StudentDashboard() {
+  const router = useRouter();
 
   // Sample data - replace with actual API calls
   const stats = {

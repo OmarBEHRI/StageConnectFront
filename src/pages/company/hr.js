@@ -3,8 +3,10 @@ import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
+import { useRouter } from 'next/router';
 
 export default function ComHRManagement() {
+  const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);

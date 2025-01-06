@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
+import { useRouter } from 'next/router';
 import StatisticsSection from '@/components/university/StatisticsSection';
 
 export default function UniversityDashboard() {
+  const router = useRouter();
   const [stats, setStats] = useState(null);
-
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

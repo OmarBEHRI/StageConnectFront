@@ -4,8 +4,10 @@ import FormComponent from '@/components/FormComponent'
 import SearchBar from '@/components/university/SearchBar'
 import { useState, useEffect } from 'react'
 import axiosInstance from '@/axiosInstance/axiosInstance'
+import { useRouter } from 'next/router'
 
 export default function UniversityAccountsManagement() {
+  const router = useRouter();
   const [universityAccounts, setUniversityAccounts] = useState([])
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)

@@ -1,11 +1,12 @@
-import { useState } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function HRInterviews() {
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");

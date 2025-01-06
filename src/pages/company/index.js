@@ -1,8 +1,10 @@
 import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function CompanyDashboard() {
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
