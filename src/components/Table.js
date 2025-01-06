@@ -99,7 +99,7 @@ export default function Table({ columns, items, buttons, actions, idParam }) {
                 {buttons.map((button, buttonIndex) => (
                   <button
                     key={button}
-                    onClick={() => {actions[buttonIndex](item[idParam]); console.log(item[idParam])}}
+                    onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
                     className={`${
                       button.toLowerCase() === 'delete' 
                         ? 'text-red-600 hover:text-red-800' 
