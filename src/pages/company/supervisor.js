@@ -12,7 +12,7 @@ export default function ComSupervisorManagement() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accounts, setAccounts] = useState([]);
-  const [entrepriseId, setEntrepriseId] = useState(null);
+  const [entrepriseId, setEntrepriseId] = useState(0);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
