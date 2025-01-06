@@ -31,7 +31,7 @@ export default function HROfferManagement() {
   const fetchCompteEntreprise = async () => {
     try {
       const rhId = localStorage.getItem('id');
-      const response = await axiosInstance.get(`/rh/${rhId}`);
+      const response = await axiosInstance.get(`/api/rh/${rhId}`);
       setEntrepriseId(response.data.entrepriseId);
       fetchOffers(response.data.entrepriseId);
     } catch (error) {
