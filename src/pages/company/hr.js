@@ -4,7 +4,7 @@ import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import FormComponent from '@/components/FormComponent';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/components/axiosInstance';
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function ComHRManagement() {
   const router = useRouter();
