@@ -106,17 +106,6 @@ export default function StudentsManagement() {
     }
   };
 
-  const handleDeleteStudent = async (id) => {
-    try {
-      await axiosInstance.delete(`/api/etudiants/${id}`);
-      const updatedStudents = students.filter(student => student.idEtu !== id);
-      setStudents(updatedStudents);
-      setFilteredStudents(updatedStudents);
-    } catch (error) {
-      console.error('Error deleting student:', error);
-    }
-  };
-
   const studentFields = [
     { name: 'nom', placeholder: 'Nom', type: 'text' },
     { name: 'prenom', placeholder: 'Prénom', type: 'text' },
@@ -147,8 +136,8 @@ export default function StudentsManagement() {
         columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut']}
         columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant']}
         items={filteredStudents}
-        buttons={['Modifier', 'Supprimer']}
-        actions={[handleEditStudent, handleDeleteStudent]}
+        buttons={['Modifier']} // Only the "Modifier" button is included
+        actions={[handleEditStudent]} // Only the edit action is passed
         idParam="idEtu"
       />
       <FormComponent
