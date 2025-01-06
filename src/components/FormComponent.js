@@ -7,6 +7,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
   // );
 
   // const [formData, setFormData] = useState(initialFormData);
+  console.log(prefillData);
   const [formData, setFormData] = useState(
     prefillData || Object.fromEntries(fields.map((field) => [field.name, ""]))
   );
