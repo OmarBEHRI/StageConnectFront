@@ -19,8 +19,13 @@ export default function CompanyAccountsManagement() {
     router.push('/')
   }
 
-  const columns = ['idCompte','name', 'nom', 'prenom', 'telephone', 'email']
-  const buttons = ['Edit', 'Disable']
+  // Define columnKeys (actual property keys in the items)
+  const columnKeys = ['idCompte', 'name', 'nom', 'prenom', 'telephone', 'email']
+
+  // Define columns (display names in French with proper formatting)
+  const columns = ['ID Compte', 'Entreprise', 'Nom', 'Prénom', 'Téléphone', 'Email']
+
+  const buttons = ['Modifier', 'Désactiver']
 
   const fetchAccounts = async () => {
     try {
@@ -121,18 +126,18 @@ export default function CompanyAccountsManagement() {
   }
 
   const formFields = [
-    { name: 'name', placeholder: 'Company Name' },
+    { name: 'name', placeholder: 'Nom de l\'entreprise' },
     { name: 'nom', placeholder: 'Nom' },
-    { name: 'prenom', placeholder: 'Prenom' },
-    { name: 'telephone', placeholder: 'Telephone' },
+    { name: 'prenom', placeholder: 'Prénom' },
+    { name: 'telephone', placeholder: 'Téléphone' },
     { name: 'email', placeholder: 'Email' },
-    { name: 'motDePasse', type: 'password', placeholder: 'Password' }
+    { name: 'motDePasse', type: 'password', placeholder: 'Mot de passe' }
   ]
 
   return (
     <Layout role="admin" onLogout={handleLogout}>
       <div className="p-6">
-        <h1 className="text-3xl font-bold mb-8">Company Accounts Management</h1>
+        <h1 className="text-3xl font-bold mb-8">Gestion des comptes entreprises</h1>
         <div className="mb-4 flex justify-between items-center">
           <SearchBar onSearch={handleSearch} />
           <button
@@ -142,12 +147,13 @@ export default function CompanyAccountsManagement() {
               setFormData({})
             }}
           >
-            Create New Account
+            Créer un nouveau compte
           </button>
         </div>
         
         <Table 
-          columns={columns}
+          columns={columns} // Display names in French
+          columnKeys={columnKeys} // Property keys in the items
           items={filteredAccounts}
           buttons={buttons}
           actions={[handleEdit, handleDisable]}
@@ -159,8 +165,8 @@ export default function CompanyAccountsManagement() {
           onClose={() => setShowCreateForm(false)}
           onSubmit={handleCreate}
           fields={formFields}
-          title="Create New Company Account"
-          submitButtonText="Create"
+          title="Créer un nouveau compte entreprise"
+          submitButtonText="Créer"
         />
 
         <FormComponent 
@@ -168,8 +174,8 @@ export default function CompanyAccountsManagement() {
           onClose={() => setShowEditForm(false)}
           onSubmit={handleSaveEdit}
           fields={formFields}
-          title="Edit Company Account"
-          submitButtonText="Save"
+          title="Modifier le compte entreprise"
+          submitButtonText="Enregistrer"
           prefillData={companyAccounts.find(account => account.idCompte === editAccountId)}
         />
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Table({ columns, items, buttons, actions, idParam }) {
+export default function Table({ columns, columnKeys, items, buttons, actions, idParam }) {
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'ascending'
@@ -15,7 +15,7 @@ export default function Table({ columns, items, buttons, actions, idParam }) {
   const sortedItems = [...items].sort((a, b) => {
     if (!sortConfig.key) return 0;
     
-    const key = sortConfig.key.toLowerCase().replace(/\s+/g, '');
+    const key = columnKeys[columns.indexOf(sortConfig.key)]; // Get the property key for the column
     const valueA = a[key];
     const valueB = b[key];
 
@@ -44,12 +44,12 @@ export default function Table({ columns, items, buttons, actions, idParam }) {
   });
 
   // Handle sort request
-  const requestSort = (key) => {
+  const requestSort = (column) => {
     let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+    if (sortConfig.key === column && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
-    setSortConfig({ key, direction });
+    setSortConfig({ key: column, direction });
   };
 
   // Get sort direction indicator
@@ -64,7 +64,7 @@ export default function Table({ columns, items, buttons, actions, idParam }) {
     <table className="min-w-full bg-white">
       <thead>
         <tr>
-          {columns.map((column) => (
+          {columns.map((column, index) => (
             <th
               key={column}
               onClick={() => requestSort(column)}
@@ -86,14 +86,17 @@ export default function Table({ columns, items, buttons, actions, idParam }) {
             key={itemIndex}
             className="hover:bg-gray-100"
           >
-            {columns.map((column) => (
-              <td 
-                key={column}
-                className="px-6 py-4 whitespace-nowrap text-center"
-              >
-                {item[column]}
-              </td>
-            ))}
+            {columns.map((column, colIndex) => {
+              const key = columnKeys[colIndex]; // Get the property key for the column
+              return (
+                <td 
+                  key={column}
+                  className="px-6 py-4 whitespace-nowrap text-center"
+                >
+                  {item[key]}
+                </td>
+              );
+            })}
             {buttons && buttons.length > 0 && (
               <td className="px-6 py-4 whitespace-nowrap text-center">
                 {buttons.map((button, buttonIndex) => (
