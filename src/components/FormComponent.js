@@ -1,8 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
 
-export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = {} }) {
-  // Compute initial form data only when prefillData changes
+export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = null }) {
+  // Compute initial form data only when prefillData changes and is not null
   const initialFormData = useMemo(() => {
+    if (!prefillData) {
+      // If prefillData is null or undefined, initialize with empty values
+      return fields.reduce((acc, field) => {
+        acc[field.name] = '';
+        return acc;
+      }, {});
+    }
+    // If prefillData is provided, use it to prefill the form
     return fields.reduce((acc, field) => {
       acc[field.name] = prefillData[field.name] || '';
       return acc;
