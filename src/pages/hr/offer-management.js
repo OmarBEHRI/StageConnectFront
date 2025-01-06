@@ -151,8 +151,30 @@ export default function HROfferManagement() {
         </div>
 
         <Table
-          columns={["Title", "Position", "Start Date", "Status"]}
-          columnKeys={["objetOffre", "posteOffre", "dateLancement", "status"]}
+          columns={[
+            "Title", 
+            "Position", 
+            "Start Date", 
+            "End Date", 
+            "Description", 
+            "Duration", 
+            "Mode", 
+            "Remuneration", 
+            "Type", 
+            "Required Level", 
+          ]}
+          columnKeys={[
+            "objetOffre", 
+            "posteOffre", 
+            "dateLancement", 
+            "dateLimite", 
+            "descriptionOffre", 
+            "dureeStage", 
+            "modeOffre", 
+            "remuneration", 
+            "typeStageOffre", 
+            "niveauRequisOffre", 
+          ]}
           items={offers}
           buttons={["Edit", "Delete"]}
           actions={[handleEdit, handleDelete]}
@@ -176,3 +198,4 @@ export default function HROfferManagement() {
     </Layout>
   );
 }
+
