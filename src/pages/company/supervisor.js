@@ -31,7 +31,7 @@ export default function ComSupervisorManagement() {
   const fetchCompteEntreprise = async () => {
     try {
       const compteEntrepriseId = localStorage.getItem('id');
-      console.log(`CompteEntrepriseIdeId: ${compteEntrepriseId}`);
+      console.log(`CompteEntrepriseId: ${compteEntrepriseId}`);
       const response = await axiosInstance.get(`/compte-entreprises/${compteEntrepriseId}`);
       const entreId = response.data.entrepriseId;
       setEntrepriseId(entreId);
@@ -45,6 +45,7 @@ export default function ComSupervisorManagement() {
   const fetchEncadrantAccounts = async (entrepriseId) => {
     try {
       const response = await axiosInstance.get(`/api/encadrants/by-entreprise/${entrepriseId}`);
+      console.log('Encadrant Accounts:', response.data); // Debugging
       setAccounts(response.data);
     } catch (error) {
       console.error('Error fetching Encadrant accounts:', error);
