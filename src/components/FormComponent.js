@@ -1,16 +1,19 @@
 import { useState, useEffect, useMemo } from 'react';
 
 export default function FormComponent({ isOpen, onClose, onSubmit, fields, title, submitButtonText, prefillData = {} }) {
-  const initialFormData = useMemo(() => 
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}), 
-    [fields, prefillData]
+  // const initialFormData = useMemo(() => 
+  //   fields.reduce((acc, field) => ({ ...acc, [field.name]: prefillData[field.name] || '' }), {}), 
+  //   [fields, prefillData]
+  // );
+
+  // const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(
+    prefillData || Object.fromEntries(fields.map((field) => [field.name, ""]))
   );
 
-  const [formData, setFormData] = useState(initialFormData);
-
-  useEffect(() => {
-    setFormData(initialFormData);
-  }, [initialFormData]);
+  // useEffect(() => {
+  //   setFormData(initialFormData);
+  // }, [initialFormData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
