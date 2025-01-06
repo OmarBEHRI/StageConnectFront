@@ -11,8 +11,10 @@ export default function Layout({ children, role }) {
     localStorage.removeItem('userId');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
-    console.log(localStorage.getItem('id'));
-    router.push('/');
+    console.log(localStorage.getItem('token'));
+    setTimeout(() => {
+      router.push('/');
+    }, 100); 
   };
 
   return (
