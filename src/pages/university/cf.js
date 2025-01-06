@@ -14,11 +14,12 @@ export default function UniversityCFManagement() {
   const [formData, setFormData] = useState({});
   const [editAccountId, setEditAccountId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
+  const [filieres, setFilieres] = useState([]); // State to store filieres
 
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
 
-  // Fetch the Ecole ID and ChefDeFiliere accounts on component mount
+  // Fetch the Ecole ID, ChefDeFiliere accounts, and Filieres on component mount
   useEffect(() => {
     if (compteEcoleId) {
       fetchEcoleId();
@@ -31,6 +32,7 @@ export default function UniversityCFManagement() {
       const ecoleId = response.data.ecoleId;
       setEcoleId(ecoleId);
       fetchChefDeFiliereAccounts(ecoleId);
+      fetchFilieresByEcoleId(ecoleId); // Fetch filieres for the ecole
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
     }
@@ -43,6 +45,15 @@ export default function UniversityCFManagement() {
       setFilteredAccounts(response.data);
     } catch (error) {
       console.error('Error fetching ChefDeFiliere accounts:', error);
+    }
+  };
+
+  const fetchFilieresByEcoleId = async (ecoleId) => {
+    try {
+      const response = await axiosInstance.get(`/api/filieres/ecole/${ecoleId}`);
+      setFilieres(response.data); // Set the list of filieres
+    } catch (error) {
+      console.error('Error fetching filieres:', error);
     }
   };
 
@@ -65,6 +76,13 @@ export default function UniversityCFManagement() {
 
   const handleCreateAccount = async (formData) => {
     try {
+      // Find the selected filiere by its name
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === formData.filiere);
+      if (!selectedFiliere) {
+        console.error('Selected filiere not found');
+        return;
+      }
+
       const response = await axiosInstance.post('/chefs-de-filiere', {
         nom: formData.nom,
         prenom: formData.prenom,
@@ -72,6 +90,7 @@ export default function UniversityCFManagement() {
         motDePasse: formData.motDePasse,
         telephone: formData.telephone,
         ecoleId: ecoleId,
+        filiereId: selectedFiliere.idFiliere, // Include the filiereId
       });
       setAccounts([...accounts, response.data]);
       setFilteredAccounts([...filteredAccounts, response.data]);
@@ -83,14 +102,27 @@ export default function UniversityCFManagement() {
 
   const handleEdit = (id) => {
     const accountToEdit = accounts.find(account => account.idCf === id);
-    setFormData(accountToEdit);
+    setFormData({
+      ...accountToEdit,
+      filiere: filieres.find(filiere => filiere.idFiliere === accountToEdit.filiereId)?.nomFiliere || '',
+    });
     setEditAccountId(id);
     setIsModalOpen(true);
   };
 
   const handleSaveEdit = async (formData) => {
     try {
-      const response = await axiosInstance.put(`/chefs-de-filiere/${editAccountId}`, formData);
+      // Find the selected filiere by its name
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === formData.filiere);
+      if (!selectedFiliere) {
+        console.error('Selected filiere not found');
+        return;
+      }
+
+      const response = await axiosInstance.put(`/chefs-de-filiere/${editAccountId}`, {
+        ...formData,
+        filiereId: selectedFiliere.idFiliere, // Include the filiereId
+      });
       const updatedAccounts = accounts.map(account =>
         account.idCf === editAccountId ? response.data : account
       );
@@ -109,6 +141,12 @@ export default function UniversityCFManagement() {
     { name: 'email', placeholder: 'Email', type: 'email' },
     { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
     { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password' },
+    {
+      name: 'filiere',
+      placeholder: 'Filière',
+      type: 'select',
+      options: filieres.map(filiere => filiere.nomFiliere), // Populate options with filiere names
+    },
   ];
 
   return (
@@ -128,9 +166,12 @@ export default function UniversityCFManagement() {
       </div>
       
       <Table 
-        columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone']}
-        columnKeys={['idCf', 'nom', 'prenom', 'email', 'telephone']}
-        items={filteredAccounts}
+        columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Filière']}
+        columnKeys={['idCf', 'nom', 'prenom', 'email', 'telephone', 'filiereId']}
+        items={filteredAccounts.map(account => ({
+          ...account,
+          filiereId: filieres.find(filiere => filiere.idFiliere === account.filiereId)?.nomFiliere || 'N/A',
+        }))}
         buttons={['Modifier']}
         actions={[handleEdit]}
         idParam="idCf"
