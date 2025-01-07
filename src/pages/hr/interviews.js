@@ -103,7 +103,8 @@ export default function HRInterviews() {
         ...data,
         statut: "nouveau", // Set statut to "nouveau" by default
         etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
-        offreId: selectedInterview.offreId, // Take offreId from selectedInterview
+        offreId: selectedInterview.offreId,
+        encadrantId:  selectedInterview.encadrantId,// Take offreId from selectedInterview
       };
       await axiosInstance.post('/stages', stageDTO); // Create the internship
       await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, { resultat: "accepté" }); // Update interview result
