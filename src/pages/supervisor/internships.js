@@ -43,13 +43,13 @@ export default function SupervisorInternships() {
           if (dateLimite > currentDate) {
             stage.statut = "en cours";
             const newStatus = "en cours";
-            await axiosInstance.put(`/stages/${idStage}/status`, null, {
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
               params: { newStatus },
             });
           } else {
             stage.statut = "terminé";
             const newStatus = "terminé";
-            await axiosInstance.put(`/stages/${idStage}/status`, null, {
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
               params: { newStatus },
             });
           }
