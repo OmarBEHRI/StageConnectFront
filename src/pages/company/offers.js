@@ -59,8 +59,8 @@ export default function ComOffers() {
         </div>
 
         <Table
-          columns={["ID Offre", "Title", "Position", "Start Date", "Status"]}
-          columnKeys={["idOffre","objetOffre", "posteOffre", "dateLancement", "status"]}
+          columns={["ID Offre", "Title", "Position", "Start Date"]}
+          columnKeys={["idOffre","objetOffre", "posteOffre", "dateLancement"]}
           items={offers}
           idParam="idOffre"
         />
