@@ -53,7 +53,7 @@ export default function CompteEntrepriseProfile() {
   };
 
   return (
-    <Layout role="companyManager">
+    <Layout role="company">
       <div className="p-6 font-roboto">
         <h1 className="text-2xl font-bold mb-6 text-black">Company Manager Profile</h1>
 
