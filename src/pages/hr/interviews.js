@@ -1,14 +1,17 @@
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
+import FormComponent from '@/components/FormComponent';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 
-export default function HRInternships() {
+export default function HRInterviews() {
   const router = useRouter();
-  const [internships, setInternships] = useState([]);
+  const [isInternshipFormOpen, setIsInternshipFormOpen] = useState(false);
+  const [interviews, setInterviews] = useState([]);
   const [entrepriseId, setEntrepriseId] = useState(null);
+  const [selectedInterview, setSelectedInterview] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -24,91 +27,128 @@ export default function HRInternships() {
     }
   }, [router]);
 
-  // Fetch RH by ID to get entrepriseId
   const fetchCompteEntreprise = async () => {
     try {
       const rhId = localStorage.getItem('id');
       const response = await axiosInstance.get(`/api/rh/${rhId}`);
       setEntrepriseId(response.data.entrepriseId);
-      fetchInternships(response.data.entrepriseId); // Fetch internships for the company
+      fetchInterviews(response.data.entrepriseId);
     } catch (error) {
-      console.error('Error fetching RH details:', error);
-      alert('Failed to fetch RH details.');
+      console.error('Error fetching CompteEntreprise:', error);
+      alert('Failed to fetch CompteEntreprise data.');
     }
   };
 
-  // Fetch internships by entrepriseId and enrich with Etudiant details
-  const fetchInternships = async (entrepriseId) => {
+  const fetchInterviews = async (entrepriseId) => {
     try {
-      const response = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
-      
-      // Fetch Etudiant details for each internship
-      const internshipsWithEtudiant = await Promise.all(
-        response.data.map(async (internship) => {
-          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${internship.etudiantId}`);
+      const response = await axiosInstance.get(`/entretiens/by-entreprise/${entrepriseId}`);
+      const filteredInterviews = response.data.filter(interview => interview.resultat === "nouveau");
+
+      // Fetch Etudiant details for each interview
+      const interviewsWithEtudiant = await Promise.all(
+        filteredInterviews.map(async (interview) => {
+          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${interview.etudiantId}`);
           return {
-            ...internship,
-            etudiant: etudiantResponse.data, // Add Etudiant details to the internship object
-            dateDebut: formatDate(internship.dateDebut), // Format start date
-            dateFin: formatDate(internship.dateFin), // Format end date
+            ...interview,
+            etudiant: etudiantResponse.data, // Add Etudiant details to the interview object
           };
         })
       );
 
-      setInternships(internshipsWithEtudiant);
+      setInterviews(interviewsWithEtudiant);
     } catch (error) {
-      console.error('Error fetching internships or Etudiant details:', error);
-      alert('Failed to fetch internships or Etudiant details.');
+      console.error('Error fetching interviews or Etudiant details:', error);
+      alert('Failed to fetch interviews or Etudiant details.');
     }
   };
 
-  // Format date to a human-readable format
   const formatDate = (date) => {
     if (!date) return "N/A"; // Handle null or undefined dates
     const dateObj = new Date(date);
     return dateObj.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   };
 
-  // Handle delete action for an internship
-  const handleDelete = async (internshipId) => {
+  const internshipFormFields = [
+    { name: "titre", placeholder: "Title" },
+    { name: "description", placeholder: "Description" },
+    { name: "dateDebut", placeholder: "Start Date", type: "date" },
+    { name: "dateFin", placeholder: "End Date", type: "date" },
+    { name: "duree", placeholder: "Duration" },
+    { name: "localisation", placeholder: "Location" },
+    { name: "montantRemuneration", placeholder: "Remuneration", type: "number" },
+    { name: "type", placeholder: "Type" },
+    { name: "encadrantId", placeholder: "Supervisor ID", type: "number" },
+  ];
+
+  const handleAccept = (interviewId) => {
+    const interview = interviews.find(int => int.idEntretien === interviewId);
+    setSelectedInterview(interview);
+    setIsInternshipFormOpen(true);
+  };
+
+  const handleRefuse = async (interviewId) => {
     try {
-      await axiosInstance.delete(`/stages/${internshipId}`);
-      fetchInternships(entrepriseId); // Refresh the list after deletion
+      await axiosInstance.put(`/entretiens/${interviewId}`, { resultat: "refusé" });
+      fetchInterviews(entrepriseId);
     } catch (error) {
-      console.error('Error deleting internship:', error);
-      alert('Failed to delete internship.');
+      console.error('Error refusing interview:', error);
+      alert('Failed to refuse interview.');
+    }
+  };
+
+  const handleCreateInternship = async (data) => {
+    try {
+      const stageDTO = {
+        ...data,
+        statut: "nouveau", // Set statut to "nouveau" by default
+        etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
+        offreId: selectedInterview.offreId, // Take offreId from selectedInterview
+      };
+      await axiosInstance.post('/stages', stageDTO); // Create the internship
+      await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, { resultat: "accepté" }); // Update interview result
+      fetchInterviews(entrepriseId); // Refresh the interviews list
+      setIsInternshipFormOpen(false); // Close the form
+    } catch (error) {
+      console.error('Error creating internship:', error);
+      alert('Failed to create internship.');
     }
   };
 
   return (
     <Layout role="hr">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Internships Management</h1>
+        <h1 className="text-2xl font-bold">Interviews Management</h1>
         
         <SearchBar onSearch={(query) => console.log('Search:', query)} />
 
         <Table 
-          columns={["ID", "Title", "Student Name", "Email", "Phone", "Start Date", "End Date", "Status"]}
+          columns={["Student Name", "Email", "Phone", "Offer ID", "Date"]}
           columnKeys={[
-            "idStage", 
-            "titre", 
             "etudiant.nom", 
             "etudiant.email", 
             "etudiant.tel", 
-            "dateDebut", 
-            "dateFin", 
-            "statut"
+            "offreId", 
+            "dateEntretien"
           ]}
-          items={internships}
-          buttons={["Delete"]}
-          actions={[handleDelete]}
-          idParam="idStage"
+          items={interviews}
+          buttons={["Accept", "Refuse"]}
+          actions={[handleAccept, handleRefuse]}
+          idParam="idEntretien"
           formatData={(key, value) => {
-            if (key === "dateDebut" || key === "dateFin") {
-              return formatDate(value); // Format date fields
+            if (key === "dateEntretien") {
+              return formatDate(value); // Format dateEntretien
             }
             return value; // Return other values as-is
           }}
+        />
+
+        <FormComponent 
+          isOpen={isInternshipFormOpen}
+          onClose={() => setIsInternshipFormOpen(false)}
+          onSubmit={handleCreateInternship}
+          fields={internshipFormFields}
+          title="Create Internship"
+          submitButtonText="Create"
         />
       </div>
     </Layout>
