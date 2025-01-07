@@ -55,7 +55,7 @@ export default function StudentOffers() {
       console.log('Debugging: Type of visibleOffers', typeof visibleOffers);
 
       // Filter out offers that the student has already applied to
-      const filteredVisibleOffers = visibleOffers.filter(
+      const filteredVisibleOffers = [visibleOffers].filter(
         (offer) => !postulations.some((postulation) => postulation.offreId === offer.idOffre)
       );
 
