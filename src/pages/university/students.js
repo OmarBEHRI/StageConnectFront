@@ -206,7 +206,7 @@ export default function StudentsManagement() {
 
       <Table
         columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut', 'Filière']}
-        columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant']}
+        columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant','filiere']}
         items={filteredStudents.map(student => ({
           ...student,
           filiere: getFiliereName(student.filiereId), // Add filière name to the student object
