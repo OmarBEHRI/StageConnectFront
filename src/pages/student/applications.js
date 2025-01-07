@@ -1,17 +1,25 @@
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
-
+import axiosInstance from '@/axiosInstance/axiosInstance';
 export default function StudentApplications() {
   const router = useRouter();
+  const [applications, setApplications] = useState({
+    columns: ['Company', 'Position', 'Type', 'ObjetOffre', 'Status'],
+    columnKeys: ['company', 'position', 'type', 'objetOffre', 'status'], // Map column keys to match the keys in your data
+    items: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
-      if (token) {
+      const etudiantId = localStorage.getItem("id");
+      if (token && etudiantId) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchPostulations(etudiantId);
       } else {
         router.push('/');
       }
@@ -19,62 +27,51 @@ export default function StudentApplications() {
       router.push('/');
     }
   }, [router]);
+  const fetchPostulations = async (etudiantId) => {
+    try {
+      const response = await axiosInstance.get(`/api/postulations/etudiant/${etudiantId}`);
+      const postulations = response.data;
 
-  // Sample data
-  const [applications] = useState({
-    columns: ['Company', 'Position', 'Type', 'Domain', 'Status'],
-    items: [
-      {
-        id: 1,
-        company: 'Tech Corp',
-        position: 'Frontend Developer',
-        type: 'Paid',
-        domain: 'Web Development',
-        status: 'pending'
-      },
-      {
-        id: 2,
-        company: 'DataMinds AI',
-        position: 'ML Engineer Intern',
-        type: 'Paid',
-        domain: 'Machine Learning',
-        status: 'accepted'
-      },
-      {
-        id: 3,
-        company: 'CloudScale Solutions',
-        position: 'DevOps Intern',
-        type: 'Paid',
-        domain: 'Cloud Infrastructure',
-        status: 'refused'
-      },
-      {
-        id: 4,
-        company: 'GreenTech Innovations',
-        position: 'Backend Developer',
-        type: 'Unpaid',
-        domain: 'Software Development',
-        status: 'pending'
-      },
-      {
-        id: 5,
-        company: 'FinTech Solutions',
-        position: 'Full Stack Developer',
-        type: 'Paid',
-        domain: 'Financial Technology',
-        status: 'pending'
-      },
-      {
-        id: 6,
-        company: 'Mobile Masters',
-        position: 'Mobile App Developer',
-        type: 'Paid',
-        domain: 'Mobile Development',
-        status: 'accepted'
-      }
-    ]
-  });
+      // Fetch additional offer details for each postulation
+      const transformedPostulations = await Promise.all(postulations.map(async (postulation) => {
+        try {
+          const offerResponse = await axiosInstance.get(`/api/offres/${postulation.offreId}`);
+          const offer = offerResponse.data;
 
+          const entrepriseResponse = await axiosInstance.get(`/api/entreprise/${offer.entrepriseId}`);
+          const entreprise = entrepriseResponse.data;
+
+          return {
+            id: postulation.id,
+            company: entreprise.nomEntreprise, // Set company name as entreprise.nomEntreprise
+            position: offer.posteOffre, // Use posteOffre from offer
+            type: offer.typeStageOffre, // Use typeStageOffre from offer
+            objetOffre: offer.objetOffre , // Use objetOffre from offer
+            status: postulation.etatPostulation
+          };
+        } catch (offerError) {
+          console.error(`Error fetching offer details for postulation ${postulation.id}:`, offerError);
+          return {
+            id: postulation.id,
+            company: 'Company Name',
+            position: 'Position Name',
+            type: 'Type',
+            domain: 'Domain',
+            status: postulation.etatPostulation
+          };
+        }
+      }));
+
+      setApplications(prevState => ({
+        ...prevState,
+        items: transformedPostulations
+      }));
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   const getStatusColor = (status) => {
     const colors = {
       refused: 'text-red-600',
@@ -83,7 +80,6 @@ export default function StudentApplications() {
     };
     return colors[status] || 'text-gray-600';
   };
-
   const handleSearch = (query) => {
     // Implement search logic
     console.log("Searching for:", query);
@@ -92,8 +88,12 @@ export default function StudentApplications() {
     // Add logout logic here
     router.push('/');
   };
-
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   return (
     <Layout role="student">
       <div className="p-6">
@@ -102,8 +102,9 @@ export default function StudentApplications() {
           <SearchBar onSearch={handleSearch} />
         </div>
         <div className="overflow-x-auto">
-          <Table 
+          <Table
             columns={applications.columns}
+            columnKeys={applications.columnKeys} // Pass columnKeys to the Table component
             items={applications.items.map(item => ({
               ...item,
               status: <span className={getStatusColor(item.status)}>{item.status}</span>
