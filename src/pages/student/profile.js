@@ -31,7 +31,14 @@ export default function EtudiantProfile() {
     try {
       console.log(updatedData);
       console.log(`ID Etudiant :${etudiant.idEtu}`)
-      const response = await axiosInstance.put(`/api/etudiants/${etudiant.idEtu}`, updatedData);
+      const response = await axiosInstance.put(`/api/etudiants/${etudiant.idEtu}`, 
+        {
+          ...updatedData,
+          filiereId: etudiant.filiereId,
+          userId : etudiant.userId,
+          codeEtu: etudiant.codeEtu,
+        }
+      );
       setEtudiant(response.data);
       setIsEditing(false);
     } catch (error) {
@@ -73,6 +80,7 @@ export default function EtudiantProfile() {
               { name: 'prenom', placeholder: 'Prenom', type: 'text' },
               { name: 'email', placeholder: 'Email', type: 'email' },
               { name: 'tel', placeholder: 'Phone', type: 'text' },
+              { name: 'motDePasse', placeholder: 'Mot De Passe', type: 'password' },
             ]}
             title="Edit Student Profile"
             submitButtonText="Save"
