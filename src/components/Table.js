@@ -60,77 +60,67 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
     return '';
   };
 
-  // Function to truncate text and show full text on hover
-  const renderCellContent = (content) => {
-    if (typeof content === 'string' && content.length > 8) {
-      return (
-        <span title={content}>
-          {content.substring(0, 8)}...
-        </span>
-      );
-    }
-    return content;
-  };
-
   return (
-    <table className="min-w-full bg-white">
-      <thead>
-        <tr>
-          {columns.map((column, index) => (
-            <th
-              key={column}
-              onClick={() => requestSort(column)}
-              className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
-            >
-              {column}{getSortDirection(column)}
-            </th>
-          ))}
-          {buttons && buttons.length > 0 && (
-            <th className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Actions
-            </th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {sortedItems.map((item, itemIndex) => (
-          <tr 
-            key={itemIndex}
-            className="hover:bg-gray-100"
-          >
-            {columns.map((column, colIndex) => {
-              const key = columnKeys[colIndex]; // Get the property key for the column
-              return (
-                <td 
-                  key={column}
-                  className="px-6 py-4 whitespace-nowrap text-center"
-                >
-                  {renderCellContent(item[key])}
-                </td>
-              );
-            })}
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr>
+            {columns.map((column, index) => (
+              <th
+                key={column}
+                onClick={() => requestSort(column)}
+                className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
+              >
+                {column}{getSortDirection(column)}
+              </th>
+            ))}
             {buttons && buttons.length > 0 && (
-              <td className="px-6 py-4 whitespace-nowrap text-center">
-                {buttons.map((button, buttonIndex) => (
-                  <button
-                    key={button}
-                    onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
-                    className={`${
-                      button.toLowerCase() === 'delete' 
-                        ? 'text-red-600 hover:text-red-800' 
-                        : 'text-blue-600 hover:text-blue-800'
-                    } ${
-                      buttonIndex < buttons.length - 1 ? 'mr-4' : ''
-                    } normal-case`}
-                  >
-                    {button}
-                  </button>
-                ))}
-              </td>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
             )}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {sortedItems.map((item, itemIndex) => (
+            <tr 
+              key={itemIndex}
+              className="hover:bg-gray-100"
+            >
+              {columns.map((column, colIndex) => {
+                const key = columnKeys[colIndex]; // Get the property key for the column
+                return (
+                  <td 
+                    key={column}
+                    className="px-6 py-4 whitespace-nowrap text-center"
+                  >
+                    {item[key]}
+                  </td>
+                );
+              })}
+              {buttons && buttons.length > 0 && (
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  {buttons.map((button, buttonIndex) => (
+                    <button
+                      key={button}
+                      onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
+                      className={`${
+                        button.toLowerCase() === 'delete' 
+                          ? 'text-red-600 hover:text-red-800' 
+                          : 'text-blue-600 hover:text-blue-800'
+                      } ${
+                        buttonIndex < buttons.length - 1 ? 'mr-4' : ''
+                      } normal-case`}
+                    >
+                      {button}
+                    </button>
+                  ))}
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
