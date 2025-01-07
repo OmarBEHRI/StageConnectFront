@@ -37,7 +37,7 @@ export default function SupervisorInternships() {
       const filteredStages = stagesResponse.data.filter(stage => stage.encadrantId == idEncadrant);
 
       const updatedStages = await Promise.all(filteredStages.map(async (stage) => {
-        if (stage.statut !== "terminé") {
+        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau" && stage.statut !== "a valider") {
           const currentDate = new Date();
           const dateLimite = new Date(stage.dateLimite);
           if (dateLimite > currentDate) {
