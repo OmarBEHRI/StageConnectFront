@@ -99,8 +99,6 @@ export default function SupervisorInternships() {
     { name: "performance", type: "select", placeholder: "Performance Rating",
       options: ["Excellent", "Good", "Average", "Below Average"] },
     { name: "skills", placeholder: "Technical Skills Demonstrated" },
-    { name: "strengths", placeholder: "Key Strengths" },
-    { name: "improvements", placeholder: "Areas for Improvement" },
     { name: "comments", type: "textarea", placeholder: "Additional Comments" }
   ];
 
