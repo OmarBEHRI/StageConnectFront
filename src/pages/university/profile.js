@@ -71,12 +71,7 @@ export default function CompteEcoleProfile() {
 
   const handleEditFiliere = async (updatedFiliere) => {
     try {
-      const response = await axiosInstance.put(`/api/filieres/${updatedFiliere.idFiliere}`, 
-        {
-          ...updatedFiliere,
-          idFiliere: editingFiliere.idFiliere,
-          ecoleId: ecole.idEcole
-        });
+      const response = await axiosInstance.put(`/api/filieres/${updatedFiliere.idFiliere}`, updatedFiliere);
       setFilieres(filieres.map(f => f.idFiliere === response.data.idFiliere ? response.data : f));
       setEditingFiliere(null);
     } catch (error) {
@@ -95,21 +90,22 @@ export default function CompteEcoleProfile() {
 
   return (
     <Layout role="university">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">University Manager Profile</h1>
+      <div className="p-6 font-roboto">
+        <h1 className="text-2xl font-bold mb-6 text-black">University Manager Profile</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* CompteEcole and Ecole Information Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* CompteEcole Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Compte Ecole Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Compte Ecole Information</h2>
             {compteEcole && (
-              <div className="space-y-2">
-                <p className="font-medium"><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
-                <p className="font-medium"><strong>Email:</strong> {compteEcole.email}</p>
-                <p className="font-medium"><strong>Phone:</strong> {compteEcole.telephone}</p>
+              <div className="space-y-2 text-black">
+                <p><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
+                <p><strong>Email:</strong> {compteEcole.email}</p>
+                <p><strong>Phone:</strong> {compteEcole.telephone}</p>
                 <button
                   onClick={() => setIsEditingCompteEcole(true)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   Edit
                 </button>
@@ -119,15 +115,15 @@ export default function CompteEcoleProfile() {
 
           {/* Ecole Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Ecole Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Ecole Information</h2>
             {ecole && (
-              <div className="space-y-2">
-                <p className="font-medium"><strong>School Name:</strong> {ecole.nomEcole}</p>
-                <p className="font-medium"><strong>City:</strong> {ecole.villeEcole}</p>
-                <p className="font-medium"><strong>Address:</strong> {ecole.adresseEcole}</p>
+              <div className="space-y-2 text-black">
+                <p><strong>School Name:</strong> {ecole.nomEcole}</p>
+                <p><strong>City:</strong> {ecole.villeEcole}</p>
+                <p><strong>Address:</strong> {ecole.adresseEcole}</p>
                 <button
                   onClick={() => setIsEditingEcole(true)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   Edit
                 </button>
@@ -136,13 +132,13 @@ export default function CompteEcoleProfile() {
           </div>
         </div>
 
-        {/* Filiere Management */}
+        {/* Filiere Management Section */}
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Filiere Management</h2>
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-black">Filiere Management</h2>
             <button
               onClick={() => setIsAddingFiliere(true)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mb-4"
+              className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
             >
               Add Filiere
             </button>
