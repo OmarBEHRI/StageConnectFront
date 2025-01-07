@@ -42,10 +42,16 @@ export default function SupervisorInternships() {
           const dateLimite = new Date(stage.dateLimite);
           if (dateLimite > currentDate) {
             stage.statut = "en cours";
-            await axiosInstance.put(`/stages/${stage.idStage}/status`,  "en cours" );
+            const newStatus = "en cours";
+            await axiosInstance.put(`/stages/${idStage}/status`, null, {
+              params: { newStatus },
+            });
           } else {
             stage.statut = "terminé";
-            await axiosInstance.put(`/stages/${stage.idStage}/status`, "terminé" );
+            const newStatus = "terminé";
+            await axiosInstance.put(`/stages/${idStage}/status`, null, {
+              params: { newStatus },
+            });
           }
         }
         return stage;
