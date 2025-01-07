@@ -14,6 +14,7 @@ export default function StudentsManagement() {
   const [formData, setFormData] = useState({});
   const [editStudentId, setEditStudentId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
+  const [filieres, setFilieres] = useState([]); // State to store filieres
   const [error, setError] = useState(null); // State to manage error messages
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function StudentsManagement() {
       router.push('/');
     }
   }, [router]);
+
   // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
 
@@ -44,6 +46,7 @@ export default function StudentsManagement() {
       const ecoleId = response.data.ecoleId;
       setEcoleId(ecoleId);
       fetchStudentsByEcoleId(ecoleId); // Fetch students for the ecole
+      fetchFilieresByEcoleId(ecoleId); // Fetch filieres for the ecole
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
       setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
@@ -61,6 +64,15 @@ export default function StudentsManagement() {
     }
   };
 
+  const fetchFilieresByEcoleId = async (ecoleId) => {
+    try {
+      const response = await axiosInstance.get(`/api/filieres/ecole/${ecoleId}`);
+      setFilieres(response.data);
+    } catch (error) {
+      console.error('Error fetching filieres:', error);
+      setError('Erreur lors de la récupération des filières. Veuillez réessayer.');
+    }
+  };
 
   const handleSearch = (query) => {
     if (query.trim() === '') {
@@ -77,6 +89,12 @@ export default function StudentsManagement() {
 
   const handleCreateStudent = async (studentData) => {
     try {
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+      if (!selectedFiliere) {
+        setError('Filière non trouvée. Veuillez sélectionner une filière valide.');
+        return;
+      }
+
       const response = await axiosInstance.post('/api/etudiants', {
         nom: studentData.nom,
         prenom: studentData.prenom,
@@ -86,7 +104,7 @@ export default function StudentsManagement() {
         codeEtu: studentData.codeEtu,
         statutEtudiant: studentData.statutEtudiant,
         ecoleId: ecoleId,
-        filiereId: studentData.filiereId,
+        filiereId: selectedFiliere.idFiliere,
       });
       setStudents([...students, response.data]);
       setFilteredStudents([...filteredStudents, response.data]);
@@ -100,7 +118,10 @@ export default function StudentsManagement() {
 
   const handleEditStudent = (id) => {
     const studentToEdit = students.find(student => student.idEtu === id);
-    setFormData(studentToEdit);
+    setFormData({
+      ...studentToEdit,
+      filiereNom: filieres.find(filiere => filiere.idFiliere === studentToEdit.filiereId)?.nomFiliere || '',
+    });
     setEditStudentId(id);
     setIsModalOpen(true);
     setError(null); // Clear any previous errors
@@ -108,6 +129,12 @@ export default function StudentsManagement() {
 
   const handleSaveEdit = async (studentData) => {
     try {
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+      if (!selectedFiliere) {
+        setError('Filière non trouvée. Veuillez sélectionner une filière valide.');
+        return;
+      }
+
       const response = await axiosInstance.put(`/api/etudiants/${editStudentId}`, {
         nom: studentData.nom,
         prenom: studentData.prenom,
@@ -117,7 +144,7 @@ export default function StudentsManagement() {
         codeEtu: studentData.codeEtu,
         statutEtudiant: studentData.statutEtudiant,
         ecoleId: ecoleId,
-        filiereId: studentData.filiereId,
+        filiereId: selectedFiliere.idFiliere,
       });
       const updatedStudents = students.map(student =>
         student.idEtu === editStudentId ? response.data : student
@@ -141,7 +168,12 @@ export default function StudentsManagement() {
     { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password' },
     { name: 'codeEtu', placeholder: 'Code Étudiant', type: 'text' },
     { name: 'statutEtudiant', placeholder: 'Statut Étudiant', type: 'text' },
-    { name: 'filiereId', placeholder: 'Filière ID', type: 'text' },
+    {
+      name: 'filiereNom',
+      placeholder: 'Filière',
+      type: 'select',
+      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere })),
+    },
   ];
 
   return (

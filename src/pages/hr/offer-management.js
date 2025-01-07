@@ -170,6 +170,7 @@ export default function HROfferManagement() {
 
         <Table
           columns={[
+            "ID Offre",
             "Title", 
             "Position", 
             "Start Date", 
@@ -182,6 +183,7 @@ export default function HROfferManagement() {
             "Required Level", 
           ]}
           columnKeys={[
+            "idOffre",
             "objetOffre", 
             "posteOffre", 
             "dateLancement", 
