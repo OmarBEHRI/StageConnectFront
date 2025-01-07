@@ -113,6 +113,7 @@ export default function HRInterviews() {
       console.log('Debugging: etudiantId', selectedInterview.etudiantId);
       console.log('Debugging: offreId', selectedInterview.offreId);
       console.log('Debugging: encadrantId', data.encadrantId);
+      console.log('Debugging: idEntretien', selectedInterview.idEntretien);
 
       
 
