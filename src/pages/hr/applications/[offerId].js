@@ -4,78 +4,95 @@ import Card from '@/components/Card';
 import FormComponent from '@/components/FormComponent';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function HRApplicationManagement() {
   const router = useRouter();
+  const { offerId } = router.query;
+
+  const [isInterviewFormOpen, setIsInterviewFormOpen] = useState(false);
+  const [selectedPostulationId, setSelectedPostulationId] = useState(null);
+  const [postulations, setPostulations] = useState([]);
+  const [filteredPostulations, setFilteredPostulations] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       if (token) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        if (offerId) fetchPostulations(offerId);
       } else {
         router.push('/');
       }
     } else {
       router.push('/');
     }
-  }, [router]);
-  
-  const { offerId } = router.query;
-  const [isInterviewFormOpen, setIsInterviewFormOpen] = useState(false);
-  const [selectedApplicantId, setSelectedApplicantId] = useState(null);
+  }, [router, offerId]);
 
-  // Mock data - replace with actual data
-  const applications = [
-    {
-      id: 1,
-      image: "/default-avatar.png", // Add default avatar image
-      name: "John Doe",
-      university: "MIT",
-      academicLevel: "Master's",
-      major: "Computer Science",
-      cvLink: "https://example.com/cv1.pdf",
-      motivationLetter: "I am very interested in this position...",
-    },
-    {
-      id: 2,
-      image: "/default-avatar.png",
-      name: "Jane Smith",
-      university: "Stanford",
-      academicLevel: "Bachelor's",
-      major: "Software Engineering",
-      cvLink: "https://example.com/cv2.pdf",
-      motivationLetter: "I believe I would be a great fit...",
-    },
-  ];
-
-  const interviewFormFields = [
-    { name: "date", type: "date", placeholder: "Interview Date" },
-    { name: "time", type: "time", placeholder: "Interview Time" },
-    { name: "location", placeholder: "Interview Location" },
-    { name: "interviewer", placeholder: "Interviewer Name" },
-  ];
-
-  const handleSearch = (query) => {
-    console.log('Searching for:', query);
-    // Implement search logic here
+  const fetchPostulations = async (offerId) => {
+    try {
+      const response = await axiosInstance.get(`/api/postulations/offre/${offerId}`);
+      const pendingPostulations = response.data.filter(
+        (postulation) => postulation.etatPostulation === "En attente"
+      );
+      setPostulations(pendingPostulations);
+      setFilteredPostulations(pendingPostulations);
+    } catch (error) {
+      console.error('Error fetching postulations:', error);
+    }
   };
 
-  const handleScheduleInterview = (applicantId) => {
-    setSelectedApplicantId(applicantId);
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filtered = postulations.filter(
+      (postulation) =>
+        postulation.etudiantId.toString().includes(query) ||
+        postulation.offreId.toString().includes(query)
+    );
+    setFilteredPostulations(filtered);
+  };
+
+  const handleScheduleInterview = (postulationId) => {
+    setSelectedPostulationId(postulationId);
     setIsInterviewFormOpen(true);
   };
 
-  const handleRefuse = (applicantId) => {
-    console.log('Refusing application:', applicantId);
-    // Implement refuse logic here
+  const handleRefuse = async (postulationId) => {
+    try {
+      await axiosInstance.patch(`/api/postulations/${postulationId}/etat`, null, {
+        params: { etat: 'refusé' },
+      });
+      fetchPostulations(offerId); // Refresh the list
+    } catch (error) {
+      console.error('Error refusing postulation:', error);
+    }
   };
 
-  const handleCreateInterview = (data) => {
-    console.log('Creating interview for applicant:', selectedApplicantId, data);
-    setIsInterviewFormOpen(false);
-    // Implement interview creation logic here
+  const handleCreateInterview = async (data) => {
+    try {
+      const postulation = postulations.find((p) => p.id === selectedPostulationId);
+      const entretienDTO = {
+        dateEntretien: new Date(`${data.date}T${data.time}`).toISOString(),
+        adresse: data.location,
+        duree: data.duration,
+        etat: "Scheduled",
+        resultat: "Pending",
+        lien: data.link,
+        offreId: postulation.offreId,
+        etudiantId: postulation.etudiantId,
+      };
+
+      await axiosInstance.post('/entretiens', entretienDTO);
+      await axiosInstance.patch(`/api/postulations/${selectedPostulationId}/etat`, null, {
+        params: { etat: 'accepté' },
+      });
+
+      setIsInterviewFormOpen(false);
+      fetchPostulations(offerId); // Refresh the list
+    } catch (error) {
+      console.error('Error creating interview:', error);
+    }
   };
 
   if (!offerId) return null;
@@ -89,26 +106,23 @@ export default function HRApplicationManagement() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {applications.map((application) => (
+          {filteredPostulations.map((postulation) => (
             <Card
-              key={application.id}
-              image={application.image}
-              title={application.name}
+              key={postulation.id}
+              title={`Postulation #${postulation.id}`}
               specifications={[
-                { label: "University", value: application.university },
-                { label: "Academic Level", value: application.academicLevel },
-                { label: "Major", value: application.major },
-                { label: "CV", value: application.cvLink, isLink: true },
-                { label: "Motivation", value: application.motivationLetter },
+                { label: "Etudiant ID", value: postulation.etudiantId },
+                { label: "Offre ID", value: postulation.offreId },
+                { label: "État", value: postulation.etatPostulation },
               ]}
               buttons={[
                 {
-                  label: "Schedule Interview",
-                  onClick: () => handleScheduleInterview(application.id),
+                  label: "Accepter",
+                  onClick: () => handleScheduleInterview(postulation.id),
                 },
                 {
-                  label: "Refuse",
-                  onClick: () => handleRefuse(application.id),
+                  label: "Refuser",
+                  onClick: () => handleRefuse(postulation.id),
                 },
               ]}
             />
@@ -119,7 +133,13 @@ export default function HRApplicationManagement() {
           isOpen={isInterviewFormOpen}
           onClose={() => setIsInterviewFormOpen(false)}
           onSubmit={handleCreateInterview}
-          fields={interviewFormFields}
+          fields={[
+            { name: "date", type: "date", placeholder: "Interview Date" },
+            { name: "time", type: "time", placeholder: "Interview Time" },
+            { name: "location", placeholder: "Interview Location" },
+            { name: "duration", placeholder: "Duration" },
+            { name: "link", placeholder: "Meeting Link" },
+          ]}
           title="Schedule Interview"
         />
       </div>
