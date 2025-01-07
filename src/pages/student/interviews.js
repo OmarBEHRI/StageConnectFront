@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function StudentInterviews() {
   const router = useRouter();
+  const [interviews, setInterviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
-      if (token) {
+      const etudiantId = localStorage.getItem("id");
+
+      if (token && etudiantId) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchInterviews(etudiantId);
       } else {
         router.push('/');
       }
@@ -20,21 +26,40 @@ export default function StudentInterviews() {
     }
   }, [router]);
 
-  const [interviews] = useState([ // Sample data
-    {
-      id: 1,
-      company: 'Tech Corp',
-      companyLogo: '/images/sample-logo.jpg',
-      position: 'Frontend Developer',
-      domain: 'Web Development',
-      date: '2024-04-15',
-      time: '14:00',
-      location: 'Online (Zoom)',
-      meetingLink: 'https://zoom.us/j/123456789',
-      status: 'scheduled'
-    },
-    // Add more interviews...
-  ]);
+  const fetchInterviews = async (etudiantId) => {
+    try {
+      const response = await axiosInstance.get(`/api/entretiens/etudiant/${etudiantId}`);
+      const interviewsWithDetails = await Promise.all(
+        response.data.map(async (entretien) => {
+          const [etudiantResponse, offreResponse] = await Promise.all([
+            axiosInstance.get(`/api/etudiants/${entretien.etudiantId}`),
+            axiosInstance.get(`/offres/${entretien.offreId}`),
+          ]);
+
+          return {
+            ...entretien,
+            etudiant: etudiantResponse.data,
+            offre: offreResponse.data,
+          };
+        })
+      );
+
+      setInterviews(interviewsWithDetails);
+    } catch (error) {
+      console.error('Error fetching interviews:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);
@@ -44,6 +69,9 @@ export default function StudentInterviews() {
     window.open(meetingLink, '_blank');
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Layout role="student">
@@ -55,22 +83,21 @@ export default function StudentInterviews() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {interviews.map((interview) => (
             <Card
-              key={interview.id}
-              image={interview.companyLogo}
-              title={interview.company}
+              key={interview.idEntretien}
+              title={interview.offre.objetOffre}
               specifications={[
-                { label: "Position", value: interview.position },
-                { label: "Domain", value: interview.domain },
-                { label: "Date", value: interview.date },
-                { label: "Time", value: interview.time },
-                { label: "Location", value: interview.location },
-                { label: "Meeting Link", value: interview.meetingLink, isLink: true }
+                { label: "Date", value: formatDate(interview.dateEntretien) },
+                { label: "Address", value: interview.adresse },
+                { label: "Duration", value: interview.duree },
+                { label: "Status", value: interview.etat },
+                { label: "Result", value: interview.resultat },
+                { label: "Meeting Link", value: interview.lien, isLink: true },
               ]}
               buttons={[
                 {
-                  label: "Join Meeting",
-                  onClick: () => handleJoinMeeting(interview.meetingLink)
-                }
+                  label: "Rejoindre réunion",
+                  onClick: () => handleJoinMeeting(interview.lien),
+                },
               ]}
             />
           ))}
