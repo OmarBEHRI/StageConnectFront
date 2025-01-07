@@ -56,7 +56,7 @@ export default function StudentInternships() {
 
   const getButtonLabel = (status) => {
     const labels = {
-      'nouveau': 'Postuler',
+      'nouveau': 'Valider',
       'a valider': 'Demande en attente',
       'valide': 'Validé',
       'refuser': 'Refusé'
