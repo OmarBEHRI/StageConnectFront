@@ -9,6 +9,7 @@ export default function StudentInterviews() {
   const router = useRouter();
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -65,7 +66,12 @@ export default function StudentInterviews() {
   };
 
   const handleJoinMeeting = (meetingLink) => {
-    window.open(meetingLink, '_blank');
+    if (meetingLink && meetingLink.startsWith('http')) {
+      window.open(meetingLink, '_blank');
+    } else {
+      setErrorMessage('lien introuvable');
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
   };
 
   if (loading) {
@@ -98,7 +104,11 @@ export default function StudentInterviews() {
                   onClick: () => handleJoinMeeting(interview.lien),
                 },
               ]}
-            />
+            >
+              {errorMessage && (
+                <p className="text-red-500">{errorMessage}</p>
+              )}
+            </Card>
           ))}
         </div>
       </div>
