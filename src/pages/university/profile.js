@@ -71,7 +71,12 @@ export default function CompteEcoleProfile() {
 
   const handleEditFiliere = async (updatedFiliere) => {
     try {
-      const response = await axiosInstance.put(`/api/filieres/${updatedFiliere.idFiliere}`, updatedFiliere);
+      const response = await axiosInstance.put(`/api/filieres/${updatedFiliere.idFiliere}`, 
+        {
+          ...updatedFiliere,
+          idFiliere: editingFiliere.idFiliere,
+          ecoleId: ecole.idEcole
+        });
       setFilieres(filieres.map(f => f.idFiliere === response.data.idFiliere ? response.data : f));
       setEditingFiliere(null);
     } catch (error) {
@@ -89,55 +94,59 @@ export default function CompteEcoleProfile() {
   };
 
   return (
-    <Layout role="universityManager">
+    <Layout role="university">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">University Manager Profile</h1>
 
-        {/* CompteEcole Information */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Compte Ecole Information</h2>
-          {compteEcole && (
-            <div className="space-y-2">
-              <p><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
-              <p><strong>Email:</strong> {compteEcole.email}</p>
-              <p><strong>Phone:</strong> {compteEcole.telephone}</p>
-              <button
-                onClick={() => setIsEditingCompteEcole(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Edit
-              </button>
-            </div>
-          )}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* CompteEcole Information Card */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Compte Ecole Information</h2>
+            {compteEcole && (
+              <div className="space-y-2">
+                <p className="font-medium"><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
+                <p className="font-medium"><strong>Email:</strong> {compteEcole.email}</p>
+                <p className="font-medium"><strong>Phone:</strong> {compteEcole.telephone}</p>
+                <button
+                  onClick={() => setIsEditingCompteEcole(true)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
 
-        {/* Ecole Information */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Ecole Information</h2>
-          {ecole && (
-            <div className="space-y-2">
-              <p><strong>School Name:</strong> {ecole.nomEcole}</p>
-              <p><strong>City:</strong> {ecole.villeEcole}</p>
-              <p><strong>Address:</strong> {ecole.adresseEcole}</p>
-              <button
-                onClick={() => setIsEditingEcole(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Edit
-              </button>
-            </div>
-          )}
+          {/* Ecole Information Card */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Ecole Information</h2>
+            {ecole && (
+              <div className="space-y-2">
+                <p className="font-medium"><strong>School Name:</strong> {ecole.nomEcole}</p>
+                <p className="font-medium"><strong>City:</strong> {ecole.villeEcole}</p>
+                <p className="font-medium"><strong>Address:</strong> {ecole.adresseEcole}</p>
+                <button
+                  onClick={() => setIsEditingEcole(true)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Filiere Management */}
-        <div className="mb-8">
+        <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4">Filiere Management</h2>
-          <button
-            onClick={() => setIsAddingFiliere(true)}
-            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mb-4"
-          >
-            Add Filiere
-          </button>
+          <div className="flex justify-end">
+            <button
+              onClick={() => setIsAddingFiliere(true)}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mb-4"
+            >
+              Add Filiere
+            </button>
+          </div>
           <Table
             columns={['Name', 'Abbreviation']}
             columnKeys={['nomFiliere', 'abrvFiliere']}
