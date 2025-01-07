@@ -51,6 +51,9 @@ export default function StudentOffers() {
       const postulationsResponse = await axiosInstance.get(`/api/postulations/etudiant/${studentId}`);
       const postulations = postulationsResponse.data;
 
+      // Debugging: print the type of visibleOffers
+      console.log('Debugging: Type of visibleOffers', typeof visibleOffers);
+
       // Filter out offers that the student has already applied to
       const filteredVisibleOffers = visibleOffers.filter(
         (offer) => !postulations.some((postulation) => postulation.offreId === offer.idOffre)
