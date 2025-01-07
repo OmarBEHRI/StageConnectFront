@@ -73,12 +73,12 @@ export default function CompteEcoleProfile() {
     try {
       console.log('Starting handleEditFiliere with updatedFiliere:', updatedFiliere);
       console.log('Current editingFiliere:', editingFiliere);
-      console.log('Current editingFiliere.idFiliere:', editingFiliere.idFiliere);
-      const response = await axiosInstance.put(`/api/filieres/${editingFiliere.idFiliere}`, 
+      console.log('Current editingFiliere.idFiliere:', editingFiliere);
+      const response = await axiosInstance.put(`/api/filieres/${editingFiliere}`, 
         {
           ...updatedFiliere,
           ecoleId: ecole.idEcole,
-          idFiliere: editingFiliere.idFiliere
+          idFiliere: editingFiliere,
         });
       console.log('Received response from server:', response.data);
       setFilieres(filieres.map(f => f.idFiliere === response.data.idFiliere ? response.data : f));
