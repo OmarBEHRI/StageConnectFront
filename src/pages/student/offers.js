@@ -95,6 +95,7 @@ export default function StudentOffers() {
       formData.append('etudiantId', studentId);
       formData.append('Cv', cvFile);
       formData.append('LettreMotivation', lettreMotivationFile);
+      formData.append('etatPostulation','En attente')
 
       // Send POST request to create postulation
       const response = await axiosInstance.post('/api/postulations/upload', formData, {
