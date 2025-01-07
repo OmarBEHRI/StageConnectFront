@@ -108,10 +108,13 @@ export default function HRInterviews() {
       };
       
       // Console log for debugging
+      console.log('Debugging: selectedInterview object', selectedInterview);
       console.log('Debugging: stageDTO data', data);
       console.log('Debugging: etudiantId', selectedInterview.etudiantId);
       console.log('Debugging: offreId', selectedInterview.offreId);
       console.log('Debugging: encadrantId', data.encadrantId);
+
+      
 
       await axiosInstance.post('/stages', stageDTO); // Create the internship
       await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, { resultat: "accepté" }); // Update interview result
