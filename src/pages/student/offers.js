@@ -5,6 +5,7 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import Modal from '@/components/Modal'; // Import a Modal component
 
 export default function StudentOffers() {
   const router = useRouter();
@@ -13,6 +14,10 @@ export default function StudentOffers() {
   const [postulations, setPostulations] = useState([]); // State for postulations
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [searchQuery, setSearchQuery] = useState(''); // Search query state
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [selectedOfferId, setSelectedOfferId] = useState(null); // State to store the selected offer ID
+  const [cvFile, setCvFile] = useState(null); // State for CV file
+  const [lettreMotivationFile, setLettreMotivationFile] = useState(null); // State for Lettre de Motivation file
 
   // Fetch student data, visible offers, and postulations
   useEffect(() => {
@@ -81,14 +86,12 @@ export default function StudentOffers() {
   };
 
   // Handle postulation
-  const handlePostuler = async (offreId) => {
+  const handlePostuler = async () => {
     try {
       const studentId = localStorage.getItem('id');
       const formData = new FormData();
-      const cvFile = document.querySelector('#cvFile').files[0];
-      const lettreMotivationFile = document.querySelector('#lettreMotivationFile').files[0];
 
-      formData.append('offreId', offreId);
+      formData.append('offreId', selectedOfferId);
       formData.append('etudiantId', studentId);
       formData.append('etatPostulation', 'PENDING');
       formData.append('Cv', cvFile);
@@ -103,14 +106,25 @@ export default function StudentOffers() {
 
       if (response.status === 201) {
         // Update the list of visible offers
-        const updatedOffers = offers.filter((offer) => offer.idOffre !== offreId);
+        const updatedOffers = offers.filter((offer) => offer.idOffre !== selectedOfferId);
         setOffers(updatedOffers);
         setFilteredOffers(updatedOffers);
+        setIsModalOpen(false); // Close the modal
         alert('Postulation réussie!');
       }
     } catch (error) {
       console.error('Error submitting postulation:', error);
       alert('Erreur lors de la postulation.');
+    }
+  };
+
+  // Handle file selection
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    if (type === 'cv') {
+      setCvFile(file);
+    } else if (type === 'lettreMotivation') {
+      setLettreMotivationFile(file);
     }
   };
 
@@ -139,19 +153,8 @@ export default function StudentOffers() {
                   {
                     label: 'Postuler',
                     onClick: () => {
-                      // Show form for CV and Lettre de Motivation
-                      const cvFileInput = document.createElement('input');
-                      cvFileInput.type = 'file';
-                      cvFileInput.id = 'cvFile';
-                      const lettreMotivationFileInput = document.createElement('input');
-                      lettreMotivationFileInput.type = 'file';
-                      lettreMotivationFileInput.id = 'lettreMotivationFile';
-                      document.body.appendChild(cvFileInput);
-                      document.body.appendChild(lettreMotivationFileInput);
-                      cvFileInput.click();
-                      lettreMotivationFileInput.click();
-                      cvFileInput.onchange = () => handlePostuler(offer.idOffre);
-                      lettreMotivationFileInput.onchange = () => handlePostuler(offer.idOffre);
+                      setSelectedOfferId(offer.idOffre); // Set the selected offer ID
+                      setIsModalOpen(true); // Open the modal
                     },
                   },
                 ]}
@@ -159,6 +162,39 @@ export default function StudentOffers() {
             ))}
           </div>
         )}
+
+        {/* Modal for CV and Lettre de Motivation upload */}
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <div className="p-6">
+            <h2 className="text-xl font-bold mb-4">Postuler à l'offre</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">CV (PDF)</label>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => handleFileChange(e, 'cv')}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Lettre de Motivation (PDF)</label>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => handleFileChange(e, 'lettreMotivation')}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <button
+                onClick={handlePostuler}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Soumettre
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </Layout>
   );
