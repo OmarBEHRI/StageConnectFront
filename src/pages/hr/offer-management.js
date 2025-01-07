@@ -142,6 +142,10 @@ export default function HROfferManagement() {
     }
   };
 
+  const handlePostulations = (offerId) => {
+    router.push(`/hr/applications/${offerId}`);
+  };
+
   return (
     <Layout role="company">
       <div className="space-y-6">
@@ -187,8 +191,8 @@ export default function HROfferManagement() {
             "niveauRequisOffre", 
           ]}
           items={offers}
-          buttons={["Edit", "Delete"]}
-          actions={[handleEdit, handleDelete]}
+          buttons={["Edit", "Delete", "Postulations"]}
+          actions={[handleEdit, handleDelete, handlePostulations]}
           idParam="idOffre"
           formatData={(key, value) => {
             if (key === "dateLancement" || key === "dateLimite") {
