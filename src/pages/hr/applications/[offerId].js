@@ -77,7 +77,7 @@ export default function HRApplicationManagement() {
         adresse: data.location,
         duree: data.duration,
         etat: "Scheduled",
-        resultat: "Pending",
+        resultat: "nouveau",
         lien: data.link,
         offreId: postulation.offreId,
         etudiantId: postulation.etudiantId,
