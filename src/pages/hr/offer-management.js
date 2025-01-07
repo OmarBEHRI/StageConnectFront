@@ -42,6 +42,7 @@ export default function HROfferManagement() {
 
   const fetchOffers = async (entrepriseId) => {
     try {
+      console.log('Entreprise ID:', entrepriseId); // Log entreprise id
       const response = await axiosInstance.get(`/api/offres/entreprise/${entrepriseId}`);
       console.log('Response:', response); // Log response for debugging
       const formattedOffers = response.data.map(offer => ({
