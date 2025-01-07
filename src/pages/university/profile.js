@@ -223,7 +223,7 @@ export default function CompteEcoleProfile() {
             ]}
             title="Edit Filiere"
             submitButtonText="Save"
-            prefillData={editingFiliere}
+            prefillData={filieres.find(filiere => filiere.idFiliere = editingFiliere)}
           />
         )}
       </div>
