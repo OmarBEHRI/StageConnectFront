@@ -108,7 +108,17 @@ export default function StudentsManagement() {
 
   const handleSaveEdit = async (studentData) => {
     try {
-      const response = await axiosInstance.put(`/api/etudiants/${editStudentId}`, studentData);
+      const response = await axiosInstance.put(`/api/etudiants/${editStudentId}`, {
+        nom: studentData.nom,
+        prenom: studentData.prenom,
+        email: studentData.email,
+        tel: studentData.telephone,
+        motDePasse: studentData.motDePasse,
+        codeEtu: studentData.codeEtu,
+        statutEtudiant: studentData.statutEtudiant,
+        ecoleId: ecoleId,
+        filiereId: studentData.filiereId,
+      });
       const updatedStudents = students.map(student =>
         student.idEtu === editStudentId ? response.data : student
       );
