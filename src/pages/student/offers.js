@@ -93,7 +93,6 @@ export default function StudentOffers() {
 
       formData.append('offreId', selectedOfferId);
       formData.append('etudiantId', studentId);
-      formData.append('etatPostulation', 'PENDING');
       formData.append('Cv', cvFile);
       formData.append('LettreMotivation', lettreMotivationFile);
 
