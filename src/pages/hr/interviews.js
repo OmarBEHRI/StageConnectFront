@@ -12,6 +12,8 @@ export default function HRInterviews() {
   const [interviews, setInterviews] = useState([]);
   const [entrepriseId, setEntrepriseId] = useState(null);
   const [selectedInterview, setSelectedInterview] = useState(null);
+  const [encadrants, setEncadrants] = useState([]); // State to store encadrants
+  const [error, setError] = useState(null); // State to manage error messages
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -27,15 +29,32 @@ export default function HRInterviews() {
     }
   }, [router]);
 
+  // Function to set an error message and clear it after 5 seconds
+  const setErrorMessage = (message) => {
+    setError(message);
+    setTimeout(() => setError(null), 5000); // Clear error after 5 seconds
+  };
+
   const fetchCompteEntreprise = async () => {
     try {
       const rhId = localStorage.getItem('id');
       const response = await axiosInstance.get(`/api/rh/${rhId}`);
       setEntrepriseId(response.data.entrepriseId);
       fetchInterviews(response.data.entrepriseId);
+      fetchEncadrants(response.data.entrepriseId); // Fetch encadrants after setting entrepriseId
     } catch (error) {
       console.error('Error fetching CompteEntreprise:', error);
-      alert('Failed to fetch CompteEntreprise data.');
+      setErrorMessage('Failed to fetch CompteEntreprise data.');
+    }
+  };
+
+  const fetchEncadrants = async (entrepriseId) => {
+    try {
+      const response = await axiosInstance.get(`/api/encadrants/by-entreprise/${entrepriseId}`);
+      setEncadrants(response.data); // Store encadrants in state
+    } catch (error) {
+      console.error('Error fetching encadrants:', error);
+      setErrorMessage('Failed to fetch encadrants.');
     }
   };
 
@@ -45,21 +64,23 @@ export default function HRInterviews() {
       const response = await axiosInstance.get(`/entretiens/by-entreprise/${entrepriseId}`);
       const filteredInterviews = response.data.filter(interview => interview.resultat === "nouveau");
 
-      // Fetch Etudiant details for each interview
-      const interviewsWithEtudiant = await Promise.all(
+      // Fetch Etudiant and Offre details for each interview
+      const interviewsWithDetails = await Promise.all(
         filteredInterviews.map(async (interview) => {
           const etudiantResponse = await axiosInstance.get(`/api/etudiants/${interview.etudiantId}`);
+          const offreResponse = await axiosInstance.get(`/api/offres/${interview.offreId}`);
           return {
             ...interview,
             etudiant: etudiantResponse.data, // Add Etudiant details to the interview object
+            offre: offreResponse.data, // Add Offre details to the interview object
           };
         })
       );
 
-      setInterviews(interviewsWithEtudiant);
+      setInterviews(interviewsWithDetails);
     } catch (error) {
-      console.error('Error fetching interviews or Etudiant details:', error);
-      alert('Failed to fetch interviews or Etudiant details.');
+      console.error('Error fetching interviews, Etudiant, or Offre details:', error);
+      setErrorMessage('Failed to fetch interviews, Etudiant, or Offre details.');
     }
   };
 
@@ -78,7 +99,15 @@ export default function HRInterviews() {
     { name: "localisation", placeholder: "Location" },
     { name: "montantRemuneration", placeholder: "Remuneration", type: "number" },
     { name: "type", placeholder: "Type" },
-    { name: "encadrantId", placeholder: "Supervisor ID", type: "number" },
+    {
+      name: "encadrant",
+      placeholder: "Supervisor",
+      type: "select",
+      options: encadrants.map(encadrant => ({
+        label: `${encadrant.nom} ${encadrant.prenom}`,
+        value: `${encadrant.nom} ${encadrant.prenom}`,
+      })),
+    },
   ];
 
   const handleAccept = (interviewId) => {
@@ -93,39 +122,46 @@ export default function HRInterviews() {
       fetchInterviews(entrepriseId);
     } catch (error) {
       console.error('Error refusing interview:', error);
-      alert('Failed to refuse interview.');
+      setErrorMessage('Failed to refuse interview.');
     }
   };
 
   const handleCreateInternship = async (data) => {
     try {
+      // Find the selected encadrant by nom and prenom
+      const selectedEncadrant = encadrants.find(
+        (encadrant) => `${encadrant.nom} ${encadrant.prenom}` === data.encadrant
+      );
+
+      if (!selectedEncadrant) {
+        throw new Error("Selected encadrant not found.");
+      }
+
       const stageDTO = {
         ...data,
         statut: "nouveau", // Set statut to "nouveau" by default
         etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
         offreId: selectedInterview.offreId,
-        encadrantId: data.encadrantId, // Take offreId from selectedInterview
+        encadrantId: selectedEncadrant.idEncadrant, // Use the idEncadrant from the selected encadrant
       };
-      
+
       // Console log for debugging
       console.log('Debugging: selectedInterview object', selectedInterview);
       console.log('Debugging: stageDTO data', data);
       console.log('Debugging: etudiantId', selectedInterview.etudiantId);
       console.log('Debugging: offreId', selectedInterview.offreId);
-      console.log('Debugging: encadrantId', data.encadrantId);
+      console.log('Debugging: encadrantId', selectedEncadrant.idEncadrant);
       console.log('Debugging: idEntretien', selectedInterview.idEntretien);
 
-      
-
       await axiosInstance.post('/stages', stageDTO);
-      const { etudiant, ...updatedInterview } = selectedInterview; // Exclude etudiant object
+      const { etudiant, offre, ...updatedInterview } = selectedInterview; // Exclude etudiant and offre objects
       updatedInterview.resultat = "accepté"; // Create the internship
       await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, updatedInterview); // Update interview result
       fetchInterviews(entrepriseId); // Refresh the interviews list
       setIsInternshipFormOpen(false); // Close the form
     } catch (error) {
       console.error('Error creating internship:', error);
-      alert('Failed to create internship.');
+      setErrorMessage('Failed to create internship.');
     }
   };
 
@@ -134,15 +170,18 @@ export default function HRInterviews() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Interviews Management</h1>
         
+        {/* Display error message if any */}
+        {error && <p className="text-red-500">{error}</p>}
+
         <SearchBar onSearch={(query) => console.log('Search:', query)} />
 
         <Table 
-          columns={["Student Name", "Email", "Phone", "Offer ID", "Date"]}
+          columns={["Student Name", "Email", "Phone", "Offer Object", "Date"]}
           columnKeys={[
             "etudiant.nom", 
             "etudiant.email", 
             "etudiant.tel", 
-            "offreId", 
+            "offre.objetOffre", // Display the offer object
             "dateEntretien"
           ]}
           items={interviews}
