@@ -60,6 +60,18 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
     return '';
   };
 
+  // Function to truncate text and show full text on hover
+  const renderCellContent = (content) => {
+    if (typeof content === 'string' && content.length > 8) {
+      return (
+        <span title={content}>
+          {content.substring(0, 8)}...
+        </span>
+      );
+    }
+    return content;
+  };
+
   return (
     <table className="min-w-full bg-white">
       <thead>
@@ -93,7 +105,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                   key={column}
                   className="px-6 py-4 whitespace-nowrap text-center"
                 >
-                  {item[key]}
+                  {renderCellContent(item[key])}
                 </td>
               );
             })}
