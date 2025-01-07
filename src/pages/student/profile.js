@@ -30,15 +30,13 @@ export default function EtudiantProfile() {
   const handleSave = async (updatedData) => {
     try {
       console.log(updatedData);
-      console.log(`ID Etudiant :${etudiant.idEtu}`)
-      const response = await axiosInstance.put(`/api/etudiants/${etudiant.idEtu}`, 
-        {
-          ...updatedData,
-          filiereId: etudiant.filiereId,
-          userId : etudiant.userId,
-          codeEtu: etudiant.codeEtu,
-        }
-      );
+      console.log(`ID Etudiant :${etudiant.idEtu}`);
+      const response = await axiosInstance.put(`/api/etudiants/${etudiant.idEtu}`, {
+        ...updatedData,
+        filiereId: etudiant.filiereId,
+        userId: etudiant.userId,
+        codeEtu: etudiant.codeEtu,
+      });
       setEtudiant(response.data);
       setIsEditing(false);
     } catch (error) {
@@ -48,20 +46,20 @@ export default function EtudiantProfile() {
 
   return (
     <Layout role="student">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Student Profile</h1>
+      <div className="p-6 font-roboto">
+        <h1 className="text-2xl font-bold mb-6 text-black">Student Profile</h1>
 
-        {/* Etudiant Information */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Student Information</h2>
+        {/* Etudiant Information Card */}
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4 text-black">Student Information</h2>
           {etudiant && (
-            <div className="space-y-2">
+            <div className="space-y-2 text-black">
               <p><strong>Name:</strong> {etudiant.nom} {etudiant.prenom}</p>
               <p><strong>Email:</strong> {etudiant.email}</p>
               <p><strong>Phone:</strong> {etudiant.tel}</p>
               <button
                 onClick={() => setIsEditing(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
               >
                 Edit
               </button>

@@ -54,43 +54,46 @@ export default function CompteEntrepriseProfile() {
 
   return (
     <Layout role="companyManager">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Company Manager Profile</h1>
+      <div className="p-6 font-roboto">
+        <h1 className="text-2xl font-bold mb-6 text-black">Company Manager Profile</h1>
 
-        {/* CompteEntreprise Information */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Compte Entreprise Information</h2>
-          {compteEntreprise && (
-            <div className="space-y-2">
-              <p><strong>Name:</strong> {compteEntreprise.nom} {compteEntreprise.prenom}</p>
-              <p><strong>Email:</strong> {compteEntreprise.email}</p>
-              <p><strong>Phone:</strong> {compteEntreprise.telephone}</p>
-              <button
-                onClick={() => setIsEditingCompteEntreprise(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Edit
-              </button>
-            </div>
-          )}
-        </div>
+        {/* CompteEntreprise and Entreprise Information Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* CompteEntreprise Information Card */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 text-black">Compte Entreprise Information</h2>
+            {compteEntreprise && (
+              <div className="space-y-2 text-black">
+                <p><strong>Name:</strong> {compteEntreprise.nom} {compteEntreprise.prenom}</p>
+                <p><strong>Email:</strong> {compteEntreprise.email}</p>
+                <p><strong>Phone:</strong> {compteEntreprise.telephone}</p>
+                <button
+                  onClick={() => setIsEditingCompteEntreprise(true)}
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
 
-        {/* Entreprise Information */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Entreprise Information</h2>
-          {entreprise && (
-            <div className="space-y-2">
-              <p><strong>Company Name:</strong> {entreprise.nomEntreprise}</p>
-              <p><strong>City:</strong> {entreprise.villeEntreprise}</p>
-              <p><strong>Address:</strong> {entreprise.adresseEntreprise}</p>
-              <button
-                onClick={() => setIsEditingEntreprise(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Edit
-              </button>
-            </div>
-          )}
+          {/* Entreprise Information Card */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 text-black">Entreprise Information</h2>
+            {entreprise && (
+              <div className="space-y-2 text-black">
+                <p><strong>Company Name:</strong> {entreprise.nomEntreprise}</p>
+                <p><strong>City:</strong> {entreprise.villeEntreprise}</p>
+                <p><strong>Address:</strong> {entreprise.adresseEntreprise}</p>
+                <button
+                  onClick={() => setIsEditingEntreprise(true)}
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Modals for Editing */}
