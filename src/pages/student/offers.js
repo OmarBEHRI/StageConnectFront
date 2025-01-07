@@ -45,6 +45,7 @@ export default function StudentOffers() {
       // Fetch visible offers by filiereId
       const offersResponse = await axiosInstance.get(`/visible-offres/${filiereId}/visible-offres`);
       const visibleOffers = offersResponse.data;
+      console.log('Debugging: visibleOffers', visibleOffers);
 
       // Fetch postulations by studentId
       const postulationsResponse = await axiosInstance.get(`/api/postulations/etudiant/${studentId}`);
