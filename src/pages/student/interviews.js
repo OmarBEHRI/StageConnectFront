@@ -29,6 +29,7 @@ export default function StudentInterviews() {
   const fetchInterviews = async (etudiantId) => {
     try {
       const response = await axiosInstance.get(`/entretiens/etudiant/${etudiantId}`);
+      console.log(response.data);
       const interviewsWithDetails = await Promise.all(
         response.data.map(async (entretien) => {
           const [etudiantResponse, offreResponse] = await Promise.all([
