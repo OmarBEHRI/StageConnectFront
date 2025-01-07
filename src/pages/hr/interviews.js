@@ -104,8 +104,15 @@ export default function HRInterviews() {
         statut: "nouveau", // Set statut to "nouveau" by default
         etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
         offreId: selectedInterview.offreId,
-        encadrantId:  data.encadrantId,// Take offreId from selectedInterview
+        encadrantId: data.encadrantId, // Take offreId from selectedInterview
       };
+      
+      // Console log for debugging
+      console.log('Debugging: stageDTO data', data);
+      console.log('Debugging: etudiantId', selectedInterview.etudiantId);
+      console.log('Debugging: offreId', selectedInterview.offreId);
+      console.log('Debugging: encadrantId', data.encadrantId);
+
       await axiosInstance.post('/stages', stageDTO); // Create the internship
       await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, { resultat: "accepté" }); // Update interview result
       fetchInterviews(entrepriseId); // Refresh the interviews list
