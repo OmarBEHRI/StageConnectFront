@@ -137,8 +137,11 @@ export default function HRInterviews() {
         throw new Error("Selected encadrant not found.");
       }
 
+      // Remove encadrant from data
+      const { encadrant, ...updatedData } = data;
+      
       const stageDTO = {
-        ...data,
+        ...updatedData,
         statut: "nouveau", // Set statut to "nouveau" by default
         etudiantId: selectedInterview.etudiantId, // Take etudiantId from selectedInterview
         offreId: selectedInterview.offreId,
