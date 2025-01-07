@@ -36,6 +36,7 @@ export default function StudentApplications() {
       const transformedPostulations = await Promise.all(postulations.map(async (postulation) => {
         try {
           console.log(`Fetching offer details for postulation ID: ${postulation.id}`);
+          console.log(`Postulation: ${postulation}`)
           
           const offerResponse = await axiosInstance.get(`/api/offres/${postulation.offreId}`);
           const offer = offerResponse.data;
