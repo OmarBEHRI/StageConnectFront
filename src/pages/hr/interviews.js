@@ -41,6 +41,7 @@ export default function HRInterviews() {
 
   const fetchInterviews = async (entrepriseId) => {
     try {
+      console.log('Debugging: EntrepriseId', entrepriseId);
       const response = await axiosInstance.get(`/entretiens/by-entreprise/${entrepriseId}`);
       const filteredInterviews = response.data.filter(interview => interview.resultat === "nouveau");
 
