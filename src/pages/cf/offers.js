@@ -82,9 +82,7 @@ export default function CFOffers() {
   // Handle adding an offer to visible offers
   const handleAddOffer = async (offreId) => {
     try {
-      await axiosInstance.post(`/visible-offres/filiere/${filiereId}/offre/${offreId}/visibility`, {
-        visible: true,
-      });
+      await axiosInstance.post(`/visible-offres/filiere/${filiereId}/offre/${offreId}/visibility`, true);
       fetchVisibleOffers(filiereId); // Refresh visible offers
     } catch (err) {
       setError('Failed to add offer');
