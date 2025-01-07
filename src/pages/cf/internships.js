@@ -3,6 +3,7 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance'
 
 export default function CFInternships() {
   const router = useRouter();
