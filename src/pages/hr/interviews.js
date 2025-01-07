@@ -117,11 +117,10 @@ export default function HRInterviews() {
 
       
 
-      await axiosInstance.post('/stages', stageDTO); // Create the internship
-      await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, {
-        ...selectedInterview,
-         resultat: "accepté" 
-        }); // Update interview result
+      await axiosInstance.post('/stages', stageDTO);
+      const { etudiant, ...updatedInterview } = selectedInterview; // Exclude etudiant object
+      updatedInterview.resultat = "accepté"; // Create the internship
+      await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, updatedInterview); // Update interview result
       fetchInterviews(entrepriseId); // Refresh the interviews list
       setIsInternshipFormOpen(false); // Close the form
     } catch (error) {
