@@ -172,9 +172,15 @@ export default function StudentsManagement() {
       name: 'filiereNom',
       placeholder: 'Filière',
       type: 'select',
-      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere }))
+      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere })),
     },
   ];
+
+  // Function to get the filière name by filiereId
+  const getFiliereName = (filiereId) => {
+    const filiere = filieres.find(filiere => filiere.idFiliere === filiereId);
+    return filiere ? filiere.nomFiliere : 'N/A';
+  };
 
   return (
     <Layout role="university">
@@ -199,9 +205,12 @@ export default function StudentsManagement() {
       )}
 
       <Table
-        columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut']}
+        columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut', 'Filière']}
         columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant']}
-        items={filteredStudents}
+        items={filteredStudents.map(student => ({
+          ...student,
+          filiere: getFiliereName(student.filiereId), // Add filière name to the student object
+        }))}
         buttons={['Modifier']} // Only the "Modifier" button is included
         actions={[handleEditStudent]} // Only the edit action is passed
         idParam="idEtu"
