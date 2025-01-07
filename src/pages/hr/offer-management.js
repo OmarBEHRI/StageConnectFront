@@ -43,11 +43,13 @@ export default function HROfferManagement() {
   const fetchOffers = async (entrepriseId) => {
     try {
       const response = await axiosInstance.get(`/api/offres/entreprise/${entrepriseId}`);
+      console.log('Response:', response); // Log response for debugging
       const formattedOffers = response.data.map(offer => ({
         ...offer,
         dateLancement: formatDate(offer.dateLancement),
         dateLimite: formatDate(offer.dateLimite),
       }));
+      console.log('Formatted Offers:', formattedOffers); // Log formattedOffers for debugging
       setOffers(formattedOffers);
     } catch (error) {
       console.error('Error fetching offers:', error);
@@ -79,8 +81,8 @@ export default function HROfferManagement() {
       const offreDTO = {
         objetOffre: data.objetOffre,
         posteOffre: data.posteOffre,
-        dateLancement: data.dateLancement,
-        dateLimite: data.dateLimite,
+        dateLancement: new Date(data.dateLancement).toISOString(),
+        dateLimite: new Date(data.dateLimite).toISOString(),
         descriptionOffre: data.descriptionOffre,
         dureeStage: data.dureeStage,
         modeOffre: data.modeOffre,
