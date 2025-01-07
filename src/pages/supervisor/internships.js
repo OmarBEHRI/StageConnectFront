@@ -99,8 +99,17 @@ export default function SupervisorInternships() {
   };
 
   const evaluationFormFields = [
-    { name: "performance", type: "select", placeholder: "Performance Rating",
-      options: ["Excellent", "Good", "Average", "Below Average"] },
+    {
+      name: "performance",
+      placeholder: "Performance Rating",
+      type: "select",
+      options: [
+        { label: "Excellent", value: "Excellent" },
+        { label: "Good", value: "Good" },
+        { label: "Average", value: "Average" },
+        { label: "Below Average", value: "Below Average" }
+      ],
+    },
     { name: "skills", placeholder: "Technical Skills Demonstrated" },
     { name: "comments", type: "textarea", placeholder: "Additional Comments" }
   ];
