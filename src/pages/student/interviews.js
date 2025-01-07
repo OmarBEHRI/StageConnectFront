@@ -65,7 +65,7 @@ export default function StudentInterviews() {
   };
 
   const handleJoinMeeting = (meetingLink) => {
-    window.location.href = meetingLink;
+    window.open(meetingLink, '_blank');
   };
 
   if (loading) {
