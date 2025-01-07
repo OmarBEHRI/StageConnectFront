@@ -85,7 +85,10 @@ export default function SupervisorInternships() {
       };
 
       await axiosInstance.post('/evaluations', evaluationDTO);
-      await axiosInstance.put(`/stages/${selectedInternshipId}/status`, { status: "évalué" });
+      const newStatus = "évalué";
+      await axiosInstance.put(`/stages/${selectedInternshipId}/status`, null, {
+        params: { newStatus },
+      });
 
       setIsEvaluationFormOpen(false);
       fetchInternships(); // Refresh the list
