@@ -25,7 +25,7 @@ export default function CompteEntrepriseProfile() {
       const compteEntrepriseResponse = await axiosInstance.get(`/compte-entreprises/${id}`);
       setCompteEntreprise(compteEntrepriseResponse.data);
 
-      const entrepriseResponse = await axiosInstance.get(`/api/entreprise/${compteEntrepriseResponse.data.entrepriseId}`);
+      const entrepriseResponse = await axiosInstance.get(`/api/entreprises/${compteEntrepriseResponse.data.entrepriseId}`);
       setEntreprise(entrepriseResponse.data);
     } catch (error) {
       console.error('Error fetching profile data:', error);
