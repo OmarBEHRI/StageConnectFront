@@ -1,7 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 
-const Card = ({ image, title, specifications, buttons }) => {
+const Card = ({ title, specifications, buttons }) => {
   const getButtonColor = (label) => {
     const lowerLabel = label.toLowerCase();
     if (['validate', 'accept', 'apply'].includes(lowerLabel)) return 'bg-green-500 hover:bg-green-600';
@@ -13,17 +12,7 @@ const Card = ({ image, title, specifications, buttons }) => {
   return (
     <div className="w-full aspect-w-5 aspect-h-4">
       <div className="bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col">
-        <div className="flex items-center mb-4">
-          <div className="relative w-16 h-16 flex-shrink-0">
-            <Image 
-              src={image} 
-              alt={title} 
-              fill
-              className="rounded-full object-cover"
-            />
-          </div>
-          <h2 className="text-xl font-semibold ml-4 line-clamp-2">{title}</h2>
-        </div>
+        <h2 className="text-xl font-semibold mb-4 line-clamp-2 text-center">{title}</h2>
         <div className="grid grid-cols-2 gap-4 mb-6 flex-grow">
           {specifications.map((spec, index) => (
             <div key={index} className="flex flex-col">
