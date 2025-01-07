@@ -33,7 +33,7 @@ export default function StudentInterviews() {
       const interviewsWithDetails = await Promise.all(
         response.data.map(async (entretien) => {
           const etudiantResponse = await axiosInstance.get(`/api/etudiants/${entretien.etudiantId}`);
-          const offreResponse = await axiosInstance.get(`/offres/${entretien.offreId}`);
+          const offreResponse = await axiosInstance.get(`/api/offres/${entretien.offreId}`);
 
           return {
             ...entretien,
