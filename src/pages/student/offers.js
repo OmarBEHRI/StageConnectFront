@@ -95,7 +95,7 @@ export default function StudentOffers() {
       formData.append('etudiantId', studentId);
       formData.append('Cv', cvFile);
       formData.append('LettreMotivation', lettreMotivationFile);
-      formData.append('etatPostulation','En attente')
+      formData.append('etatPostulation', 'En attente');
 
       // Send POST request to create postulation
       const response = await axiosInstance.post('/api/postulations/upload', formData, {
@@ -126,6 +126,13 @@ export default function StudentOffers() {
     } else if (type === 'lettreMotivation') {
       setLettreMotivationFile(file);
     }
+  };
+
+  // Handle closing the modal without submitting
+  const handleAnnuler = () => {
+    setIsModalOpen(false); // Close the modal
+    setCvFile(null); // Reset CV file
+    setLettreMotivationFile(null); // Reset Lettre de Motivation file
   };
 
   return (
@@ -186,12 +193,20 @@ export default function StudentOffers() {
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <button
-                onClick={handlePostuler}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              >
-                Soumettre
-              </button>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={handleAnnuler}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={handlePostuler}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Soumettre
+                </button>
+              </div>
             </div>
           </div>
         </Modal>
