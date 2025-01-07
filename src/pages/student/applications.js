@@ -42,7 +42,7 @@ export default function StudentApplications() {
           const offer = offerResponse.data;
           console.log(`Offer details for postulation ID ${postulation.id}:`, offer);
 
-          const entrepriseResponse = await axiosInstance.get(`/api/entreprise/${offer.entrepriseId}`);
+          const entrepriseResponse = await axiosInstance.get(`/api/entreprises/${offer.entrepriseId}`);
           const entreprise = entrepriseResponse.data;
           console.log(`Entreprise details for postulation ID ${postulation.id}:`, entreprise);
 
