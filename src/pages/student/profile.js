@@ -29,7 +29,7 @@ export default function EtudiantProfile() {
 
   const handleSave = async (updatedData) => {
     try {
-      console.log(`updateData : ${updatedData}`);
+      console.log(updatedData);
       console.log(`ID Etudiant :${etudiant.idEtu}`)
       const response = await axiosInstance.put(`/api/etudiants/${etudiant.idEtu}`, updatedData);
       setEtudiant(response.data);
