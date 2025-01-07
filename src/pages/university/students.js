@@ -172,7 +172,7 @@ export default function StudentsManagement() {
       name: 'filiereNom',
       placeholder: 'Filière',
       type: 'select',
-      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere })),
+      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere }))
     },
   ];
 
