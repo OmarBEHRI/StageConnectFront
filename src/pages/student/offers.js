@@ -18,6 +18,7 @@ export default function StudentOffers() {
   const [selectedOfferId, setSelectedOfferId] = useState(null); // State to store the selected offer ID
   const [cvFile, setCvFile] = useState(null); // State for CV file
   const [lettreMotivationFile, setLettreMotivationFile] = useState(null); // State for Lettre de Motivation file
+  const [successMessage, setSuccessMessage] = useState(null); // State for success message
 
   // Fetch student data, visible offers, and postulations
   useEffect(() => {
@@ -110,11 +111,13 @@ export default function StudentOffers() {
         setOffers(updatedOffers);
         setFilteredOffers(updatedOffers);
         setIsModalOpen(false); // Close the modal
-        alert('Postulation réussie!');
+        setSuccessMessage('Postulation réussie!'); // Set success message
+        setTimeout(() => setSuccessMessage(null), 5000); // Clear success message after 5 seconds
       }
     } catch (error) {
       console.error('Error submitting postulation:', error);
-      alert('Erreur lors de la postulation.');
+      setSuccessMessage('Erreur lors de la postulation.'); // Set error message
+      setTimeout(() => setSuccessMessage(null), 5000); // Clear error message after 5 seconds
     }
   };
 
@@ -142,6 +145,12 @@ export default function StudentOffers() {
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
+        {/* Display success or error message */}
+        {successMessage && (
+          <p className={`mb-4 ${successMessage.includes('Erreur') ? 'text-red-500' : 'text-green-500'}`}>
+            {successMessage}
+          </p>
+        )}
         {isLoading ? (
           <p>Loading...</p>
         ) : (
