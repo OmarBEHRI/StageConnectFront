@@ -29,7 +29,28 @@ export default function StudentInternships() {
       const response = await axiosInstance.get(`/stages/by-etudiant/${etudiantId}`);
       const stages = response.data;
 
-      const stagesWithEtudiant = await Promise.all(stages.map(async (stage) => {
+      const updatedStages = await Promise.all(stages.map(async (stage) => {
+        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau" && stage.statut !== "a valider") {
+          const currentDate = new Date();
+          const dateLimite = new Date(stage.dateLimite);
+          if (dateLimite > currentDate && stage.statut !== "en cours") {
+            stage.statut = "en cours";
+            const newStatus = "en cours";
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
+              params: { newStatus },
+            });
+          } else if (dateLimite < currentDate && stage.statut !== "terminé") {
+            stage.statut = "terminé";
+            const newStatus = "terminé";
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
+              params: { newStatus },
+            });
+          }
+        }
+        return stage;
+      }));
+
+      const stagesWithEtudiant = await Promise.all(updatedStages.map(async (stage) => {
         const etudiantResponse = await axiosInstance.get(`/api/etudiants/${stage.etudiantId}`);
         return { ...stage, etudiant: etudiantResponse.data };
       }));
@@ -59,7 +80,10 @@ export default function StudentInternships() {
       'nouveau': 'Valider',
       'a valider': 'Demande en attente',
       'valide': 'Validé',
-      'refuser': 'Refusé'
+      'refusé': 'Refusé',
+      'en cours': 'En Cours',
+      'terminé': "Terminé",
+      'évalué': 'Evalué',
     };
     return labels[status] || 'Postuler';
   };

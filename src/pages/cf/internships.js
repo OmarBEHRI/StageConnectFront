@@ -108,7 +108,7 @@ export default function CFInternships() {
               ]}
               buttons={[
                 { label: 'Accepter', onClick: () => updateStageStatus(stage.idStage, 'valide') },
-                { label: 'Refuser', onClick: () => updateStageStatus(stage.idStage, 'refuser') },
+                { label: 'Refuser', onClick: () => updateStageStatus(stage.idStage, 'refusé') },
               ]}
             />
           ))}

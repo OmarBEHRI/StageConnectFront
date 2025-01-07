@@ -40,13 +40,13 @@ export default function SupervisorInternships() {
         if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau" && stage.statut !== "a valider") {
           const currentDate = new Date();
           const dateLimite = new Date(stage.dateLimite);
-          if (dateLimite > currentDate) {
+          if (dateLimite > currentDate && stage.statut !== "en cours") {
             stage.statut = "en cours";
             const newStatus = "en cours";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
               params: { newStatus },
             });
-          } else {
+          } else if (dateLimite < currentDate && stage.statut !== "terminé") {
             stage.statut = "terminé";
             const newStatus = "terminé";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
@@ -57,7 +57,9 @@ export default function SupervisorInternships() {
         return stage;
       }));
 
-      setInternships(updatedStages);
+      const filteredUpdatedStages = updatedStages.filter(stage => stage.statut !== "nouveau" && stage.statut !== "a valider" && stage.statut !== "refusé");
+
+      setInternships(filteredUpdatedStages);
     } catch (error) {
       console.log(error);
       setError("Failed to fetch internships. Please try again later.");
