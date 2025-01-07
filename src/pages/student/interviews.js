@@ -32,10 +32,8 @@ export default function StudentInterviews() {
       console.log(response.data);
       const interviewsWithDetails = await Promise.all(
         response.data.map(async (entretien) => {
-          const [etudiantResponse, offreResponse] = await Promise.all([
-            axiosInstance.get(`/api/etudiants/${entretien.etudiantId}`),
-            axiosInstance.get(`/offres/${entretien.idOffre}`),
-          ]);
+          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${entretien.etudiantId}`);
+          const offreResponse = await axiosInstance.get(`/offres/${entretien.offreId}`);
 
           return {
             ...entretien,
