@@ -50,7 +50,7 @@ export default function CFDashboard() {
 
       // Fetch visible offers
       const visibleOffersResponse = await axiosInstance.get(`/compte-ecoles/${filiereId}/visible-offers`);
-      const visibleOffers = visibleOffersResponse.data.length;
+      const visibleOffers = visibleOffersResponse.data;
 
       // Update stats state
       setStats([
