@@ -156,25 +156,43 @@ const handleViewPdf = async (postulationId, type) => {
             ? `/api/postulations/download/${postulationId}/cv`
             : `/api/postulations/download/${postulationId}/lettre-motivation`;
 
+        console.log('Endpoint:', endpoint);
+        console.log('PostulationId:', postulationId);
+        console.log('Type:', type);
+
         // Fetch the PDF file from the backend
         const response = await fetch(endpoint);
+        console.log('Response:', response);
+
         if (!response.ok) {
+            console.error('Response not OK:', response.status, response.statusText);
             throw new Error('Failed to fetch PDF');
         }
 
         // Convert the response to a Blob
         const blob = await response.blob();
+        console.log('Blob:', blob);
 
         // Create a link element to trigger the download
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = type === 'cv' ? 'cv.pdf' : 'lettre_motivation.pdf'; // Set the file name
+        
+        console.log('Download link:', link.href);
+        console.log('Filename:', link.download);
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
+
+        console.log('Download completed successfully');
     } catch (error) {
         console.error('Error downloading PDF:', error);
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack
+        });
     }
 };
   if (!offer || !student) return <div>Loading...</div>;
@@ -201,7 +219,7 @@ const handleViewPdf = async (postulationId, type) => {
         <div>
           <a
             href="#"
-            onClick={() => handleViewPdf(postulation.Cv, 'Cv')}
+            onClick={() => handleViewPdf(postulation.id, 'cv')}
             className="text-blue-600 hover:underline"
           >
             Voir CV
@@ -209,7 +227,7 @@ const handleViewPdf = async (postulationId, type) => {
           <br />
           <a
             href="#"
-            onClick={() => handleViewPdf(postulation.LettreMotivation, 'Lettre de Motivation')}
+            onClick={() => handleViewPdf(postulation.id, 'ldm')}
             className="text-blue-600 hover:underline"
           >
             Voir Lettre de Motivation
