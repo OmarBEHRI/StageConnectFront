@@ -65,16 +65,16 @@ export default function HROfferManagement() {
   };
 
   const formFields = [
-    { name: "objetOffre", placeholder: "Title" },
-    { name: "posteOffre", placeholder: "Position" },
-    { name: "dateLancement", placeholder: "Start Date", type: "date" },
-    { name: "dateLimite", placeholder: "End Date", type: "date" },
-    { name: "descriptionOffre", placeholder: "Description" },
-    { name: "dureeStage", placeholder: "Duration" },
-    { name: "modeOffre", placeholder: "Mode" },
-    { name: "remuneration", placeholder: "Remuneration" },
-    { name: "typeStageOffre", placeholder: "Type" },
-    { name: "niveauRequisOffre", placeholder: "Required Level" },
+    { name: "objetOffre", placeholder: "Title", required: true },
+    { name: "posteOffre", placeholder: "Position", required: true },
+    { name: "dateLancement", placeholder: "Start Date", type: "date", required: true },
+    { name: "dateLimite", placeholder: "End Date", type: "date", required: true },
+    { name: "descriptionOffre", placeholder: "Description", required: true },
+    { name: "dureeStage", placeholder: "Duration", required: true },
+    { name: "modeOffre", placeholder: "Mode", required: true },
+    { name: "remuneration", placeholder: "Remuneration", required: true },
+    { name: "typeStageOffre", placeholder: "Type", required: true },
+    { name: "niveauRequisOffre", placeholder: "Required Level", required: true },
   ];
 
   const handleCreateOffer = async (data) => {

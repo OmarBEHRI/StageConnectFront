@@ -132,6 +132,10 @@ export default function CompteEcoleProfile() {
                 <p><strong>School Name:</strong> {ecole.nomEcole}</p>
                 <p><strong>City:</strong> {ecole.villeEcole}</p>
                 <p><strong>Address:</strong> {ecole.adresseEcole}</p>
+                <p><strong>Description:</strong> {ecole.description}</p>
+                <p><strong>Fixed Phone:</strong> {ecole.telephoneFix}</p>
+                <p><strong>School Type:</strong> {ecole.typeEcole}</p>
+                <p><strong>School Domain:</strong> {ecole.domaineEcole}</p>
                 <button
                   onClick={() => setIsEditingEcole(true)}
                   className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
@@ -191,6 +195,10 @@ export default function CompteEcoleProfile() {
               { name: 'nomEcole', placeholder: 'School Name', type: 'text' },
               { name: 'villeEcole', placeholder: 'City', type: 'text' },
               { name: 'adresseEcole', placeholder: 'Address', type: 'text' },
+              { name: 'description', placeholder: 'Description', type: 'text' },
+              { name: 'telephoneFix', placeholder: 'Fixed Phone', type: 'text' },
+              { name: 'typeEcole', placeholder: 'School Type', type: 'text' },
+              { name: 'domaineEcole', placeholder: 'School Domain', type: 'text' },
             ]}
             title="Edit Ecole"
             submitButtonText="Save"
@@ -204,8 +212,8 @@ export default function CompteEcoleProfile() {
             onClose={() => setIsAddingFiliere(false)}
             onSubmit={handleAddFiliere}
             fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text' },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text' },
+              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
+              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
             ]}
             title="Add Filiere"
             submitButtonText="Add"
@@ -218,8 +226,8 @@ export default function CompteEcoleProfile() {
             onClose={() => setEditingFiliere(null)}
             onSubmit={handleEditFiliere}
             fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text' },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text' },
+              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
+              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
             ]}
             title="Edit Filiere"
             submitButtonText="Save"

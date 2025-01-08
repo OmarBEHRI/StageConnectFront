@@ -119,11 +119,11 @@ export default function UniversityCoordinatorsManagement() {
   };
 
   const formFields = [
-    { name: 'nom', placeholder: 'Nom', type: 'text' },
-    { name: 'prenom', placeholder: 'Prénom', type: 'text' },
-    { name: 'email', placeholder: 'Email', type: 'email' },
-    { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
-    { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password' },
+    { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
+    { name: 'prenom', placeholder: 'Prénom', type: 'text', required: true },
+    { name: 'email', placeholder: 'Email', type: 'email', required: true },
+    { name: 'telephone', placeholder: 'Téléphone', type: 'text', required: true },
+    { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password', required: true },
   ];
 
   return (

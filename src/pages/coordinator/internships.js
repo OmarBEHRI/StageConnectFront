@@ -44,7 +44,28 @@ export default function CoordinatorInternships() {
       // Fetch stages by ecoleId
       console.log(`Ecole ID: ${ecoleId}`);
       const stagesResponse = await axiosInstance.get(`/stages/by-ecole/${ecoleId}`);
-      const filteredStages = stagesResponse.data.filter(
+      const updatedStages = await Promise.all(stagesResponse.map(async (stage) => {
+        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
+          const currentDate = new Date();
+          const dateFin = new Date(stage.dateFin);
+          const dateDebut = new Date(stage.dateDebut);
+          if (dateFin > currentDate && dateDebut < currentDate && stage.statut !== "en cours") {
+            stage.statut = "en cours";
+            const newStatus = "en cours";
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
+              params: { newStatus },
+            });
+          } else if (dateFin < currentDate && stage.statut !== "terminé") {
+            stage.statut = "terminé";
+            const newStatus = "terminé";
+            await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
+              params: { newStatus },
+            });
+          }
+        }
+        return stage;
+      }));
+      const filteredStages = updatedStages.data.filter(
         (stage) => stage.statut !== "nouveau" && stage.statut !== "a valider"
       );
 
@@ -71,11 +92,6 @@ export default function CoordinatorInternships() {
   const handleSearch = (query) => {
     console.log('Searching for:', query);
     // Implement search logic here
-  };
-
-  const handleValidate = (internshipId) => {
-    console.log('Validating internship:', internshipId);
-    // Implement validation logic here
   };
 
   // Format date to human-readable format

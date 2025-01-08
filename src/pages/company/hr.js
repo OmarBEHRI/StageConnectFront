@@ -51,10 +51,10 @@ export default function ComHRManagement() {
   };
 
   const formFields = [
-    { name: "firstname", placeholder: "First Name" },
-    { name: "lastname", placeholder: "Last Name" },
-    { name: "username", placeholder: "Username" },
-    { name: "password", type: "password", placeholder: "Password" },
+    { name: "firstname", placeholder: "First Name", required: true },
+    { name: "lastname", placeholder: "Last Name", required: true },
+    { name: "username", placeholder: "Username", required: true },
+    { name: "password", type: "password", placeholder: "Password", required: true },
   ];
 
   const handleCreateAccount = async (data) => {

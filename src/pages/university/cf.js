@@ -158,16 +158,17 @@ export default function UniversityCFManagement() {
   };
 
   const formFields = [
-    { name: 'nom', placeholder: 'Nom', type: 'text' },
-    { name: 'prenom', placeholder: 'Prénom', type: 'text' },
-    { name: 'email', placeholder: 'Email', type: 'email' },
+    { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
+    { name: 'prenom', placeholder: 'Prénom', type: 'text', required: true },
+    { name: 'email', placeholder: 'Email', type: 'email', required: true },
     { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
-    { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password' },
+    { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password', required: true },
     {
       name: 'filiere',
       placeholder: 'Filière',
       type: 'select',
       options: filieres.map(filiere => filiere.nomFiliere), // Populate options with filiere names
+      required: true,
     },
   ];
 

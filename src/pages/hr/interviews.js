@@ -91,14 +91,14 @@ export default function HRInterviews() {
   };
 
   const internshipFormFields = [
-    { name: "titre", placeholder: "Title" },
-    { name: "description", placeholder: "Description" },
-    { name: "dateDebut", placeholder: "Start Date", type: "date" },
-    { name: "dateFin", placeholder: "End Date", type: "date" },
-    { name: "duree", placeholder: "Duration" },
-    { name: "localisation", placeholder: "Location" },
-    { name: "montantRemuneration", placeholder: "Remuneration", type: "number" },
-    { name: "type", placeholder: "Type" },
+    { name: "titre", placeholder: "Title", required: true },
+    { name: "description", placeholder: "Description", required: true },
+    { name: "dateDebut", placeholder: "Start Date", type: "date", required: true },
+    { name: "dateFin", placeholder: "End Date", type: "date", required: true },
+    { name: "duree", placeholder: "Duration", required: true },
+    { name: "localisation", placeholder: "Location", required: true },
+    { name: "montantRemuneration", placeholder: "Remuneration", type: "number", required: true },
+    { name: "type", placeholder: "Type", required: true },
     {
       name: "encadrant",
       placeholder: "Supervisor",
@@ -107,6 +107,7 @@ export default function HRInterviews() {
         label: `${encadrant.nom} ${encadrant.prenom}`,
         value: `${encadrant.nom} ${encadrant.prenom}`,
       })),
+      required: true,
     },
   ];
 

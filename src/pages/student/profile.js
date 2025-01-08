@@ -74,11 +74,11 @@ export default function EtudiantProfile() {
             onClose={() => setIsEditing(false)}
             onSubmit={handleSave}
             fields={[
-              { name: 'nom', placeholder: 'Nom', type: 'text' },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text' },
-              { name: 'email', placeholder: 'Email', type: 'email' },
+              { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
+              { name: 'prenom', placeholder: 'Prenom', type: 'text', required: true },
+              { name: 'email', placeholder: 'Email', type: 'email', required: true },
               { name: 'tel', placeholder: 'Phone', type: 'text' },
-              { name: 'motDePasse', placeholder: 'Mot De Passe', type: 'password' },
+              { name: 'motDePasse', placeholder: 'Mot De Passe', type: 'password', required: true },
             ]}
             title="Edit Student Profile"
             submitButtonText="Save"

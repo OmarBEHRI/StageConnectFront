@@ -36,17 +36,18 @@ export default function SupervisorInternships() {
       const stagesResponse = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
       const filteredStages = stagesResponse.data.filter(stage => stage.encadrantId == idEncadrant);
 
-      const updatedStages = await Promise.all(filteredStages.map(async (stage) => {
-        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau" && stage.statut !== "a valider") {
+      const updatedStages = await Promise.all(stages.map(async (stage) => {
+        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
           const currentDate = new Date();
-          const dateLimite = new Date(stage.dateLimite);
-          if (dateLimite > currentDate && stage.statut !== "en cours") {
+          const dateFin = new Date(stage.dateFin);
+          const dateDebut = new Date(stage.dateDebut);
+          if (dateFin > currentDate && dateDebut < currentDate && stage.statut !== "en cours") {
             stage.statut = "en cours";
             const newStatus = "en cours";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
               params: { newStatus },
             });
-          } else if (dateLimite < currentDate && stage.statut !== "terminé") {
+          } else if (dateFin < currentDate && stage.statut !== "terminé") {
             stage.statut = "terminé";
             const newStatus = "terminé";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
@@ -111,9 +112,10 @@ export default function SupervisorInternships() {
         { label: "Average", value: "Average" },
         { label: "Below Average", value: "Below Average" }
       ],
+      required: true,
     },
-    { name: "skills", placeholder: "Technical Skills Demonstrated" },
-    { name: "comments", type: "textarea", placeholder: "Additional Comments" }
+    { name: "skills", placeholder: "Technical Skills Demonstrated", required: true },
+    { name: "comments", type: "textarea", placeholder: "Additional Comments", required: true }
   ];
 
   return (

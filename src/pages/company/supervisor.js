@@ -55,10 +55,10 @@ export default function ComSupervisorManagement() {
   };
 
   const formFields = [
-    { name: "nom", placeholder: "First Name" },
-    { name: "prenom", placeholder: "Last Name" },
-    { name: "email", placeholder: "Email" },
-    { name: "motDePasse", type: "password", placeholder: "Password" },
+    { name: "nom", placeholder: "First Name", required: true },
+    { name: "prenom", placeholder: "Last Name", required: true },
+    { name: "email", placeholder: "Email", required: true },
+    { name: "motDePasse", type: "password", placeholder: "Password", required: true },
   ];
 
   const handleCreateAccount = async (data) => {

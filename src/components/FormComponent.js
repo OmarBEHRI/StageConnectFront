@@ -50,7 +50,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
               {fields.map((field) => (
                 <div key={field.name}>
                   <label className="block text-gray-700 text-sm font-medium mb-2">
-                    {field.placeholder}
+                    {field.placeholder} {field.required && <span className="text-red-500">*</span>}
                   </label>
                   {field.type === 'select' ? (
                     <select
@@ -58,7 +58,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
                       value={formData[field.name] || ''}
                       onChange={handleChange}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required={field.required || false} // Add this line
+                      required={field.required || false}
                     >
                       <option value="">Select {field.placeholder}</option>
                       {field.options.map((option) => (
@@ -74,7 +74,7 @@ export default function FormComponent({ isOpen, onClose, onSubmit, fields, title
                       value={formData[field.name] || ''}
                       onChange={handleChange}
                       placeholder={field.placeholder}
-                      required={field.required || false} // Add this line
+                      required={field.required || false}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   )}

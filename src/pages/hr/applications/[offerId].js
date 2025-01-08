@@ -134,11 +134,11 @@ export default function HRApplicationManagement() {
           onClose={() => setIsInterviewFormOpen(false)}
           onSubmit={handleCreateInterview}
           fields={[
-            { name: "date", type: "date", placeholder: "Interview Date" },
-            { name: "time", type: "time", placeholder: "Interview Time" },
-            { name: "location", placeholder: "Interview Location" },
-            { name: "duration", placeholder: "Duration" },
-            { name: "link", placeholder: "Meeting Link" },
+            { name: "date", type: "date", placeholder: "Interview Date", required: true },
+            { name: "time", type: "time", placeholder: "Interview Time", required: true },
+            { name: "location", placeholder: "Interview Location", required: true },
+            { name: "duration", placeholder: "Duration", required: true },
+            { name: "link", placeholder: "Meeting Link", required: true },
           ]}
           title="Schedule Interview"
           submitButtonText="Creer"

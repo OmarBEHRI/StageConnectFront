@@ -191,6 +191,7 @@ export default function StudentOffers() {
                   accept=".pdf"
                   onChange={(e) => handleFileChange(e, 'cv')}
                   className="w-full p-2 border rounded"
+                  required
                 />
               </div>
               <div>
@@ -200,6 +201,7 @@ export default function StudentOffers() {
                   accept=".pdf"
                   onChange={(e) => handleFileChange(e, 'lettreMotivation')}
                   className="w-full p-2 border rounded"
+                  required
                 />
               </div>
               <div className="flex justify-end space-x-4">

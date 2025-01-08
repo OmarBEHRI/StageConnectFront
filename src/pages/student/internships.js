@@ -30,16 +30,17 @@ export default function StudentInternships() {
       const stages = response.data;
 
       const updatedStages = await Promise.all(stages.map(async (stage) => {
-        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau" && stage.statut !== "a valider") {
+        if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
           const currentDate = new Date();
-          const dateLimite = new Date(stage.dateLimite);
-          if (dateLimite > currentDate && stage.statut !== "en cours") {
+          const dateFin = new Date(stage.dateFin);
+          const dateDebut = new Date(stage.dateDebut);
+          if (dateFin > currentDate && dateDebut < currentDate && stage.statut !== "en cours") {
             stage.statut = "en cours";
             const newStatus = "en cours";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {
               params: { newStatus },
             });
-          } else if (dateLimite < currentDate && stage.statut !== "terminé") {
+          } else if (dateFin < currentDate && stage.statut !== "terminé") {
             stage.statut = "terminé";
             const newStatus = "terminé";
             await axiosInstance.put(`/stages/${stage.idStage}/status`, null, {

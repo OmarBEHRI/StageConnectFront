@@ -103,10 +103,11 @@ export default function CompteEntrepriseProfile() {
             onClose={() => setIsEditingCompteEntreprise(false)}
             onSubmit={handleSaveCompteEntreprise}
             fields={[
-              { name: 'nom', placeholder: 'Nom', type: 'text' },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text' },
-              { name: 'email', placeholder: 'Email', type: 'email' },
+              { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
+              { name: 'prenom', placeholder: 'Prenom', type: 'text', required: true },
+              { name: 'email', placeholder: 'Email', type: 'email', required: true },
               { name: 'telephone', placeholder: 'Phone', type: 'text' },
+              { name: 'motDePasse', placeholder: 'Password', type: 'password', required: true },
             ]}
             title="Edit Compte Entreprise"
             submitButtonText="Save"
@@ -120,9 +121,9 @@ export default function CompteEntrepriseProfile() {
             onClose={() => setIsEditingEntreprise(false)}
             onSubmit={handleSaveEntreprise}
             fields={[
-              { name: 'nomEntreprise', placeholder: 'Company Name', type: 'text' },
-              { name: 'villeEntreprise', placeholder: 'City', type: 'text' },
-              { name: 'adresseEntreprise', placeholder: 'Address', type: 'text' },
+              { name: 'nomEntreprise', placeholder: 'Company Name', type: 'text', required: true },
+              { name: 'villeEntreprise', placeholder: 'City', type: 'text', required: true },
+              { name: 'adresseEntreprise', placeholder: 'Address', type: 'text', required: true },
             ]}
             title="Edit Entreprise"
             submitButtonText="Save"
