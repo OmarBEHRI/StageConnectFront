@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper } from '@mui/material';
+import { Table as TableMUI, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper } from '@mui/material';
 
 export default function Table({ columns, columnKeys, items, buttons, actions, idParam }) {
   const [sortConfig, setSortConfig] = useState({
@@ -78,7 +78,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
   return (
     <div className="overflow-x-auto">
       <TableContainer component={Paper}>
-        <Table className="min-w-full bg-white">
+        <TableMUI className="min-w-full bg-white">
           <TableHead>
             <TableRow>
               {columns.map((column, index) => (
@@ -136,7 +136,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </TableMUI>
       </TableContainer>
       <TablePagination
         component="div"
