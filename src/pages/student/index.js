@@ -38,7 +38,9 @@ export default function StudentDashboard() {
       const ecoleId = studentResponse.data.ecoleId;
 
       // Fetch available offers (placeholder, replace with actual endpoint if available)
-      const visibleOffers = 150; // Replace with actual API call if needed
+      const openOffersRes = await axiosInstance.get('/api/admins/open-offers/count');
+      const visibleOffers  = openOffersRes.data;
+     // Replace with actual API call if needed
 
       // Fetch my applications
       const applicationsResponse = await axiosInstance.get(`/api/etudiants/${idEtu}/postulations/count`);
