@@ -199,12 +199,30 @@ export default function StudentsManagement() {
   const handleBulkCreateStudents = async (studentsData) => {
     try {
       const responses = await Promise.all(
-        studentsData.map(studentData => {
-          const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+        studentsData.map(async (studentData) => {
+          // Check if the filiere exists
+          let selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+
+          // If the filiere does not exist, create it
           if (!selectedFiliere) {
-            throw new Error(`Filière non trouvée pour l'étudiant: ${studentData.nom} ${studentData.prenom}`);
+            try {
+              const newFiliereResponse = await axiosInstance.post('/api/filieres', {
+                nomFiliere: studentData.filiereNom,
+                ecoleId: ecoleId, // Use the ecoleId from the state
+              });
+
+              // Add the new filiere to the filieres list
+              setFilieres((prevFilieres) => [...prevFilieres, newFiliereResponse.data]);
+
+              // Use the newly created filiere
+              selectedFiliere = newFiliereResponse.data;
+            } catch (error) {
+              console.error('Error creating filiere:', error);
+              throw new Error(`Erreur lors de la création de la filière: ${studentData.filiereNom}`);
+            }
           }
 
+          // Create the student with the selected filiere
           return axiosInstance.post('/api/etudiants', {
             nom: studentData.nom,
             prenom: studentData.prenom,
@@ -219,9 +237,10 @@ export default function StudentsManagement() {
         })
       );
 
+      // Add the new students to the students list
       const newStudents = responses.map(response => response.data);
-      setStudents([...students, ...newStudents]);
-      setFilteredStudents([...filteredStudents, ...newStudents]);
+      setStudents((prevStudents) => [...prevStudents, ...newStudents]);
+      setFilteredStudents((prevFilteredStudents) => [...prevFilteredStudents, ...newStudents]);
       setError(null);
     } catch (error) {
       console.error('Error creating students:', error);
