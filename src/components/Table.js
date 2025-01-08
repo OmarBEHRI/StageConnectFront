@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper } from '@mui/material';
 
 export default function Table({ columns, columnKeys, items, buttons, actions, idParam }) {
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'ascending'
   });
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Helper function to determine if a value is a number
   const isNumber = (value) => {
@@ -60,67 +64,88 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
     return '';
   };
 
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white">
-        <thead>
-          <tr>
-            {columns.map((column, index) => (
-              <th
-                key={column}
-                onClick={() => requestSort(column)}
-                className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
-              >
-                {column}{getSortDirection(column)}
-              </th>
-            ))}
-            {buttons && buttons.length > 0 && (
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Actions
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedItems.map((item, itemIndex) => (
-            <tr 
-              key={itemIndex}
-              className="hover:bg-gray-100"
-            >
-              {columns.map((column, colIndex) => {
-                const key = columnKeys[colIndex]; // Get the property key for the column
-                return (
-                  <td 
-                    key={column}
-                    className="px-6 py-4 whitespace-nowrap text-center"
-                  >
-                    {item[key]}
-                  </td>
-                );
-              })}
+      <TableContainer component={Paper}>
+        <Table className="min-w-full bg-white">
+          <TableHead>
+            <TableRow>
+              {columns.map((column, index) => (
+                <TableCell
+                  key={column}
+                  onClick={() => requestSort(column)}
+                  className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
+                >
+                  {column}{getSortDirection(column)}
+                </TableCell>
+              ))}
               {buttons && buttons.length > 0 && (
-                <td className="px-6 py-4 whitespace-nowrap text-center">
-                  {buttons.map((button, buttonIndex) => (
-                    <button
-                      key={button}
-                      onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
-                      className={`${
-                        button.toLowerCase() === 'delete' 
-                          ? 'text-red-600 hover:text-red-800' 
-                          : 'text-blue-600 hover:text-blue-800'
-                      } ${
-                        buttonIndex < buttons.length - 1 ? 'mr-4' : ''
-                      } normal-case`}
-                    >
-                      {button}
-                    </button>
-                  ))}
-                </td>
+                <TableCell className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Actions
+                </TableCell>
               )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedItems.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, itemIndex) => (
+              <TableRow 
+                key={itemIndex}
+                className="hover:bg-gray-100"
+              >
+                {columns.map((column, colIndex) => {
+                  const key = columnKeys[colIndex]; // Get the property key for the column
+                  return (
+                    <TableCell 
+                      key={column}
+                      className="px-6 py-4 whitespace-nowrap text-center"
+                    >
+                      {item[key]}
+                    </TableCell>
+                  );
+                })}
+                {buttons && buttons.length > 0 && (
+                  <TableCell className="px-6 py-4 whitespace-nowrap text-center">
+                    {buttons.map((button, buttonIndex) => (
+                      <button
+                        key={button}
+                        onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
+                        className={`${
+                          button.toLowerCase() === 'delete' 
+                            ? 'text-red-600 hover:text-red-800' 
+                            : 'text-blue-600 hover:text-blue-800'
+                        } ${
+                          buttonIndex < buttons.length - 1 ? 'mr-4' : ''
+                        } normal-case`}
+                      >
+                        {button}
+                      </button>
+                    ))}
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        component="div"
+        count={sortedItems.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 }

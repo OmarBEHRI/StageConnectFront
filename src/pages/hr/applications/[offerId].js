@@ -141,6 +141,7 @@ export default function HRApplicationManagement() {
             { name: "link", placeholder: "Meeting Link" },
           ]}
           title="Schedule Interview"
+          submitButtonText="Creer"
         />
       </div>
     </Layout>
