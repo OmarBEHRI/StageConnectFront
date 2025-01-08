@@ -58,7 +58,7 @@ export default function UniversityDashboard() {
       const offersByMajor = {};
       for (const filiere of filieres) {
         const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
-        offersByMajor[filiere.nomFiliere] = offersResponse.data.length;
+        offersByMajor[filiere.nomFiliere] = offersResponse.data;
       }
 
       // Update stats state
