@@ -149,30 +149,34 @@ function PostulationCard({ postulation, handleScheduleInterview, handleRefuse })
       .catch(error => console.error('Error fetching student:', error));
   }, [postulation.offreId, postulation.etudiantId]);
 
-  const handleViewPdf = (data, fileName = 'document.pdf') => {
-      if (!data) return;
-      
-      // Create a Blob from the PDF data
-      const blob = new Blob([data], { type: 'application/pdf' });
-      
-      // Create a link element
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName; // Set the file name for the download
-      
-      // Append the link to the body (required for Firefox)
-      document.body.appendChild(link);
-      
-      // Trigger the download
-      link.click();
-      
-      // Remove the link from the document
-      document.body.removeChild(link);
-      
-      // Revoke the Blob URL to free up memory
-      URL.revokeObjectURL(link.href);
-  };
+const handleViewPdf = async (postulationId, type) => {
+    try {
+        // Determine the endpoint based on the type (CV or Lettre de Motivation)
+        const endpoint = type === 'cv' 
+            ? `/api/postulations/download/${postulationId}/cv`
+            : `/api/postulations/download/${postulationId}/lettre-motivation`;
 
+        // Fetch the PDF file from the backend
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+            throw new Error('Failed to fetch PDF');
+        }
+
+        // Convert the response to a Blob
+        const blob = await response.blob();
+
+        // Create a link element to trigger the download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = type === 'cv' ? 'cv.pdf' : 'lettre_motivation.pdf'; // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    } catch (error) {
+        console.error('Error downloading PDF:', error);
+    }
+};
   if (!offer || !student) return <div>Loading...</div>;
 
   return (
