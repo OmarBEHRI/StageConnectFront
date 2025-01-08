@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Card = ({ title, specifications, buttons }) => {
+const Card = ({ title, specifications, buttons, extraContent }) => {
   const getButtonColor = (label) => {
     const lowerLabel = label.toLowerCase();
     if (['validate', 'accept', 'apply'].includes(lowerLabel)) return 'bg-green-500 hover:bg-green-600';
@@ -27,6 +27,11 @@ const Card = ({ title, specifications, buttons }) => {
             </div>
           ))}
         </div>
+        {extraContent && (
+          <div className="mb-6">
+            {extraContent}
+          </div>
+        )}
         {buttons && buttons.length > 0 && (
           <div className="flex justify-center space-x-4 mt-auto">
             {buttons.map((button, index) => {

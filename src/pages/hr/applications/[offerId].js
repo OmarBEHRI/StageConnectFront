@@ -107,24 +107,11 @@ export default function HRApplicationManagement() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredPostulations.map((postulation) => (
-            <Card
+            <PostulationCard
               key={postulation.id}
-              title={`Postulation #${postulation.id}`}
-              specifications={[
-                { label: "Etudiant ID", value: postulation.etudiantId },
-                { label: "Offre ID", value: postulation.offreId },
-                { label: "État", value: postulation.etatPostulation },
-              ]}
-              buttons={[
-                {
-                  label: "Accepter",
-                  onClick: () => handleScheduleInterview(postulation.id),
-                },
-                {
-                  label: "Refuser",
-                  onClick: () => handleRefuse(postulation.id),
-                },
-              ]}
+              postulation={postulation}
+              handleScheduleInterview={handleScheduleInterview}
+              handleRefuse={handleRefuse}
             />
           ))}
         </div>
@@ -145,5 +132,69 @@ export default function HRApplicationManagement() {
         />
       </div>
     </Layout>
+  );
+}
+
+function PostulationCard({ postulation, handleScheduleInterview, handleRefuse }) {
+  const [offer, setOffer] = useState(null);
+  const [student, setStudent] = useState(null);
+
+  useEffect(() => {
+    axiosInstance.get(`/api/offres/${postulation.offreId}`)
+      .then(response => setOffer(response.data))
+      .catch(error => console.error('Error fetching offer:', error));
+
+    axiosInstance.get(`/api/etudiants/${postulation.etudiantId}`)
+      .then(response => setStudent(response.data))
+      .catch(error => console.error('Error fetching student:', error));
+  }, [postulation.offreId, postulation.etudiantId]);
+
+  const handleViewPdf = (data, type) => {
+    if (!data) return;
+    const blob = new Blob([data], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  };
+
+  if (!offer || !student) return <div>Loading...</div>;
+
+  return (
+    <Card
+      title={`Postulation #${postulation.id}`}
+      specifications={[
+        { label: "Etudiant", value: `${student.nom} ${student.prenom}` },
+        { label: "Offre", value: offer.objetOffre },
+        { label: "État", value: postulation.etatPostulation },
+      ]}
+      buttons={[
+        {
+          label: "Accepter",
+          onClick: () => handleScheduleInterview(postulation.id),
+        },
+        {
+          label: "Refuser",
+          onClick: () => handleRefuse(postulation.id),
+        },
+      ]}
+      extraContent={
+        <div>
+          <a
+            href="#"
+            onClick={() => handleViewPdf(postulation.Cv, 'Cv')}
+            className="text-blue-600 hover:underline"
+          >
+            Voir CV
+          </a>
+          <br />
+          <a
+            href="#"
+            onClick={() => handleViewPdf(postulation.LettreMotivation, 'Lettre de Motivation')}
+            className="text-blue-600 hover:underline"
+          >
+            Voir Lettre de Motivation
+          </a>
+        </div>
+      }
+    />
   );
 }
