@@ -18,7 +18,7 @@ export default function StudentsManagement() {
   const [filieres, setFilieres] = useState([]);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
-  const [showFileUploadMessage, setShowFileUploadMessage] = useState(false); // State to control the visibility of the message
+  const [showFileUploadMessage, setShowFileUploadMessage] = useState(true); // Show the message from the beginning
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -165,7 +165,6 @@ export default function StudentsManagement() {
     const file = event.target.files[0];
     if (file) {
       setFile(file);
-      setShowFileUploadMessage(true); // Show the message when a file is uploaded
       processFile(file);
     }
   };
@@ -256,13 +255,16 @@ export default function StudentsManagement() {
       <h1 className="text-3xl font-bold mb-12 mt-12">Gestion des Étudiants</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />
-        <div>
-          <input
-            type="file"
-            accept=".xlsx, .csv"
-            onChange={handleFileUpload}
-            className="mr-4"
-          />
+        <div className="flex gap-4">
+          <label className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer">
+            Choisir un fichier Excel
+            <input
+              type="file"
+              accept=".xlsx, .csv"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </label>
           <button
             onClick={() => {
               setFormData({});
