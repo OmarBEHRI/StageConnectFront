@@ -34,11 +34,15 @@ export default function CoordinatorInternships() {
         return;
       }
 
+
       // Fetch CoordinateurDeStage by ID
       const coordinateurResponse = await axiosInstance.get(`/api/coordinateurs/${coordinateurId}`);
+      console.log("Coordinateur Object: ");
+      console.log(coordinateurResponse);
       const ecoleId = coordinateurResponse.data.ecoleId;
 
       // Fetch stages by ecoleId
+      console.log(`Ecole ID: ${ecoleId}`);
       const stagesResponse = await axiosInstance.get(`/stages/by-ecole/${ecoleId}`);
       const filteredStages = stagesResponse.data.filter(
         (stage) => stage.statut !== "nouveau" && stage.statut !== "a valider"
