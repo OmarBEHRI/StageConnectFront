@@ -85,13 +85,13 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                 <TableCell
                   key={column}
                   onClick={() => requestSort(column)}
-                  className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
+                  className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none text-center"
                 >
                   {column}{getSortDirection(column)}
                 </TableCell>
               ))}
               {buttons && buttons.length > 0 && (
-                <TableCell className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <TableCell className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
                   Actions
                 </TableCell>
               )}
