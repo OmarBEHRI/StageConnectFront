@@ -28,22 +28,23 @@ export default function CompanyDashboard() {
         const entrepriseId = compteResponse.data.entrepriseId;
 
         // Fetch statistics
-        const endpoints = [
-          { title: "Open Offers", endpoint: `/compte-entreprises/${entrepriseId}/open-offers` },
-          { title: "Total Offers", endpoint: `/compte-entreprises/${entrepriseId}/total-offers` },
-          { title: "Total Interviews", endpoint: `/compte-entreprises/${entrepriseId}/total-interviews` },
-          { title: "Total HR", endpoint: `/compte-entreprises/${entrepriseId}/rh` },
-          { title: "Total Supervisors", endpoint: `/compte-entreprises/${entrepriseId}/supervisors` },
-          { title: "Total Confirmed Internships", endpoint: `/compte-entreprises/${entrepriseId}/total-internships-confirmed` },
-          { title: "Total Internships Offers", endpoint: `/compte-entreprises/${entrepriseId}/total-internships` },
-        ];
+        const openOffersRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/open-offers`);
+        const totalOffersRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-offers`);
+        const totalInterviewsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-interviews`);
+        const totalHRRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/rh`);
+        const totalSupervisorsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/supervisors`);
+        const confirmedInternshipsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships-confirmed`);
+        const totalInternshipsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships`);
 
-        const statsData = await Promise.all(
-          endpoints.map(async (stat) => {
-            const response = await axiosInstance.get(stat.endpoint);
-            return { title: stat.title, value: response.data };
-          })
-        );
+        const statsData = [
+          { title: "Open Offers", value: openOffersRes.data },
+          { title: "Total Offers", value: totalOffersRes.data },
+          { title: "Total Interviews", value: totalInterviewsRes.data },
+          { title: "Total HR", value: totalHRRes.data },
+          { title: "Total Supervisors", value: totalSupervisorsRes.data },
+          { title: "Total Confirmed Internships", value: confirmedInternshipsRes.data },
+          { title: "Total Internships Offers", value: totalInternshipsRes.data }
+        ];
 
         setStats(statsData);
         setLoading(false);
