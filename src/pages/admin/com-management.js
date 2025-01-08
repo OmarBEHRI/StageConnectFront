@@ -144,12 +144,12 @@ export default function CompanyAccountsManagement() {
   }
 
   const formFields = [
-    { name: 'name', placeholder: 'Nom de l\'entreprise' },
-    { name: 'nom', placeholder: 'Nom' },
-    { name: 'prenom', placeholder: 'Prénom' },
+    { name: 'name', placeholder: 'Nom de l\'entreprise', required: true },
+    { name: 'nom', placeholder: 'Nom', required: true },
+    { name: 'prenom', placeholder: 'Prénom', required: true },
     { name: 'telephone', placeholder: 'Téléphone' },
-    { name: 'email', placeholder: 'Email' },
-    { name: 'motDePasse', type: 'password', placeholder: 'Mot de passe' }
+    { name: 'email', placeholder: 'Email', required: true },
+    { name: 'motDePasse', type: 'password', placeholder: 'Mot de passe', required: true }
   ]
 
   return (

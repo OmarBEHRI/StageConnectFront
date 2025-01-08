@@ -152,14 +152,14 @@ export default function UniversityAccountsManagement() {
     }
   }
 
-  const formFields = [
-    { name: 'name', placeholder: 'Nom de l\'université' },
-    { name: 'nom', placeholder: 'Nom' },
-    { name: 'prenom', placeholder: 'Prénom' },
-    { name: 'telephone', placeholder: 'Téléphone' },
-    { name: 'email', placeholder: 'Email' },
-    { name: 'password', type: 'password', placeholder: 'Mot de passe' }
-  ]
+const formFields = [
+  { name: 'name', placeholder: 'Nom de l\'université', required: true },
+  { name: 'nom', placeholder: 'Nom', required: true },
+  { name: 'prenom', placeholder: 'Prénom', required: true },
+  { name: 'telephone', placeholder: 'Téléphone' },
+  { name: 'email', placeholder: 'Email', required: true },
+  { name: 'password', type: 'password', placeholder: 'Mot de passe', required: true }
+]
 
   return (
     <Layout role="admin">
