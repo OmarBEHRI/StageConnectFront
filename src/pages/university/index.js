@@ -32,7 +32,7 @@ export default function UniversityDashboard() {
       const ecoleId = universityResponse.data.ecoleId;
 
       // Fetch total students
-      const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${idEcole}/students`);
+      const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students`);
       const totalStudents = totalStudentsResponse.data;
 
       // Fetch total offers
