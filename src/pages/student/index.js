@@ -49,7 +49,7 @@ export default function StudentDashboard() {
       const internships = internshipsResponse.data;
 
       // Fetch upcoming interviews
-      const interviewsResponse = await axiosInstance.get(`/student/${idEtu}/count-interviews`);
+      const interviewsResponse = await axiosInstance.get(`/api/etudiants/student/${idEtu}/count-interviews`);
       const interviews = interviewsResponse.data;
 
       // Fetch university students
