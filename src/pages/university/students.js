@@ -5,6 +5,7 @@ import Table from '@/components/Table';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import * as XLSX from 'xlsx';
 
 export default function StudentsManagement() {
   const router = useRouter();
@@ -14,8 +15,10 @@ export default function StudentsManagement() {
   const [formData, setFormData] = useState({});
   const [editStudentId, setEditStudentId] = useState(null);
   const [ecoleId, setEcoleId] = useState(null);
-  const [filieres, setFilieres] = useState([]); // State to store filieres
-  const [error, setError] = useState(null); // State to manage error messages
+  const [filieres, setFilieres] = useState([]);
+  const [error, setError] = useState(null);
+  const [file, setFile] = useState(null);
+  const [showFileUploadMessage, setShowFileUploadMessage] = useState(false); // State to control the visibility of the message
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -30,10 +33,8 @@ export default function StudentsManagement() {
     }
   }, [router]);
 
-  // Fetch the CompteEcole ID from local storage
   const compteEcoleId = localStorage.getItem('id');
 
-  // Fetch the Ecole ID and Etudiant accounts on component mount
   useEffect(() => {
     if (compteEcoleId) {
       fetchEcoleId();
@@ -45,8 +46,8 @@ export default function StudentsManagement() {
       const response = await axiosInstance.get(`/compte-ecoles/${compteEcoleId}`);
       const ecoleId = response.data.ecoleId;
       setEcoleId(ecoleId);
-      fetchStudentsByEcoleId(ecoleId); // Fetch students for the ecole
-      fetchFilieresByEcoleId(ecoleId); // Fetch filieres for the ecole
+      fetchStudentsByEcoleId(ecoleId);
+      fetchFilieresByEcoleId(ecoleId);
     } catch (error) {
       console.error('Error fetching Ecole ID:', error);
       setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
@@ -109,7 +110,7 @@ export default function StudentsManagement() {
       setStudents([...students, response.data]);
       setFilteredStudents([...filteredStudents, response.data]);
       setIsModalOpen(false);
-      setError(null); // Clear any previous errors
+      setError(null);
     } catch (error) {
       console.error('Error creating student:', error);
       setError('Erreur lors de la création de l\'étudiant. Veuillez réessayer.');
@@ -124,7 +125,7 @@ export default function StudentsManagement() {
     });
     setEditStudentId(id);
     setIsModalOpen(true);
-    setError(null); // Clear any previous errors
+    setError(null);
   };
 
   const handleSaveEdit = async (studentData) => {
@@ -153,10 +154,79 @@ export default function StudentsManagement() {
       setFilteredStudents(updatedStudents);
       setIsModalOpen(false);
       setEditStudentId(null);
-      setError(null); // Clear any previous errors
+      setError(null);
     } catch (error) {
       console.error('Error updating student:', error);
       setError('Erreur lors de la mise à jour de l\'étudiant. Veuillez réessayer.');
+    }
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFile(file);
+      setShowFileUploadMessage(true); // Show the message when a file is uploaded
+      processFile(file);
+    }
+  };
+
+  const processFile = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(worksheet);
+
+      // Assuming the Excel file has columns: nom, prenom, email, telephone, motDePasse, codeEtu, statutEtudiant, filiereNom
+      const studentsFromFile = json.map(row => ({
+        nom: row.nom,
+        prenom: row.prenom,
+        email: row.email,
+        telephone: row.telephone,
+        motDePasse: row.motDePasse,
+        codeEtu: row.codeEtu,
+        statutEtudiant: row.statutEtudiant,
+        filiereNom: row.filiereNom,
+      }));
+
+      // Now you can send these students to the backend
+      handleBulkCreateStudents(studentsFromFile);
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleBulkCreateStudents = async (studentsData) => {
+    try {
+      const responses = await Promise.all(
+        studentsData.map(studentData => {
+          const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+          if (!selectedFiliere) {
+            throw new Error(`Filière non trouvée pour l'étudiant: ${studentData.nom} ${studentData.prenom}`);
+          }
+
+          return axiosInstance.post('/api/etudiants', {
+            nom: studentData.nom,
+            prenom: studentData.prenom,
+            email: studentData.email,
+            tel: studentData.telephone,
+            motDePasse: studentData.motDePasse,
+            codeEtu: studentData.codeEtu,
+            statutEtudiant: studentData.statutEtudiant,
+            ecoleId: ecoleId,
+            filiereId: selectedFiliere.idFiliere,
+          });
+        })
+      );
+
+      const newStudents = responses.map(response => response.data);
+      setStudents([...students, ...newStudents]);
+      setFilteredStudents([...filteredStudents, ...newStudents]);
+      setError(null);
+    } catch (error) {
+      console.error('Error creating students:', error);
+      setError('Erreur lors de la création des étudiants. Veuillez réessayer.');
     }
   };
 
@@ -176,7 +246,6 @@ export default function StudentsManagement() {
     },
   ];
 
-  // Function to get the filière name by filiereId
   const getFiliereName = (filiereId) => {
     const filiere = filieres.find(filiere => filiere.idFiliere === filiereId);
     return filiere ? filiere.nomFiliere : 'N/A';
@@ -187,16 +256,32 @@ export default function StudentsManagement() {
       <h1 className="text-3xl font-bold mb-12 mt-12">Gestion des Étudiants</h1>
       <div className="flex justify-between items-center mb-6">
         <SearchBar onSearch={handleSearch} />
-        <button
-          onClick={() => {
-            setFormData({});
-            setIsModalOpen(true);
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Créer un étudiant
-        </button>
+        <div>
+          <input
+            type="file"
+            accept=".xlsx, .csv"
+            onChange={handleFileUpload}
+            className="mr-4"
+          />
+          <button
+            onClick={() => {
+              setFormData({});
+              setIsModalOpen(true);
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Créer un étudiant
+          </button>
+        </div>
       </div>
+
+      {showFileUploadMessage && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">
+            <strong>Note:</strong> This implementation assumes that the Excel/CSV file has specific columns (<code>nom</code>, <code>prenom</code>, <code>email</code>, <code>telephone</code>, <code>motDePasse</code>, <code>codeEtu</code>, <code>statutEtudiant</code>, <code>filiereNom</code>). You may need to adjust the column names based on your actual file structure.
+          </span>
+        </div>
+      )}
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -209,10 +294,10 @@ export default function StudentsManagement() {
         columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant','filiere']}
         items={filteredStudents.map(student => ({
           ...student,
-          filiere: getFiliereName(student.filiereId), // Add filière name to the student object
+          filiere: getFiliereName(student.filiereId),
         }))}
-        buttons={['Modifier']} // Only the "Modifier" button is included
-        actions={[handleEditStudent]} // Only the edit action is passed
+        buttons={['Modifier']}
+        actions={[handleEditStudent]}
         idParam="idEtu"
       />
 
