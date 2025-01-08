@@ -1,240 +1,339 @@
 import Layout from '@/components/Layout';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance';
+import SearchBar from '@/components/university/SearchBar';
 import FormComponent from '@/components/FormComponent';
 import Table from '@/components/Table';
+import axiosInstance from '@/axiosInstance/axiosInstance';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import * as XLSX from 'xlsx';
 
-export default function CompteEcoleProfile() {
+export default function StudentsManagement() {
   const router = useRouter();
-  const [compteEcole, setCompteEcole] = useState(null);
-  const [ecole, setEcole] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [editStudentId, setEditStudentId] = useState(null);
+  const [ecoleId, setEcoleId] = useState(null);
   const [filieres, setFilieres] = useState([]);
-  const [isEditingCompteEcole, setIsEditingCompteEcole] = useState(false);
-  const [isEditingEcole, setIsEditingEcole] = useState(false);
-  const [isAddingFiliere, setIsAddingFiliere] = useState(false);
-  const [editingFiliere, setEditingFiliere] = useState(null);
+  const [error, setError] = useState(null);
+  const [file, setFile] = useState(null);
+  const [showFileUploadMessage, setShowFileUploadMessage] = useState(true); // Show the message from the beginning
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (!token) router.push('/');
-      else fetchProfileData();
+      const token = localStorage.getItem("token");
+      if (token) {
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+      } else {
+        router.push('/');
+      }
+    } else {
+      router.push('/');
     }
   }, [router]);
 
-  const fetchProfileData = async () => {
+  const compteEcoleId = localStorage.getItem('id');
+
+  useEffect(() => {
+    if (compteEcoleId) {
+      fetchEcoleId();
+    }
+  }, [compteEcoleId]);
+
+  const fetchEcoleId = async () => {
     try {
-      const id = localStorage.getItem('id');
-      const compteEcoleResponse = await axiosInstance.get(`/compte-ecoles/${id}`);
-      setCompteEcole(compteEcoleResponse.data);
-
-      const ecoleResponse = await axiosInstance.get(`/api/ecoles/${compteEcoleResponse.data.ecoleId}`);
-      setEcole(ecoleResponse.data);
-
-      const filieresResponse = await axiosInstance.get(`/api/filieres/ecole/${ecoleResponse.data.idEcole}`);
-      setFilieres(filieresResponse.data);
+      const response = await axiosInstance.get(`/compte-ecoles/${compteEcoleId}`);
+      const ecoleId = response.data.ecoleId;
+      setEcoleId(ecoleId);
+      fetchStudentsByEcoleId(ecoleId);
+      fetchFilieresByEcoleId(ecoleId);
     } catch (error) {
-      console.error('Error fetching profile data:', error);
+      console.error('Error fetching Ecole ID:', error);
+      setError('Erreur lors de la récupération de l\'ID de l\'école. Veuillez réessayer.');
     }
   };
 
-  const handleSaveCompteEcole = async (updatedData) => {
+  const fetchStudentsByEcoleId = async (ecoleId) => {
     try {
-      const response = await axiosInstance.put(`/compte-ecoles/${compteEcole.idCompte}`, updatedData);
-      setCompteEcole(response.data);
-      setIsEditingCompteEcole(false);
+      const response = await axiosInstance.get(`/api/etudiants/ecole/${ecoleId}`);
+      setStudents(response.data);
+      setFilteredStudents(response.data);
     } catch (error) {
-      console.error('Error updating CompteEcole:', error);
+      console.error('Error fetching students:', error);
+      setError('Erreur lors de la récupération des étudiants. Veuillez réessayer.');
     }
   };
 
-  const handleSaveEcole = async (updatedData) => {
+  const fetchFilieresByEcoleId = async (ecoleId) => {
     try {
-      const response = await axiosInstance.put(`/api/ecoles/${ecole.idEcole}`, updatedData);
-      setEcole(response.data);
-      setIsEditingEcole(false);
+      const response = await axiosInstance.get(`/api/filieres/ecole/${ecoleId}`);
+      setFilieres(response.data);
     } catch (error) {
-      console.error('Error updating Ecole:', error);
+      console.error('Error fetching filieres:', error);
+      setError('Erreur lors de la récupération des filières. Veuillez réessayer.');
     }
   };
 
-  const handleAddFiliere = async (newFiliere) => {
+  const handleSearch = (query) => {
+    if (query.trim() === '') {
+      setFilteredStudents(students);
+      return;
+    }
+    const filtered = students.filter(student =>
+      student.nom.toLowerCase().includes(query.toLowerCase()) ||
+      student.prenom.toLowerCase().includes(query.toLowerCase()) ||
+      student.email.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+
+  const handleCreateStudent = async (studentData) => {
     try {
-      const response = await axiosInstance.post('/api/filieres', { ...newFiliere, ecoleId: ecole.idEcole });
-      setFilieres([...filieres, response.data]);
-      setIsAddingFiliere(false);
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+      if (!selectedFiliere) {
+        setError('Filière non trouvée. Veuillez sélectionner une filière valide.');
+        return;
+      }
+
+      const response = await axiosInstance.post('/api/etudiants', {
+        nom: studentData.nom,
+        prenom: studentData.prenom,
+        email: studentData.email,
+        tel: studentData.telephone,
+        motDePasse: studentData.motDePasse,
+        codeEtu: studentData.codeEtu,
+        statutEtudiant: studentData.statutEtudiant,
+        ecoleId: ecoleId,
+        filiereId: selectedFiliere.idFiliere,
+      });
+      setStudents([...students, response.data]);
+      setFilteredStudents([...filteredStudents, response.data]);
+      setIsModalOpen(false);
+      setError(null);
     } catch (error) {
-      console.error('Error adding filiere:', error);
+      console.error('Error creating student:', error);
+      setError('Erreur lors de la création de l\'étudiant. Veuillez réessayer.');
     }
   };
 
-  const handleEditFiliere = async (updatedFiliere) => {
+  const handleEditStudent = (id) => {
+    const studentToEdit = students.find(student => student.idEtu === id);
+    setFormData({
+      ...studentToEdit,
+      filiereNom: filieres.find(filiere => filiere.idFiliere === studentToEdit.filiereId)?.nomFiliere || '',
+    });
+    setEditStudentId(id);
+    setIsModalOpen(true);
+    setError(null);
+  };
+
+  const handleSaveEdit = async (studentData) => {
     try {
-      console.log('Starting handleEditFiliere with updatedFiliere:', updatedFiliere);
-      console.log('Current editingFiliere:', editingFiliere);
-      console.log('Current editingFiliere.idFiliere:', editingFiliere);
-      const response = await axiosInstance.put(`/api/filieres/${editingFiliere}`, 
-        {
-          ...updatedFiliere,
-          ecoleId: ecole.idEcole,
-          idFiliere: editingFiliere,
-        });
-      console.log('Received response from server:', response.data);
-      setFilieres(filieres.map(f => f.idFiliere === response.data.idFiliere ? response.data : f));
-      console.log('Updated filieres state:', filieres);
-      setEditingFiliere(null);
-      console.log('Set editingFiliere to null');
+      const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+      if (!selectedFiliere) {
+        setError('Filière non trouvée. Veuillez sélectionner une filière valide.');
+        return;
+      }
+
+      const response = await axiosInstance.put(`/api/etudiants/${editStudentId}`, {
+        nom: studentData.nom,
+        prenom: studentData.prenom,
+        email: studentData.email,
+        tel: studentData.telephone,
+        motDePasse: studentData.motDePasse,
+        codeEtu: studentData.codeEtu,
+        statutEtudiant: studentData.statutEtudiant,
+        ecoleId: ecoleId,
+        filiereId: selectedFiliere.idFiliere,
+      });
+      const updatedStudents = students.map(student =>
+        student.idEtu === editStudentId ? response.data : student
+      );
+      setStudents(updatedStudents);
+      setFilteredStudents(updatedStudents);
+      setIsModalOpen(false);
+      setEditStudentId(null);
+      setError(null);
     } catch (error) {
-      console.error('Error updating filiere:', error);
+      console.error('Error updating student:', error);
+      setError('Erreur lors de la mise à jour de l\'étudiant. Veuillez réessayer.');
     }
   };
 
-  const handleDeleteFiliere = async (id) => {
-    try {
-      await axiosInstance.delete(`/api/filieres/${id}`);
-      setFilieres(filieres.filter(f => f.idFiliere !== id));
-    } catch (error) {
-      console.error('Error deleting filiere:', error);
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFile(file);
+      processFile(file);
     }
+  };
+
+  const processFile = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(worksheet);
+
+      // Assuming the Excel file has columns: nom, prenom, email, telephone, motDePasse, codeEtu, statutEtudiant, filiereNom
+      const studentsFromFile = json.map(row => ({
+        nom: row.nom,
+        prenom: row.prenom,
+        email: row.email,
+        telephone: row.telephone,
+        motDePasse: row.motDePasse,
+        codeEtu: row.codeEtu,
+        statutEtudiant: row.statutEtudiant,
+        filiereNom: row.filiereNom,
+      }));
+
+      // Now you can send these students to the backend
+      handleBulkCreateStudents(studentsFromFile);
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleBulkCreateStudents = async (studentsData) => {
+    try {
+      const responses = await Promise.all(
+        studentsData.map(async (studentData) => {
+          // Check if the filiere exists
+          let selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+
+          // If the filiere does not exist, create it
+          if (!selectedFiliere) {
+            try {
+              const newFiliereResponse = await axiosInstance.post('/api/filieres', {
+                nomFiliere: studentData.filiereNom,
+                ecoleId: ecoleId, // Use the ecoleId from the state
+              });
+
+              // Add the new filiere to the filieres list
+              setFilieres((prevFilieres) => [...prevFilieres, newFiliereResponse.data]);
+
+              // Use the newly created filiere
+              selectedFiliere = newFiliereResponse.data;
+            } catch (error) {
+              console.error('Error creating filiere:', error);
+              throw new Error(`Erreur lors de la création de la filière: ${studentData.filiereNom}`);
+            }
+          }
+
+          // Create the student with the selected filiere
+          return axiosInstance.post('/api/etudiants', {
+            nom: studentData.nom,
+            prenom: studentData.prenom,
+            email: studentData.email,
+            tel: studentData.telephone,
+            motDePasse: studentData.motDePasse,
+            codeEtu: studentData.codeEtu,
+            statutEtudiant: studentData.statutEtudiant,
+            ecoleId: ecoleId,
+            filiereId: selectedFiliere.idFiliere,
+          });
+        })
+      );
+
+      // Add the new students to the students list
+      const newStudents = responses.map(response => response.data);
+      setStudents((prevStudents) => [...prevStudents, ...newStudents]);
+      setFilteredStudents((prevFilteredStudents) => [...prevFilteredStudents, ...newStudents]);
+      setError(null);
+    } catch (error) {
+      console.error('Error creating students:', error);
+      setError('Erreur lors de la création des étudiants. Veuillez réessayer.');
+    }
+  };
+
+  const studentFields = [
+    { name: 'nom', placeholder: 'Nom', type: 'text' },
+    { name: 'prenom', placeholder: 'Prénom', type: 'text' },
+    { name: 'email', placeholder: 'Email', type: 'email' },
+    { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
+    { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password' },
+    { name: 'codeEtu', placeholder: 'Code Étudiant', type: 'text' },
+    { name: 'statutEtudiant', placeholder: 'Statut Étudiant', type: 'text' },
+    {
+      name: 'filiereNom',
+      placeholder: 'Filière',
+      type: 'select',
+      options: filieres.map(filiere => ({ value: filiere.nomFiliere, label: filiere.nomFiliere })),
+    },
+  ];
+
+  const getFiliereName = (filiereId) => {
+    const filiere = filieres.find(filiere => filiere.idFiliere === filiereId);
+    return filiere ? filiere.nomFiliere : 'N/A';
   };
 
   return (
     <Layout role="university">
-      <div className="p-6 font-roboto">
-        <h1 className="text-2xl font-bold mb-6 text-black">University Manager Profile</h1>
-
-        {/* CompteEcole and Ecole Information Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* CompteEcole Information Card */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Compte Ecole Information</h2>
-            {compteEcole && (
-              <div className="space-y-2 text-black">
-                <p><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
-                <p><strong>Email:</strong> {compteEcole.email}</p>
-                <p><strong>Phone:</strong> {compteEcole.telephone}</p>
-                <button
-                  onClick={() => setIsEditingCompteEcole(true)}
-                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Ecole Information Card */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Ecole Information</h2>
-            {ecole && (
-              <div className="space-y-2 text-black">
-                <p><strong>School Name:</strong> {ecole.nomEcole}</p>
-                <p><strong>City:</strong> {ecole.villeEcole}</p>
-                <p><strong>Address:</strong> {ecole.adresseEcole}</p>
-                <p><strong>Description:</strong> {ecole.description}</p>
-                <p><strong>Fixed Phone:</strong> {ecole.telephoneFix}</p>
-                <p><strong>School Type:</strong> {ecole.typeEcole}</p>
-                <p><strong>School Domain:</strong> {ecole.domaineEcole}</p>
-                <button
-                  onClick={() => setIsEditingEcole(true)}
-                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-          </div>
+      <h1 className="text-3xl font-bold mb-12 mt-12">Gestion des Étudiants</h1>
+      <div className="flex justify-between items-center mb-6">
+        <SearchBar onSearch={handleSearch} />
+        <div className="flex gap-4">
+          <label className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer">
+            Choisir un fichier Excel
+            <input
+              type="file"
+              accept=".xlsx, .csv"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </label>
+          <button
+            onClick={() => {
+              setFormData({});
+              setIsModalOpen(true);
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Créer un étudiant
+          </button>
         </div>
-
-        {/* Filiere Management Section */}
-        <div className="mt-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-black">Filiere Management</h2>
-            <button
-              onClick={() => setIsAddingFiliere(true)}
-              className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-            >
-              Add Filiere
-            </button>
-          </div>
-          <Table
-            columns={['Name', 'Abbreviation']}
-            columnKeys={['nomFiliere', 'abrvFiliere']}
-            items={filieres}
-            buttons={['Edit', 'Delete']}
-            actions={[setEditingFiliere, handleDeleteFiliere]}
-            idParam="idFiliere"
-          />
-        </div>
-
-        {/* Modals for Editing and Adding */}
-        {isEditingCompteEcole && (
-          <FormComponent
-            isOpen={isEditingCompteEcole}
-            onClose={() => setIsEditingCompteEcole(false)}
-            onSubmit={handleSaveCompteEcole}
-            fields={[
-              { name: 'nom', placeholder: 'Nom', type: 'text' },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text' },
-              { name: 'email', placeholder: 'Email', type: 'email' },
-              { name: 'telephone', placeholder: 'Phone', type: 'text' },
-            ]}
-            title="Edit Compte Ecole"
-            submitButtonText="Save"
-            prefillData={compteEcole}
-          />
-        )}
-
-        {isEditingEcole && (
-          <FormComponent
-            isOpen={isEditingEcole}
-            onClose={() => setIsEditingEcole(false)}
-            onSubmit={handleSaveEcole}
-            fields={[
-              { name: 'nomEcole', placeholder: 'School Name', type: 'text' },
-              { name: 'villeEcole', placeholder: 'City', type: 'text' },
-              { name: 'adresseEcole', placeholder: 'Address', type: 'text' },
-              { name: 'description', placeholder: 'Description', type: 'text' },
-              { name: 'telephoneFix', placeholder: 'Fixed Phone', type: 'text' },
-              { name: 'typeEcole', placeholder: 'School Type', type: 'text' },
-              { name: 'domaineEcole', placeholder: 'School Domain', type: 'text' },
-            ]}
-            title="Edit Ecole"
-            submitButtonText="Save"
-            prefillData={ecole}
-          />
-        )}
-
-        {isAddingFiliere && (
-          <FormComponent
-            isOpen={isAddingFiliere}
-            onClose={() => setIsAddingFiliere(false)}
-            onSubmit={handleAddFiliere}
-            fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
-            ]}
-            title="Add Filiere"
-            submitButtonText="Add"
-          />
-        )}
-
-        {editingFiliere && (
-          <FormComponent
-            isOpen={!!editingFiliere}
-            onClose={() => setEditingFiliere(null)}
-            onSubmit={handleEditFiliere}
-            fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
-            ]}
-            title="Edit Filiere"
-            submitButtonText="Save"
-            prefillData={filieres.find(filiere => filiere.idFiliere = editingFiliere)}
-          />
-        )}
       </div>
+
+      {showFileUploadMessage && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">
+            <strong>Note:</strong> This implementation assumes that the Excel/CSV file has specific columns (<code>nom</code>, <code>prenom</code>, <code>email</code>, <code>telephone</code>, <code>motDePasse</code>, <code>codeEtu</code>, <code>statutEtudiant</code>, <code>filiereNom</code>). You may need to adjust the column names based on your actual file structure.
+          </span>
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
+
+      <Table
+        columns={['ID', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Code Étudiant', 'Statut', 'Filière']}
+        columnKeys={['idEtu', 'nom', 'prenom', 'email', 'tel', 'codeEtu', 'statutEtudiant','filiere']}
+        items={filteredStudents.map(student => ({
+          ...student,
+          filiere: getFiliereName(student.filiereId),
+        }))}
+        buttons={['Modifier']}
+        actions={[handleEditStudent]}
+        idParam="idEtu"
+      />
+
+      <FormComponent
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditStudentId(null);
+        }}
+        onSubmit={editStudentId ? handleSaveEdit : handleCreateStudent}
+        fields={studentFields}
+        title={editStudentId ? "Modifier l'étudiant" : "Créer un nouvel étudiant"}
+        submitButtonText={editStudentId ? "Enregistrer" : "Créer"}
+        prefillData={formData}
+      />
     </Layout>
   );
 }
