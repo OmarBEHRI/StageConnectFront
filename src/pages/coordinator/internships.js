@@ -3,15 +3,20 @@ import SearchBar from '@/components/university/SearchBar';
 import Table from '@/components/Table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function CoordinatorInternships() {
   const router = useRouter();
+  const [internships, setInternships] = useState([]); // State for internships
+  const [error, setError] = useState(null); // State for error messages
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       if (token) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchData();
       } else {
         router.push('/');
       }
@@ -19,29 +24,44 @@ export default function CoordinatorInternships() {
       router.push('/');
     }
   }, [router]);
-  // Mock data - replace with actual data
-  const internships = [
-    {
-      id: 1,
-      firstname: "John",
-      lastname: "Doe",
-      subject: "Web Development",
-      company: "Tech Corp",
-      major: "Computer Science"
-    },
-    {
-      id: 2,
-      firstname: "Jane",
-      lastname: "Smith",
-      subject: "Data Analysis",
-      company: "Data Systems",
-      major: "Data Science"
-    }
-  ];
 
-  const handleValidate = (internshipId) => {
-    console.log('Validating internship:', internshipId);
-    // Implement validation logic here
+  const fetchData = async () => {
+    try {
+      // Get CoordinateurDeStage ID from localStorage
+      const coordinateurId = localStorage.getItem('id');
+      if (!coordinateurId) {
+        router.push('/');
+        return;
+      }
+
+      // Fetch CoordinateurDeStage by ID
+      const coordinateurResponse = await axiosInstance.get(`/api/coordinateurs/${coordinateurId}`);
+      const ecoleId = coordinateurResponse.data.ecoleId;
+
+      // Fetch stages by ecoleId
+      const stagesResponse = await axiosInstance.get(`/stages/by-ecole/${ecoleId}`);
+      const filteredStages = stagesResponse.data.filter(
+        (stage) => stage.statut !== "nouveau" && stage.statut !== "a valider"
+      );
+
+      // Fetch Etudiant data for each stage
+      const internshipsWithEtudiant = await Promise.all(
+        filteredStages.map(async (stage) => {
+          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${stage.etudiantId}`);
+          return {
+            ...stage,
+            etudiant: etudiantResponse.data, // Add Etudiant details to the stage object
+          };
+        })
+      );
+
+      setInternships(internshipsWithEtudiant);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Failed to fetch data. Please try again later.');
+      setIsLoading(false);
+    }
   };
 
   const handleSearch = (query) => {
@@ -49,26 +69,55 @@ export default function CoordinatorInternships() {
     // Implement search logic here
   };
 
+  const handleValidate = (internshipId) => {
+    console.log('Validating internship:', internshipId);
+    // Implement validation logic here
+  };
+
+  // Format date to human-readable format
+  const formatDate = (date) => {
+    if (!date) return "N/A"; // Handle null or undefined dates
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString(); // Format as human-readable date
+  };
 
   return (
     <Layout role="coordinator">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Internship Validations</h1>
-        
+
+        {/* Display error message if any */}
+        {error && <p className="text-red-500">{error}</p>}
+
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
 
-        <Table 
-          columns={["First Name", "Last Name", "Subject", "Company", "Major"]}
-          items={internships.map(intern => ({
-            ...intern,
-            "First Name": intern.firstname,
-            "Last Name": intern.lastname
-          }))}
-          buttons={["Validate"]}
-          actions={[handleValidate]}
-        />
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <Table
+            columns={["Student Email", "Stage Description", "Start Date", "End Date", "Status"]}
+            columnKeys={[
+              "etudiant.email", // Student email
+              "description", // Stage description
+              "dateDebut", // Start date
+              "dateFin", // End date
+              "statut", // Stage status
+            ]}
+            items={internships.map((internship) => ({
+              ...internship,
+              "etudiant.email": internship.etudiant.email,
+              "description": internship.description,
+              "dateDebut": formatDate(internship.dateDebut), // Format start date
+              "dateFin": formatDate(internship.dateFin), // Format end date
+              "statut": internship.statut,
+            }))}
+            buttons={["Validate"]}
+            actions={[handleValidate]}
+            idParam="idStage"
+          />
+        )}
       </div>
     </Layout>
   );
