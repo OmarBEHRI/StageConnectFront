@@ -149,11 +149,28 @@ function PostulationCard({ postulation, handleScheduleInterview, handleRefuse })
       .catch(error => console.error('Error fetching student:', error));
   }, [postulation.offreId, postulation.etudiantId]);
 
-  const handleViewPdf = (data, type) => {
-    if (!data) return;
-    const blob = new Blob([data], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
+  const handleViewPdf = (data, fileName = 'document.pdf') => {
+      if (!data) return;
+      
+      // Create a Blob from the PDF data
+      const blob = new Blob([data], { type: 'application/pdf' });
+      
+      // Create a link element
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName; // Set the file name for the download
+      
+      // Append the link to the body (required for Firefox)
+      document.body.appendChild(link);
+      
+      // Trigger the download
+      link.click();
+      
+      // Remove the link from the document
+      document.body.removeChild(link);
+      
+      // Revoke the Blob URL to free up memory
+      URL.revokeObjectURL(link.href);
   };
 
   if (!offer || !student) return <div>Loading...</div>;
