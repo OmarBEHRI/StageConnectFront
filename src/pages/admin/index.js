@@ -34,27 +34,15 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      const [
-        universityAccountsRes,
-        companyAccountsRes,
-        studentsRes,
-        openOffersRes,
-        totalOffersRes,
-        internshipsRes,
-        ongoingInternshipsRes,
-        interviewsRes,
-        totalPlatformUsersRes,
-      ] = await Promise.all([
-        axiosInstance.get('/api/admins/ecoles'),
-        axiosInstance.get('/api/admins/entreprises'),
-        axiosInstance.get('/api/admins/etudiants'),
-        axiosInstance.get('/api/admins/open-offers/count'),
-        axiosInstance.get('/api/admins/offers'),
-        axiosInstance.get('/api/admins/stages-offres'),
-        axiosInstance.get('/api/admins/stages/ongoing'),
-        axiosInstance.get('/api/admins/entretiens'),
-        axiosInstance.get('/api/admins/count-platform-users'),
-      ])
+      const universityAccountsRes = await axiosInstance.get('/api/admins/ecoles');
+      const companyAccountsRes = await axiosInstance.get('/api/admins/entreprises');
+      const studentsRes = await axiosInstance.get('/api/admins/etudiants');
+      const openOffersRes = await axiosInstance.get('/api/admins/open-offers/count');
+      const totalOffersRes = await axiosInstance.get('/api/admins/offers');
+      const internshipsRes = await axiosInstance.get('/api/admins/stages-offres');
+      const ongoingInternshipsRes = await axiosInstance.get('/api/admins/stages/ongoing');
+      const interviewsRes = await axiosInstance.get('/api/admins/entretiens');
+      const totalPlatformUsersRes = await axiosInstance.get('/api/admins/count-platform-users');
 
       setStats({
         universityAccounts: universityAccountsRes.data,
