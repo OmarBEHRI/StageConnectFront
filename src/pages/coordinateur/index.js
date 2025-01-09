@@ -36,7 +36,7 @@ export default function CoordinatorDashboard() {
 
       // Fetch university name
       const universityResponse = await axiosInstance.get(`/api/ecoles/${ecoleId}`);
-      const universityName = universityResponse.data.nom;
+      const universityName = universityResponse.data.nomEcole;
 
       // Fetch total students
       const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students`);
