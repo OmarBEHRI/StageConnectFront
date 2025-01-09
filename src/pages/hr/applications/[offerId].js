@@ -149,52 +149,30 @@ function PostulationCard({ postulation, handleScheduleInterview, handleRefuse })
       .catch(error => console.error('Error fetching student:', error));
   }, [postulation.offreId, postulation.etudiantId]);
 
-const handleViewPdf = async (postulationId, type) => {
+  const handleViewPdf = async (postulationId, type) => {
     try {
-        // Determine the endpoint based on the type (CV or Lettre de Motivation)
         const endpoint = type === 'cv' 
             ? `/api/postulations/download/${postulationId}/cv`
             : `/api/postulations/download/${postulationId}/lettre-motivation`;
 
-        console.log('Endpoint:', endpoint);
-        console.log('PostulationId:', postulationId);
-        console.log('Type:', type);
+        const response = await axiosInstance.get(endpoint, {
+            responseType: 'blob'  // Important: tells axios to expect binary data
+        });
 
-        // Fetch the PDF file from the backend
-        const response = await fetch(endpoint);
-        console.log('Response:', response);
-
-        if (!response.ok) {
-            console.error('Response not OK:', response.status, response.statusText);
-            throw new Error('Failed to fetch PDF');
-        }
-
-        // Convert the response to a Blob
-        const blob = await response.blob();
-        console.log('Blob:', blob);
-
-        // Create a link element to trigger the download
+        const blob = new Blob([response.data], { type: 'application/pdf' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = type === 'cv' ? 'cv.pdf' : 'lettre_motivation.pdf'; // Set the file name
+        link.download = type === 'cv' ? 'cv.pdf' : 'lettre_motivation.pdf';
         
-        console.log('Download link:', link.href);
-        console.log('Filename:', link.download);
-
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
-
-        console.log('Download completed successfully');
     } catch (error) {
         console.error('Error downloading PDF:', error);
-        console.error('Error details:', {
-            message: error.message,
-            stack: error.stack
-        });
     }
-};
+  };
+
   if (!offer || !student) return <div>Loading...</div>;
 
   return (
