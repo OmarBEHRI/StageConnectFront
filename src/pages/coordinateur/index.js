@@ -79,7 +79,7 @@ export default function UniversityDashboard() {
 
   return (
     <Layout role="coordinator">
-      <h1 className="text-3xl font-bold mb-6">Tableau de bord de l'université</h1>
+      <h1 className="text-3xl font-bold mb-6">Tableau de bord du coordinateur</h1>
       {loading ? (
         <p>Chargement...</p>
       ) : stats ? (
