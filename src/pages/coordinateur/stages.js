@@ -43,7 +43,7 @@ export default function CoordinatorInternships() {
       // Fetch stages by ecoleId
       console.log(`Ecole ID: ${ecoleId}`);
       const stagesResponse = await axiosInstance.get(`/stages/by-ecole/${ecoleId}`);
-      const updatedStages = await Promise.all(stagesResponse.map(async (stage) => {
+      const updatedStages = await Promise.all(stagesResponse.data.map(async (stage) => {
         if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
           const currentDate = new Date();
           const dateFin = new Date(stage.dateFin);
