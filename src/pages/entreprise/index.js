@@ -36,6 +36,9 @@ export default function CompanyDashboard() {
         const confirmedInternshipsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships-confirmed`);
         const totalInternshipsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships`);
 
+        // Fetch company active internships
+        const activeInternshipsRes = await axiosInstance.get(`/api/encadrants/company/${entrepriseId}/active-internships`);
+
         const statsData = [
           { title: "Offres ouvertes", value: openOffersRes.data },
           { title: "Total des offres", value: totalOffersRes.data },
@@ -43,7 +46,8 @@ export default function CompanyDashboard() {
           { title: "Total des RH", value: totalHRRes.data },
           { title: "Total des superviseurs", value: totalSupervisorsRes.data },
           { title: "Stages confirmés", value: confirmedInternshipsRes.data },
-          { title: "Total des offres de stages", value: totalInternshipsRes.data }
+          { title: "Total des offres de stages", value: totalInternshipsRes.data },
+          { title: "Stages actifs de l'entreprise", value: activeInternshipsRes.data }, // Added this line
         ];
 
         setStats(statsData);
