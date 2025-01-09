@@ -1,12 +1,19 @@
-import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
+import StatCard from '@/components/StatCard';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import StatisticsSection from '@/components/university/StatisticsSection';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 
-export default function UniversityDashboard() {
+export default function CoordinatorDashboard() {
   const router = useRouter();
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState([
+    { title: 'Université', value: 'Loading...' },
+    { title: 'Total des étudiants', value: 'Loading...' },
+    { title: 'Offres totales', value: 'Loading...' },
+    { title: 'Étudiants sans stage', value: 'Loading...' },
+  ]);
+  const [internshipPercentageByMajor, setInternshipPercentageByMajor] = useState([]);
+  const [offersByMajor, setOffersByMajor] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,11 +32,15 @@ export default function UniversityDashboard() {
 
   const fetchStatistics = async () => {
     try {
-      const idEcole = localStorage.getItem('id'); // Get the university ID from localStorage
+      const id = localStorage.getItem('id'); // Get the coordinator ID from localStorage
 
-      // Fetch university details to get ecoleId
-      const universityResponse = await axiosInstance.get(`/api/coordinateurs/${idEcole}`);
-      const ecoleId = universityResponse.data.ecoleId;
+      // Fetch coordinator details to get ecoleId
+      const coordinatorResponse = await axiosInstance.get(`/api/coordinateurs/${id}`);
+      const ecoleId = coordinatorResponse.data.ecoleId;
+
+      // Fetch university name
+      const universityResponse = await axiosInstance.get(`/api/ecoles/${ecoleId}`);
+      const universityName = universityResponse.data.nomEcole;
 
       // Fetch total students
       const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students`);
@@ -48,28 +59,35 @@ export default function UniversityDashboard() {
       const filieres = filieresResponse.data;
 
       // Fetch internship percentage by major
-      const internshipPercentageByMajor = {};
+      const internshipPercentageByMajor = [];
       for (const filiere of filieres) {
         const percentageResponse = await axiosInstance.get(`/compte-ecoles/internship-percentage/${filiere.idFiliere}`);
-        internshipPercentageByMajor[filiere.nomFiliere] = percentageResponse.data;
+        internshipPercentageByMajor.push({
+          filiere: filiere.nomFiliere,
+          percentage: percentageResponse.data,
+        });
       }
 
       // Fetch offers by major
-      const offersByMajor = {};
+      const offersByMajor = [];
       for (const filiere of filieres) {
         const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
-        offersByMajor[filiere.nomFiliere] = offersResponse.data;
+        offersByMajor.push({
+          filiere: filiere.nomFiliere,
+          offers: offersResponse.data.length,
+        });
       }
 
       // Update stats state
-      setStats({
-        students: totalStudents,
-        offers: totalOffers,
-        studentsWithoutInternship: studentsWithoutInternship,
-        internshipPercentageByMajor: internshipPercentageByMajor,
-        offersByMajor: offersByMajor,
-      });
+      setStats([
+        { title: 'Université', value: universityName },
+        { title: 'Total des étudiants', value: totalStudents },
+        { title: 'Offres totales', value: totalOffers },
+        { title: 'Étudiants sans stage', value: studentsWithoutInternship },
+      ]);
 
+      setInternshipPercentageByMajor(internshipPercentageByMajor);
+      setOffersByMajor(offersByMajor);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching statistics:', error);
@@ -79,14 +97,32 @@ export default function UniversityDashboard() {
 
   return (
     <Layout role="coordinator">
-      <h1 className="text-3xl font-bold mb-6">Tableau de bord du coordinateur</h1>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : stats ? (
-        <StatisticsSection stats={stats} />
-      ) : (
-        <p>Aucune donnée disponible</p>
-      )}
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold mb-6">Tableau de bord du coordinateur</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {stats.map((stat, index) => (
+            <StatCard key={index} title={stat.title} value={stat.value} />
+          ))}
+        </div>
+        <div className="col-span-full">
+          <h2 className="text-xl font-semibold mb-4">Pourcentage de stages par filière</h2>
+          {internshipPercentageByMajor.map((item, index) => (
+            <div key={index} className="flex justify-between items-center mb-2">
+              <span>{item.filiere}:</span>
+              <span>{item.percentage}%</span>
+            </div>
+          ))}
+        </div>
+        <div className="col-span-full">
+          <h2 className="text-xl font-semibold mb-4">Offres par filière</h2>
+          {offersByMajor.map((item, index) => (
+            <div key={index} className="flex justify-between items-center mb-2">
+              <span>{item.filiere}:</span>
+              <span>{item.offers} offres</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </Layout>
   );
 }
