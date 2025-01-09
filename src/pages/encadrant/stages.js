@@ -36,7 +36,7 @@ export default function SupervisorInternships() {
       const stagesResponse = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
       const filteredStages = stagesResponse.data.filter(stage => stage.encadrantId == idEncadrant);
 
-      const updatedStages = await Promise.all(stages.map(async (stage) => {
+      const updatedStages = await Promise.all(filteredStages.map(async (stage) => {
         if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
           const currentDate = new Date();
           const dateFin = new Date(stage.dateFin);
