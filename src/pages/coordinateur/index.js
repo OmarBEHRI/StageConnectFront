@@ -6,11 +6,19 @@ import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function CoordinatorDashboard() {
   const router = useRouter();
+  const [stats, setStats] = useState([
+    { title: 'Validations en attente', value: 'Loading...' },
+    { title: 'Université', value: 'Loading...' },
+    { title: 'Total des étudiants', value: 'Loading...' },
+  ]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchStatistics();
       } else {
         router.push('/');
       }
@@ -19,12 +27,39 @@ export default function CoordinatorDashboard() {
     }
   }, [router]);
 
-  // Mock data - replace with actual data
-  const stats = [
-    { title: "Validations en attente", value: "12" },
-    { title: "Université", value: "INSAT" },
-    { title: "Total des étudiants", value: "450" }
-  ];
+  const fetchStatistics = async () => {
+    try {
+      const id = localStorage.getItem('id'); // Get the coordinator ID from localStorage
+
+      // Fetch coordinator details to get ecoleId
+      const coordinatorResponse = await axiosInstance.get(`/api/coordinateurs/${id}`);
+      const ecoleId = coordinatorResponse.data.ecoleId;
+
+      // Fetch pending validations
+      const pendingValidationsResponse = await axiosInstance.get(`/api/coordinateurs/${id}/pending-validations`);
+      const pendingValidations = pendingValidationsResponse.data;
+
+      // Fetch university name
+      const universityResponse = await axiosInstance.get(`/api/ecoles/${ecoleId}`);
+      const universityName = universityResponse.data.nom;
+
+      // Fetch total students
+      const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students`);
+      const totalStudents = totalStudentsResponse.data;
+
+      // Update stats state
+      setStats([
+        { title: 'Validations en attente', value: pendingValidations },
+        { title: 'Université', value: universityName },
+        { title: 'Total des étudiants', value: totalStudents },
+      ]);
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching statistics:', error);
+      setLoading(false);
+    }
+  };
 
   return (
     <Layout role="coordinator">
