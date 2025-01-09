@@ -1,6 +1,25 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function Contact() {
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await axiosInstance.post(`/api/admins/send/${formData.name}/${formData.email}/${formData.message}`)
+    console.log(formData);
+  }
+  
   return (
     <section className="py-20 bg-gray-100">
       <h2 className="text-3xl font-bold text-center mb-12">Contactez-nous</h2>
@@ -21,10 +40,13 @@ export default function Contact() {
           <p>123 Rue de l&apos;Innovation, 75001 Paris, France</p>
         </div>
       </div>
-      <form className="max-w-lg mx-auto">
+      <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
         <div className="mb-4">
           <input
             type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Votre nom"
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
             required
@@ -32,7 +54,10 @@ export default function Contact() {
         </div>
         <div className="mb-4">
           <input
-            type="email"
+            type="email" 
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Votre email"
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
             required
@@ -40,6 +65,9 @@ export default function Contact() {
         </div>
         <div className="mb-4">
           <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
             placeholder="Votre message"
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black h-32"
             required
