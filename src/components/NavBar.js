@@ -42,7 +42,7 @@ export default function Navbar({ links, onLogout }) {
               transition-colors duration-200 hover:font-bold
             "
           >
-            Logout
+            Se Déconnecter
           </button>
         </div>
       </div>
