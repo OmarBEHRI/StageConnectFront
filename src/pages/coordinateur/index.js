@@ -7,7 +7,6 @@ import axiosInstance from '@/axiosInstance/axiosInstance';
 export default function CoordinatorDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState([
-    { title: 'Validations en attente', value: 'Loading...' },
     { title: 'Université', value: 'Loading...' },
     { title: 'Total des étudiants', value: 'Loading...' },
   ]);
@@ -35,10 +34,6 @@ export default function CoordinatorDashboard() {
       const coordinatorResponse = await axiosInstance.get(`/api/coordinateurs/${id}`);
       const ecoleId = coordinatorResponse.data.ecoleId;
 
-      // Fetch pending validations
-      const pendingValidationsResponse = await axiosInstance.get(`/api/coordinateurs/${id}/pending-validations`);
-      const pendingValidations = pendingValidationsResponse.data;
-
       // Fetch university name
       const universityResponse = await axiosInstance.get(`/api/ecoles/${ecoleId}`);
       const universityName = universityResponse.data.nom;
@@ -49,7 +44,6 @@ export default function CoordinatorDashboard() {
 
       // Update stats state
       setStats([
-        { title: 'Validations en attente', value: pendingValidations },
         { title: 'Université', value: universityName },
         { title: 'Total des étudiants', value: totalStudents },
       ]);
@@ -65,7 +59,7 @@ export default function CoordinatorDashboard() {
     <Layout role="coordinator">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Tableau de bord du coordinateur</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {stats.map((stat) => (
             <StatCard key={stat.title} title={stat.title} value={stat.value} />
           ))}
