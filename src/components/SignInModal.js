@@ -51,32 +51,32 @@ export default function SignInModal({ onClose }) {
         case 'ROLE_ECOLE':
           roleEndpoint = '/compte-ecoles/user';
           idVariableReturnName = 'idCompte';
-          navigationRoute = '/university';
+          navigationRoute = '/ecole';
           break;
         case 'ROLE_ENTREPRISE':
           roleEndpoint = '/compte-entreprises/user';
           idVariableReturnName = 'idCompte';
-          navigationRoute = '/company';
+          navigationRoute = '/entreprise';
           break;
         case 'ROLE_COORDINATEUR_DE_STAGE':
           roleEndpoint = '/api/coordinateurs/user';
           idVariableReturnName = 'idCs';
-          navigationRoute = '/coordinator';
+          navigationRoute = '/coordinateur';
           break;
         case 'ROLE_RH':
           roleEndpoint = '/api/rh/user';
           idVariableReturnName = 'idRh';
-          navigationRoute = '/hr';
+          navigationRoute = '/rh';
           break;
         case 'ROLE_ENCADRANT':
           roleEndpoint = '/api/encadrants/user';
           idVariableReturnName = 'idEncadrant';
-          navigationRoute = '/supervisor';
+          navigationRoute = '/encadrant';
           break;
         case 'ROLE_ETUDIANT':
           roleEndpoint = '/api/etudiants/user';
           idVariableReturnName = 'idEtu';
-          navigationRoute = '/student';
+          navigationRoute = '/etudiant';
           break;
         default:
           throw new Error('Unknown role');
