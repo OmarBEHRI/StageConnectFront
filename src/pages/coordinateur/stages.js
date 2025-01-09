@@ -43,7 +43,8 @@ export default function CoordinatorInternships() {
       // Fetch stages by ecoleId
       console.log(`Ecole ID: ${ecoleId}`);
       const stagesResponse = await axiosInstance.get(`/stages/by-ecole/${ecoleId}`);
-      const updatedStages = await Promise.all(stagesResponse.data.map(async (stage) => {
+      console.log('API Response:', stagesResponse);
+      const updatedStages = [await Promise.all(stagesResponse.data.map(async (stage) => {
         if (stage.statut !== "terminé" && stage.statut !== "évalué" && stage.statut !== "nouveau") {
           const currentDate = new Date();
           const dateFin = new Date(stage.dateFin);
@@ -63,7 +64,8 @@ export default function CoordinatorInternships() {
           }
         }
         return stage;
-      }));
+      }))];
+      
       const filteredStages = updatedStages.data.filter(
         (stage) => stage.statut !== "nouveau" && stage.statut !== "a valider"
       );
