@@ -72,10 +72,11 @@ export default function UniversityDashboard() {
       const offersByMajor = [];
       for (const filiere of filieres) {
         const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
-        offersByMajor.push({
+        const offerData = {
           filiere: filiere.nomFiliere,
-          offers: offersResponse.data.length,
-        });
+          offers: offersResponse.data,
+        };
+        offersByMajor.push(offerData);
       }
 
       // Update stats state
@@ -118,7 +119,7 @@ export default function UniversityDashboard() {
           {offersByMajor.map((item, index) => (
             <div key={index} className="flex justify-between items-center mb-2">
               <span>{item.filiere}:</span>
-              <span>{item.offers} offres</span>
+              <span>{item.offers}</span>
             </div>
           ))}
         </div>
