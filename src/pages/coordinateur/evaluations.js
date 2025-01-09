@@ -29,7 +29,7 @@ export default function CoordinatorInternships() {
   const fetchData = async () => {
     try {
       const id = localStorage.getItem("id");
-      const response = await axiosInstance.get(`/api/coordinateur/${id}`);
+      const response = await axiosInstance.get(`/api/coordinateurs/${id}`);
       const coordinateur = response.data;
       const ecoleId = coordinateur.ecoleId;
 
