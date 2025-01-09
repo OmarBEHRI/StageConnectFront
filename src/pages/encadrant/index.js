@@ -45,7 +45,7 @@ export default function SupervisorDashboard() {
       const totalInternships = totalInternshipsResponse.data;
 
       // Fetch company total interns
-      const companyTotalInternsResponse = await axiosInstance.get(`/api/encadrants/compte-entreprises/${entrepriseId}/total-internships-confirmed`);
+      const companyTotalInternsResponse = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships-confirmed`);
       const companyTotalInterns = companyTotalInternsResponse.data;
 
       // Fetch company active internships
