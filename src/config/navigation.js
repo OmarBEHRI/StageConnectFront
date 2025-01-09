@@ -22,6 +22,7 @@ export const navConfigs = {
     coordinator: [
       { label: 'Dashboard', href: '/coordinateur' },
       { label: 'GestionStages', href: '/coordinateur/stages' },
+      { label: 'Evaluations', href: '/coordinateur/evaluations' },
     ],
   
     company: [
