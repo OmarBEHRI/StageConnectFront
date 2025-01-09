@@ -71,6 +71,7 @@ export default function HRInterviews() {
           const offreResponse = await axiosInstance.get(`/api/offres/${interview.offreId}`);
           return {
             ...interview,
+            dateEntretien: formatDate(interview.dateEntretien), // Format the interview date
             etudiant: etudiantResponse.data, // Add Etudiant details to the interview object
             offre: offreResponse.data, // Add Offre details to the interview object
           };
@@ -87,7 +88,14 @@ export default function HRInterviews() {
   const formatDate = (date) => {
     if (!date) return "N/A"; // Handle null or undefined dates
     const dateObj = new Date(date);
-    return dateObj.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const options = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return dateObj.toLocaleDateString('fr-FR', options); // Format as "DD Month YYYY at HH:MM"
   };
 
   const internshipFormFields = [
@@ -192,12 +200,6 @@ export default function HRInterviews() {
           buttons={["Accepter", "Refuser"]}
           actions={[handleAccept, handleRefuse]}
           idParam="idEntretien"
-          formatData={(key, value) => {
-            if (key === "dateEntretien") {
-              return formatDate(value); // Format dateEntretien
-            }
-            return value; // Return other values as-is
-          }}
         />
 
         <FormComponent 
