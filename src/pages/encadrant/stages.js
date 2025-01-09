@@ -80,7 +80,7 @@ export default function SupervisorInternships() {
   const handleSubmitEvaluation = async (data) => {
     try {
       const evaluationDTO = {
-        note: data.performance === "Excellent" ? 5 : data.performance === "Good" ? 4 : data.performance === "Average" ? 3 : 2,
+        note: data.note,
         competances: data.skills,
         commentaire: data.comments,
         encadrantId: localStorage.getItem("id"),
@@ -103,15 +103,11 @@ export default function SupervisorInternships() {
 
   const evaluationFormFields = [
     {
-      name: "performance",
-      placeholder: "Évaluation de la performance",
-      type: "select",
-      options: [
-        { label: "Excellent", value: "Excellent" },
-        { label: "Bon", value: "Good" },
-        { label: "Moyen", value: "Average" },
-        { label: "En dessous de la moyenne", value: "Below Average" }
-      ],
+      name: "note",
+      placeholder: "Note sur 20",
+      type: "number",
+      min: 0,
+      max: 20,
       required: true,
     },
     { name: "skills", placeholder: "Compétences techniques démontrées", required: true },
