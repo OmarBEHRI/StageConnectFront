@@ -95,6 +95,7 @@ export default function UniversityCFManagement() {
         return;
       }
 
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
       const response = await axiosInstance.post('/chefs-de-filiere', {
         nom: formData.nom,
         prenom: formData.prenom,

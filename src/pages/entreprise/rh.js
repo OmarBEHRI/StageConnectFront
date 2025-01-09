@@ -66,6 +66,7 @@ export default function ComHRManagement() {
         motDePasse: data.password,
         entrepriseId: entrepriseId,
       };
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
       await axiosInstance.post('/api/rh', rhDTO);
       fetchRHAccounts(entrepriseId);
       setIsFormOpen(false);

@@ -88,8 +88,8 @@ export default function UniversityAccountsManagement() {
         typeEcole: null,
         domaineEcole: null
       })
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.password}`)
       const newEcoleId = ecoleResponse.data.idEcole
-
       await axiosInstance.post('/compte-ecoles', {
         email: formData.email,
         motDePasse: formData.password,

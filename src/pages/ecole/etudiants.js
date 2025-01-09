@@ -43,6 +43,7 @@ export default function StudentsManagement() {
 
   const fetchEcoleId = async () => {
     try {
+      
       const response = await axiosInstance.get(`/compte-ecoles/${compteEcoleId}`);
       const ecoleId = response.data.ecoleId;
       setEcoleId(ecoleId);
@@ -96,6 +97,7 @@ export default function StudentsManagement() {
         return;
       }
 
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
       const response = await axiosInstance.post('/api/etudiants', {
         nom: studentData.nom,
         prenom: studentData.prenom,

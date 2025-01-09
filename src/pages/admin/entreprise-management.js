@@ -89,7 +89,7 @@ export default function CompanyAccountsManagement() {
         domaineEntreprise: null
       })
       const newEntrepriseId = entrepriseResponse.data.idEntreprise
-
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
       await axiosInstance.post('/compte-entreprises', {
         email: formData.email,
         motDePasse: formData.motDePasse,

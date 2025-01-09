@@ -75,6 +75,7 @@ export default function UniversityCoordinatorsManagement() {
 
   const handleCreateAccount = async (formData) => {
     try {
+      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
       const response = await axiosInstance.post('/api/coordinateurs', {
         nom: formData.nom,
         prenom: formData.prenom,
