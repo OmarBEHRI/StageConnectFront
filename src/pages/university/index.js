@@ -79,13 +79,13 @@ export default function UniversityDashboard() {
 
   return (
     <Layout role="university">
-      <h1 className="text-3xl font-bold mb-6">University Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6">Tableau de bord de l'université</h1>
       {loading ? (
-        <p>Loading...</p>
+        <p>Chargement...</p>
       ) : stats ? (
         <StatisticsSection stats={stats} />
       ) : (
-        <p>No data available</p>
+        <p>Aucune donnée disponible</p>
       )}
     </Layout>
   );

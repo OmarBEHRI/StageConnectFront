@@ -37,19 +37,19 @@ export default function CompanyDashboard() {
         const totalInternshipsRes = await axiosInstance.get(`/compte-entreprises/${entrepriseId}/total-internships`);
 
         const statsData = [
-          { title: "Open Offers", value: openOffersRes.data },
-          { title: "Total Offers", value: totalOffersRes.data },
-          { title: "Total Interviews", value: totalInterviewsRes.data },
-          { title: "Total HR", value: totalHRRes.data },
-          { title: "Total Supervisors", value: totalSupervisorsRes.data },
-          { title: "Total Confirmed Internships", value: confirmedInternshipsRes.data },
-          { title: "Total Internships Offers", value: totalInternshipsRes.data }
+          { title: "Offres ouvertes", value: openOffersRes.data },
+          { title: "Total des offres", value: totalOffersRes.data },
+          { title: "Total des entretiens", value: totalInterviewsRes.data },
+          { title: "Total des RH", value: totalHRRes.data },
+          { title: "Total des superviseurs", value: totalSupervisorsRes.data },
+          { title: "Stages confirmés", value: confirmedInternshipsRes.data },
+          { title: "Total des offres de stages", value: totalInternshipsRes.data }
         ];
 
         setStats(statsData);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Erreur lors de la récupération des données:", error);
         router.push('/');
       }
     };
@@ -58,13 +58,13 @@ export default function CompanyDashboard() {
   }, [router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Chargement...</div>;
   }
 
   return (
     <Layout role="company">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold mb-6">Company Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">Tableau de bord de l'entreprise</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {stats.map((stat) => (
             <StatCard key={stat.title} title={stat.title} value={stat.value} />

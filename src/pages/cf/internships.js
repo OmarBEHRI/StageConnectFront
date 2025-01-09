@@ -48,7 +48,7 @@ export default function CFInternships() {
 
       setStages(stagesWithStudents); // Set all stages with student data
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Erreur lors de la récupération des données:', error);
     } finally {
       setLoading(false);
     }
@@ -79,14 +79,14 @@ export default function CFInternships() {
         )
       );
     } catch (error) {
-      console.error('Error updating stage status:', error);
+      console.error('Erreur lors de la mise à jour du statut du stage:', error);
     }
   };
 
   return (
     <Layout role="cf">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Internship Validation Requests</h1>
+        <h1 className="text-2xl font-bold">Demandes de validation de stages</h1>
 
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
@@ -96,15 +96,15 @@ export default function CFInternships() {
           {filteredStages.map((stage) => (
             <Card
               key={stage.idStage}
-              title={stage.titre || 'No Title'}
+              title={stage.titre || 'Aucun titre'}
               specifications={[
-                { label: 'Description', value: stage.description || 'No Description' },
-                { label: 'Start Date', value: stage.dateDebut || 'No Start Date' },
-                { label: 'End Date', value: stage.dateFin || 'No End Date' },
-                { label: 'Location', value: stage.localisation || 'No Location' },
-                { label: 'Student', value: `${stage.etudiant?.prenom || 'No First Name'} ${stage.etudiant?.nom || 'No Last Name'}` },
-                { label: 'Email', value: stage.etudiant?.email || 'No Email' },
-                { label: 'Status', value: stage.statut || 'No Status' },
+                { label: 'Description', value: stage.description || 'Aucune description' },
+                { label: 'Date de début', value: stage.dateDebut || 'Aucune date de début' },
+                { label: 'Date de fin', value: stage.dateFin || 'Aucune date de fin' },
+                { label: 'Localisation', value: stage.localisation || 'Aucune localisation' },
+                { label: 'Étudiant', value: `${stage.etudiant?.prenom || 'Aucun prénom'} ${stage.etudiant?.nom || 'Aucun nom'}` },
+                { label: 'Email', value: stage.etudiant?.email || 'Aucun email' },
+                { label: 'Statut', value: stage.statut || 'Aucun statut' },
               ]}
               buttons={[
                 { label: 'Accepter', onClick: () => updateStageStatus(stage.idStage, 'valide') },
@@ -114,8 +114,8 @@ export default function CFInternships() {
           ))}
         </div>
 
-        {loading && <p className="text-center">Loading...</p>}
-        {!loading && filteredStages.length === 0 && <p className="text-center">No stages found.</p>}
+        {loading && <p className="text-center">Chargement...</p>}
+        {!loading && filteredStages.length === 0 && <p className="text-center">Aucun stage trouvé.</p>}
       </div>
     </Layout>
   );

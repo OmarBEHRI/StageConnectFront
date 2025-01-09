@@ -28,7 +28,7 @@ export default function CompteEntrepriseProfile() {
       const entrepriseResponse = await axiosInstance.get(`/api/entreprises/${compteEntrepriseResponse.data.entrepriseId}`);
       setEntreprise(entrepriseResponse.data);
     } catch (error) {
-      console.error('Error fetching profile data:', error);
+      console.error('Erreur lors de la récupération des données du profil:', error);
     }
   };
 
@@ -38,7 +38,7 @@ export default function CompteEntrepriseProfile() {
       setCompteEntreprise(response.data);
       setIsEditingCompteEntreprise(false);
     } catch (error) {
-      console.error('Error updating CompteEntreprise:', error);
+      console.error('Erreur lors de la mise à jour du CompteEntreprise:', error);
     }
   };
 
@@ -48,30 +48,30 @@ export default function CompteEntrepriseProfile() {
       setEntreprise(response.data);
       setIsEditingEntreprise(false);
     } catch (error) {
-      console.error('Error updating Entreprise:', error);
+      console.error('Erreur lors de la mise à jour de l\'Entreprise:', error);
     }
   };
 
   return (
     <Layout role="company">
       <div className="p-6 font-roboto">
-        <h1 className="text-2xl font-bold mb-6 text-black">Company Manager Profile</h1>
+        <h1 className="text-2xl font-bold mb-6 text-black">Profil du gestionnaire de l'entreprise</h1>
 
         {/* CompteEntreprise and Entreprise Information Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* CompteEntreprise Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Compte Entreprise Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Informations du compte entreprise</h2>
             {compteEntreprise && (
               <div className="space-y-2 text-black">
-                <p><strong>Name:</strong> {compteEntreprise.nom} {compteEntreprise.prenom}</p>
-                <p><strong>Email:</strong> {compteEntreprise.email}</p>
-                <p><strong>Phone:</strong> {compteEntreprise.telephone}</p>
+                <p><strong>Nom :</strong> {compteEntreprise.nom} {compteEntreprise.prenom}</p>
+                <p><strong>Email :</strong> {compteEntreprise.email}</p>
+                <p><strong>Téléphone :</strong> {compteEntreprise.telephone}</p>
                 <button
                   onClick={() => setIsEditingCompteEntreprise(true)}
                   className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
-                  Edit
+                  Modifier
                 </button>
               </div>
             )}
@@ -79,17 +79,17 @@ export default function CompteEntrepriseProfile() {
 
           {/* Entreprise Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Entreprise Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Informations de l'entreprise</h2>
             {entreprise && (
               <div className="space-y-2 text-black">
-                <p><strong>Company Name:</strong> {entreprise.nomEntreprise}</p>
-                <p><strong>City:</strong> {entreprise.villeEntreprise}</p>
-                <p><strong>Address:</strong> {entreprise.adresseEntreprise}</p>
+                <p><strong>Nom de l'entreprise :</strong> {entreprise.nomEntreprise}</p>
+                <p><strong>Ville :</strong> {entreprise.villeEntreprise}</p>
+                <p><strong>Adresse :</strong> {entreprise.adresseEntreprise}</p>
                 <button
                   onClick={() => setIsEditingEntreprise(true)}
                   className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
-                  Edit
+                  Modifier
                 </button>
               </div>
             )}
@@ -104,13 +104,13 @@ export default function CompteEntrepriseProfile() {
             onSubmit={handleSaveCompteEntreprise}
             fields={[
               { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text', required: true },
+              { name: 'prenom', placeholder: 'Prénom', type: 'text', required: true },
               { name: 'email', placeholder: 'Email', type: 'email', required: true },
-              { name: 'telephone', placeholder: 'Phone', type: 'text' },
-              { name: 'motDePasse', placeholder: 'Password', type: 'password', required: true },
+              { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
+              { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password', required: true },
             ]}
-            title="Edit Compte Entreprise"
-            submitButtonText="Save"
+            title="Modifier le compte entreprise"
+            submitButtonText="Enregistrer"
             prefillData={compteEntreprise}
           />
         )}
@@ -121,12 +121,12 @@ export default function CompteEntrepriseProfile() {
             onClose={() => setIsEditingEntreprise(false)}
             onSubmit={handleSaveEntreprise}
             fields={[
-              { name: 'nomEntreprise', placeholder: 'Company Name', type: 'text', required: true },
-              { name: 'villeEntreprise', placeholder: 'City', type: 'text', required: true },
-              { name: 'adresseEntreprise', placeholder: 'Address', type: 'text', required: true },
+              { name: 'nomEntreprise', placeholder: 'Nom de l\'entreprise', type: 'text', required: true },
+              { name: 'villeEntreprise', placeholder: 'Ville', type: 'text', required: true },
+              { name: 'adresseEntreprise', placeholder: 'Adresse', type: 'text', required: true },
             ]}
-            title="Edit Entreprise"
-            submitButtonText="Save"
+            title="Modifier l'entreprise"
+            submitButtonText="Enregistrer"
             prefillData={entreprise}
           />
         )}

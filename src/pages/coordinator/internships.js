@@ -34,7 +34,6 @@ export default function CoordinatorInternships() {
         return;
       }
 
-
       // Fetch CoordinateurDeStage by ID
       const coordinateurResponse = await axiosInstance.get(`/api/coordinateurs/${coordinateurId}`);
       console.log("Coordinateur Object: ");
@@ -83,14 +82,14 @@ export default function CoordinatorInternships() {
       setInternships(internshipsWithEtudiant);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Failed to fetch data. Please try again later.');
+      console.error('Erreur lors de la récupération des données:', error);
+      setError('Échec de la récupération des données. Veuillez réessayer plus tard.');
       setIsLoading(false);
     }
   };
 
   const handleSearch = (query) => {
-    console.log('Searching for:', query);
+    console.log('Recherche de:', query);
     // Implement search logic here
   };
 
@@ -104,7 +103,7 @@ export default function CoordinatorInternships() {
   return (
     <Layout role="coordinator">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Internship Validations</h1>
+        <h1 className="text-2xl font-bold">Validations des stages</h1>
 
         {/* Display error message if any */}
         {error && <p className="text-red-500">{error}</p>}
@@ -114,10 +113,10 @@ export default function CoordinatorInternships() {
         </div>
 
         {isLoading ? (
-          <p>Loading...</p>
+          <p>Chargement...</p>
         ) : (
           <Table
-            columns={["Student Email", "Stage Description", "Start Date", "End Date", "Status"]}
+            columns={["Email de l'étudiant", "Description du stage", "Date de début", "Date de fin", "Statut"]}
             columnKeys={[
               "etudiant.email", // Student email
               "description", // Stage description

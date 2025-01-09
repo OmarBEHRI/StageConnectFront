@@ -46,7 +46,7 @@ export default function StudentInterviews() {
 
       setInterviews(interviewsWithDetails);
     } catch (error) {
-      console.error('Error fetching interviews:', error);
+      console.error('Erreur lors de la récupération des entretiens :', error);
     } finally {
       setLoading(false);
     }
@@ -54,7 +54,7 @@ export default function StudentInterviews() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -62,26 +62,26 @@ export default function StudentInterviews() {
   };
 
   const handleSearch = (query) => {
-    console.log("Searching for:", query);
+    console.log("Recherche pour :", query);
   };
 
   const handleJoinMeeting = (meetingLink) => {
     if (meetingLink && meetingLink.startsWith('http')) {
       window.open(meetingLink, '_blank');
     } else {
-      setErrorMessage('lien introuvable');
+      setErrorMessage('Lien introuvable');
       setTimeout(() => setErrorMessage(null), 3000);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Chargement...</div>;
   }
 
   return (
     <Layout role="student">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">My Interviews</h1>
+        <h1 className="text-2xl font-bold mb-6">Mes entretiens</h1>
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
@@ -92,11 +92,11 @@ export default function StudentInterviews() {
               title={interview.offre.objetOffre}
               specifications={[
                 { label: "Date", value: formatDate(interview.dateEntretien) },
-                { label: "Address", value: interview.adresse },
-                { label: "Duration", value: interview.duree },
-                { label: "Status", value: interview.etat },
-                { label: "Result", value: interview.resultat },
-                { label: "Meeting Link", value: interview.lien, isLink: true },
+                { label: "Adresse", value: interview.adresse },
+                { label: "Durée", value: interview.duree },
+                { label: "Statut", value: interview.etat },
+                { label: "Résultat", value: interview.resultat },
+                { label: "Lien de réunion", value: interview.lien, isLink: true },
               ]}
               buttons={[
                 {

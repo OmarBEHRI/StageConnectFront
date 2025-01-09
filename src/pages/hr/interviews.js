@@ -44,7 +44,7 @@ export default function HRInterviews() {
       fetchEncadrants(response.data.entrepriseId); // Fetch encadrants after setting entrepriseId
     } catch (error) {
       console.error('Error fetching CompteEntreprise:', error);
-      setErrorMessage('Failed to fetch CompteEntreprise data.');
+      setErrorMessage('Échec de la récupération des données du CompteEntreprise.');
     }
   };
 
@@ -54,7 +54,7 @@ export default function HRInterviews() {
       setEncadrants(response.data); // Store encadrants in state
     } catch (error) {
       console.error('Error fetching encadrants:', error);
-      setErrorMessage('Failed to fetch encadrants.');
+      setErrorMessage('Échec de la récupération des encadrants.');
     }
   };
 
@@ -80,7 +80,7 @@ export default function HRInterviews() {
       setInterviews(interviewsWithDetails);
     } catch (error) {
       console.error('Error fetching interviews, Etudiant, or Offre details:', error);
-      setErrorMessage('Failed to fetch interviews, Etudiant, or Offre details.');
+      setErrorMessage('Échec de la récupération des entretiens, des détails de l\'étudiant ou de l\'offre.');
     }
   };
 
@@ -91,17 +91,17 @@ export default function HRInterviews() {
   };
 
   const internshipFormFields = [
-    { name: "titre", placeholder: "Title", required: true },
+    { name: "titre", placeholder: "Titre", required: true },
     { name: "description", placeholder: "Description", required: true },
-    { name: "dateDebut", placeholder: "Start Date", type: "date", required: true },
-    { name: "dateFin", placeholder: "End Date", type: "date", required: true },
-    { name: "duree", placeholder: "Duration", required: true },
-    { name: "localisation", placeholder: "Location", required: true },
-    { name: "montantRemuneration", placeholder: "Remuneration", type: "number", required: true },
+    { name: "dateDebut", placeholder: "Date de début", type: "date", required: true },
+    { name: "dateFin", placeholder: "Date de fin", type: "date", required: true },
+    { name: "duree", placeholder: "Durée", required: true },
+    { name: "localisation", placeholder: "Localisation", required: true },
+    { name: "montantRemuneration", placeholder: "Rémunération", type: "number", required: true },
     { name: "type", placeholder: "Type", required: true },
     {
       name: "encadrant",
-      placeholder: "Supervisor",
+      placeholder: "Encadrant",
       type: "select",
       options: encadrants.map(encadrant => ({
         label: `${encadrant.nom} ${encadrant.prenom}`,
@@ -123,7 +123,7 @@ export default function HRInterviews() {
       fetchInterviews(entrepriseId);
     } catch (error) {
       console.error('Error refusing interview:', error);
-      setErrorMessage('Failed to refuse interview.');
+      setErrorMessage('Échec du refus de l\'entretien.');
     }
   };
 
@@ -165,22 +165,22 @@ export default function HRInterviews() {
       setIsInternshipFormOpen(false); // Close the form
     } catch (error) {
       console.error('Error creating internship:', error);
-      setErrorMessage('Failed to create internship.');
+      setErrorMessage('Échec de la création du stage.');
     }
   };
 
   return (
     <Layout role="hr">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Interviews Management</h1>
+        <h1 className="text-2xl font-bold">Gestion des entretiens</h1>
         
         {/* Display error message if any */}
         {error && <p className="text-red-500">{error}</p>}
 
-        <SearchBar onSearch={(query) => console.log('Search:', query)} />
+        <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
 
         <Table 
-          columns={["Student Name", "Email", "Phone", "Offer Object", "Date"]}
+          columns={["Nom de l'étudiant", "Email", "Téléphone", "Objet de l'offre", "Date"]}
           columnKeys={[
             "etudiant.nom", 
             "etudiant.email", 
@@ -189,7 +189,7 @@ export default function HRInterviews() {
             "dateEntretien"
           ]}
           items={interviews}
-          buttons={["Accept", "Refuse"]}
+          buttons={["Accepter", "Refuser"]}
           actions={[handleAccept, handleRefuse]}
           idParam="idEntretien"
           formatData={(key, value) => {
@@ -205,8 +205,8 @@ export default function HRInterviews() {
           onClose={() => setIsInternshipFormOpen(false)}
           onSubmit={handleCreateInternship}
           fields={internshipFormFields}
-          title="Create Internship"
-          submitButtonText="Create"
+          title="Créer un stage"
+          submitButtonText="Créer"
         />
       </div>
     </Layout>

@@ -4,15 +4,17 @@ import Table from '@/components/Table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+
 export default function StudentApplications() {
   const router = useRouter();
   const [applications, setApplications] = useState({
-    columns: ['Company', 'Position', 'Type', 'ObjetOffre', 'Status'],
+    columns: ['Entreprise', 'Poste', 'Type', 'Objet de l\'offre', 'Statut'],
     columnKeys: ['company', 'position', 'type', 'objetOffre', 'status'], // Map column keys to match the keys in your data
     items: []
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
@@ -27,6 +29,7 @@ export default function StudentApplications() {
       router.push('/');
     }
   }, [router]);
+
   const fetchPostulations = async (etudiantId) => {
     try {
       const response = await axiosInstance.get(`/api/postulations/etudiant/${etudiantId}`);
@@ -36,8 +39,8 @@ export default function StudentApplications() {
       const transformedPostulations = await Promise.all(postulations.map(async (postulation) => {
         try {
           console.log(`Fetching offer details for postulation ID: ${postulation.id}`);
-          console.log(`Postulation: ${postulation}`)
-          
+          console.log(`Postulation: ${postulation}`);
+
           const offerResponse = await axiosInstance.get(`/api/offres/${postulation.offreId}`);
           const offer = offerResponse.data;
           console.log(`Offer details for postulation ID ${postulation.id}:`, offer);
@@ -51,17 +54,17 @@ export default function StudentApplications() {
             company: entreprise.nomEntreprise, // Set company name as entreprise.nomEntreprise
             position: offer.posteOffre, // Use posteOffre from offer
             type: offer.typeStageOffre, // Use typeStageOffre from offer
-            objetOffre: offer.objetOffre , // Use objetOffre from offer
+            objetOffre: offer.objetOffre, // Use objetOffre from offer
             status: postulation.etatPostulation
           };
         } catch (offerError) {
           console.error(`Error fetching offer details for postulation ${postulation.id}:`, offerError);
           return {
             id: postulation.id,
-            company: 'Company Name',
-            position: 'Position Name',
+            company: 'Nom de l\'entreprise',
+            position: 'Nom du poste',
             type: 'Type',
-            domain: 'Domain',
+            objetOffre: 'Objet de l\'offre',
             status: postulation.etatPostulation
           };
         }
@@ -77,6 +80,7 @@ export default function StudentApplications() {
       setLoading(false);
     }
   };
+
   const getStatusColor = (status) => {
     const colors = {
       refused: 'text-red-600',
@@ -85,24 +89,29 @@ export default function StudentApplications() {
     };
     return colors[status] || 'text-gray-600';
   };
+
   const handleSearch = (query) => {
     // Implement search logic
-    console.log("Searching for:", query);
+    console.log("Recherche pour :", query);
   };
+
   const handleLogout = () => {
     // Add logout logic here
     router.push('/');
   };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Chargement...</div>;
   }
+
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Erreur : {error}</div>;
   }
+
   return (
     <Layout role="student">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">My Applications</h1>
+        <h1 className="text-2xl font-bold mb-6">Mes candidatures</h1>
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>

@@ -32,8 +32,8 @@ export default function HRInternships() {
       setEntrepriseId(response.data.entrepriseId);
       fetchInternships(response.data.entrepriseId); // Fetch internships for the company
     } catch (error) {
-      console.error('Error fetching RH details:', error);
-      alert('Failed to fetch RH details.');
+      console.error('Erreur lors de la récupération des détails RH:', error);
+      alert('Échec de la récupération des détails RH.');
     }
   };
 
@@ -57,8 +57,8 @@ export default function HRInternships() {
 
       setInternships(internshipsWithEtudiant);
     } catch (error) {
-      console.error('Error fetching internships or Etudiant details:', error);
-      alert('Failed to fetch internships or Etudiant details.');
+      console.error('Erreur lors de la récupération des stages ou des détails de l\'étudiant:', error);
+      alert('Échec de la récupération des stages ou des détails de l\'étudiant.');
     }
   };
 
@@ -75,20 +75,20 @@ export default function HRInternships() {
       await axiosInstance.delete(`/stages/${internshipId}`);
       fetchInternships(entrepriseId); // Refresh the list after deletion
     } catch (error) {
-      console.error('Error deleting internship:', error);
-      alert('Failed to delete internship.');
+      console.error('Erreur lors de la suppression du stage:', error);
+      alert('Échec de la suppression du stage.');
     }
   };
 
   return (
     <Layout role="hr">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Internships Management</h1>
+        <h1 className="text-2xl font-bold">Gestion des stages</h1>
         
-        <SearchBar onSearch={(query) => console.log('Search:', query)} />
+        <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
 
         <Table 
-          columns={["ID", "Title", "Student Name", "Email", "Phone", "Start Date", "End Date", "Status"]}
+          columns={["ID", "Titre", "Nom de l'étudiant", "Email", "Téléphone", "Date de début", "Date de fin", "Statut"]}
           columnKeys={[
             "idStage", 
             "titre", 
@@ -100,7 +100,7 @@ export default function HRInternships() {
             "statut"
           ]}
           items={internships}
-          buttons={["Delete"]}
+          buttons={["Supprimer"]}
           actions={[handleDelete]}
           idParam="idStage"
           formatData={(key, value) => {

@@ -36,7 +36,7 @@ export default function HROfferManagement() {
       fetchOffers(response.data.entrepriseId);
     } catch (error) {
       console.error('Error fetching CompteEntreprise:', error);
-      alert('Failed to fetch CompteEntreprise data.');
+      alert('Échec de la récupération des données du CompteEntreprise.');
     }
   };
 
@@ -54,7 +54,7 @@ export default function HROfferManagement() {
       setOffers(formattedOffers);
     } catch (error) {
       console.error('Error fetching offers:', error);
-      alert('Failed to fetch offers.');
+      alert('Échec de la récupération des offres.');
     }
   };
 
@@ -65,16 +65,16 @@ export default function HROfferManagement() {
   };
 
   const formFields = [
-    { name: "objetOffre", placeholder: "Title", required: true },
-    { name: "posteOffre", placeholder: "Position", required: true },
-    { name: "dateLancement", placeholder: "Start Date", type: "date", required: true },
-    { name: "dateLimite", placeholder: "End Date", type: "date", required: true },
+    { name: "objetOffre", placeholder: "Titre", required: true },
+    { name: "posteOffre", placeholder: "Poste", required: true },
+    { name: "dateLancement", placeholder: "Date de début", type: "date", required: true },
+    { name: "dateLimite", placeholder: "Date de fin", type: "date", required: true },
     { name: "descriptionOffre", placeholder: "Description", required: true },
-    { name: "dureeStage", placeholder: "Duration", required: true },
+    { name: "dureeStage", placeholder: "Durée", required: true },
     { name: "modeOffre", placeholder: "Mode", required: true },
-    { name: "remuneration", placeholder: "Remuneration", required: true },
+    { name: "remuneration", placeholder: "Rémunération", required: true },
     { name: "typeStageOffre", placeholder: "Type", required: true },
-    { name: "niveauRequisOffre", placeholder: "Required Level", required: true },
+    { name: "niveauRequisOffre", placeholder: "Niveau requis", required: true },
   ];
 
   const handleCreateOffer = async (data) => {
@@ -98,7 +98,7 @@ export default function HROfferManagement() {
       setIsFormOpen(false);
     } catch (error) {
       console.error('Error creating offer:', error);
-      alert('Failed to create offer.');
+      alert('Échec de la création de l\'offre.');
     }
   };
 
@@ -131,7 +131,7 @@ export default function HROfferManagement() {
       setIsFormOpen(false);
     } catch (error) {
       console.error('Error updating offer:', error);
-      alert('Failed to update offer.');
+      alert('Échec de la mise à jour de l\'offre.');
     }
   };
 
@@ -141,7 +141,7 @@ export default function HROfferManagement() {
       fetchOffers(entrepriseId);
     } catch (error) {
       console.error('Error deleting offer:', error);
-      alert('Failed to delete offer.');
+      alert('Échec de la suppression de l\'offre.');
     }
   };
 
@@ -152,10 +152,10 @@ export default function HROfferManagement() {
   return (
     <Layout role="hr">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Company Offers</h1>
+        <h1 className="text-2xl font-bold">Offres de l'entreprise</h1>
 
         <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Search:', query)} />
+          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
           <button
             onClick={() => {
               setIsEditMode(false);
@@ -164,23 +164,23 @@ export default function HROfferManagement() {
             }}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Create New Offer
+            Créer une nouvelle offre
           </button>
         </div>
 
         <Table
           columns={[
             "ID Offre",
-            "Title", 
-            "Position", 
-            "Start Date", 
-            "End Date", 
+            "Titre", 
+            "Poste", 
+            "Date de début", 
+            "Date de fin", 
             "Description", 
-            "Duration", 
+            "Durée", 
             "Mode", 
-            "Remuneration", 
+            "Rémunération", 
             "Type", 
-            "Required Level", 
+            "Niveau requis", 
           ]}
           columnKeys={[
             "idOffre",
@@ -196,7 +196,7 @@ export default function HROfferManagement() {
             "niveauRequisOffre", 
           ]}
           items={offers}
-          buttons={["Edit", "Delete", "Postulations"]}
+          buttons={["Modifier", "Supprimer", "Postulations"]}
           actions={[handleEdit, handleDelete, handlePostulations]}
           idParam="idOffre"
           formatData={(key, value) => {
@@ -216,7 +216,7 @@ export default function HROfferManagement() {
           }}
           onSubmit={isEditMode ? handleEditOffer : handleCreateOffer}
           fields={formFields}
-          title={isEditMode ? "Edit Offer" : "Create New Offer"}
+          title={isEditMode ? "Modifier l'offre" : "Créer une nouvelle offre"}
           submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedOffer}
         />

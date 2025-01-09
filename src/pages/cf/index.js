@@ -7,10 +7,10 @@ import axiosInstance from '@/axiosInstance/axiosInstance';
 export default function CFDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState([
-    { title: 'Students in Major', value: 'Loading...' },
-    { title: 'Students with Internships', value: 'Loading...' },
-    { title: 'Visible Offers', value: 'Loading...' },
-    { title: 'Internships Found', value: 'Loading...' },
+    { title: 'Étudiants dans la filière', value: 'Chargement...' },
+    { title: 'Étudiants avec stages', value: 'Chargement...' },
+    { title: 'Offres visibles', value: 'Chargement...' },
+    { title: 'Stages trouvés', value: 'Chargement...' },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -54,15 +54,15 @@ export default function CFDashboard() {
 
       // Update stats state
       setStats([
-        { title: 'Students in Major', value: totalStudents },
-        { title: 'Students with Internships', value: studentsWithInternships },
-        { title: 'Visible Offers', value: visibleOffers },
-        { title: 'Internships Found', value: internshipsFound },
+        { title: 'Étudiants dans la filière', value: totalStudents },
+        { title: 'Étudiants avec stages', value: studentsWithInternships },
+        { title: 'Offres visibles', value: visibleOffers },
+        { title: 'Stages trouvés', value: internshipsFound },
       ]);
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.error('Erreur lors de la récupération des statistiques:', error);
       setLoading(false);
     }
   };
@@ -70,7 +70,7 @@ export default function CFDashboard() {
   return (
     <Layout role="cf">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold mb-6">Career Fair Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">Tableau de bord du chef de filière</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((stat) => (
             <StatCard key={stat.title} title={stat.title} value={stat.value} />

@@ -71,7 +71,7 @@ export default function StudentOffers() {
       setPostulations(postulations);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Erreur lors de la récupération des données :', error);
       setIsLoading(false);
     }
   };
@@ -111,11 +111,11 @@ export default function StudentOffers() {
         setOffers(updatedOffers);
         setFilteredOffers(updatedOffers);
         setIsModalOpen(false); // Close the modal
-        setSuccessMessage('Postulation réussie!'); // Set success message
+        setSuccessMessage('Postulation réussie !'); // Set success message
         setTimeout(() => setSuccessMessage(null), 5000); // Clear success message after 5 seconds
       }
     } catch (error) {
-      console.error('Error submitting postulation:', error);
+      console.error('Erreur lors de la soumission de la postulation :', error);
       setSuccessMessage('Erreur lors de la postulation.'); // Set error message
       setTimeout(() => setSuccessMessage(null), 5000); // Clear error message after 5 seconds
     }
@@ -141,7 +141,7 @@ export default function StudentOffers() {
   return (
     <Layout role="student">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Available Offers</h1>
+        <h1 className="text-2xl font-bold mb-6">Offres disponibles</h1>
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
@@ -152,7 +152,7 @@ export default function StudentOffers() {
           </p>
         )}
         {isLoading ? (
-          <p>Loading...</p>
+          <p>Chargement...</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredOffers.map((offer) => (

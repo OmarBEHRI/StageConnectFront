@@ -35,7 +35,7 @@ export default function CFOffers() {
     try {
       const id = localStorage.getItem('id');
       if (!id) {
-        throw new Error('No ID found in localStorage');
+        throw new Error('Aucun ID trouvé dans le localStorage');
       }
 
       const response = await axiosInstance.get(`/chefs-de-filiere/${id}`);
@@ -43,7 +43,7 @@ export default function CFOffers() {
       fetchVisibleOffers(response.data.filiereId);
       fetchAllOffers();
     } catch (err) {
-      setError(err.message || 'Failed to fetch ChefDeFiliere data');
+      setError(err.message || 'Échec de la récupération des données du ChefDeFiliere');
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +55,7 @@ export default function CFOffers() {
       const response = await axiosInstance.get(`/visible-offres/${filiereId}/visible-offres`);
       setVisibleOffers(response.data);
     } catch (err) {
-      setError('Failed to fetch visible offers');
+      setError('Échec de la récupération des offres visibles');
     }
   };
 
@@ -65,7 +65,7 @@ export default function CFOffers() {
       const response = await axiosInstance.get('/api/offres');
       setOffersList(response.data);
     } catch (err) {
-      setError('Failed to fetch all offers');
+      setError('Échec de la récupération de toutes les offres');
     }
   };
 
@@ -75,7 +75,7 @@ export default function CFOffers() {
       await axiosInstance.delete(`/visible-offres/${offreId}/${filiereId}`);
       setVisibleOffers((prev) => prev.filter((offer) => offer.idOffre !== offreId));
     } catch (err) {
-      setError('Failed to delete offer');
+      setError('Échec de la suppression de l\'offre');
     }
   };
 
@@ -85,7 +85,7 @@ export default function CFOffers() {
       await axiosInstance.post(`/visible-offres/filiere/${filiereId}/offre/${offreId}/visibility?visible=true`);
       fetchVisibleOffers(filiereId); // Refresh visible offers
     } catch (err) {
-      setError('Failed to add offer');
+      setError('Échec de l\'ajout de l\'offre');
     }
   };
 
@@ -150,17 +150,17 @@ export default function CFOffers() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Chargement...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Erreur : {error}</div>;
   }
 
   return (
     <Layout role="cf">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Available Offers</h1>
+        <h1 className="text-2xl font-bold">Offres disponibles</h1>
 
         <div className="flex items-center justify-between mb-6">
           <SearchBar onSearch={(query) => setSearchQuery(query)} />
@@ -172,7 +172,7 @@ export default function CFOffers() {
               } text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-300`}
               disabled={activeView === 'selectable'}
             >
-              Select New Offers
+              Sélectionner de nouvelles offres
             </button>
             <button
               onClick={() => toggleView('visible')}
@@ -181,7 +181,7 @@ export default function CFOffers() {
               } text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-300`}
               disabled={activeView === 'visible'}
             >
-              View Selected Offers
+              Voir les offres sélectionnées
             </button>
           </div>
         </div>

@@ -7,11 +7,11 @@ import axiosInstance from '@/axiosInstance/axiosInstance';
 export default function StudentDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState({
-    visibleOffers: 'Loading...',
-    applications: 'Loading...',
-    interviews: 'Loading...',
-    internships: 'Loading...',
-    universityStudents: 'Loading...',
+    visibleOffers: 'Chargement...',
+    applications: 'Chargement...',
+    interviews: 'Chargement...',
+    internships: 'Chargement...',
+    universityStudents: 'Chargement...',
   });
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ export default function StudentDashboard() {
       const visibleOffersResponse = await axiosInstance.get(`/api/etudiants/${filiereId}/visible/count`);
       const visibleOffers = visibleOffersResponse.data;
 
-     // Replace with actual API call if needed
+      // Replace with actual API call if needed
 
       // Fetch my applications
       const applicationsResponse = await axiosInstance.get(`/api/etudiants/${idEtu}/postulations/count`);
@@ -87,13 +87,13 @@ export default function StudentDashboard() {
   return (
     <Layout role="student">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">Tableau de bord</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard title="Available Offers" value={stats.visibleOffers} />
-          <StatCard title="My Applications" value={stats.applications} />
-          <StatCard title="Upcoming Interviews" value={stats.interviews} />
-          <StatCard title="Active Internships" value={stats.internships} />
-          <StatCard title="University Students" value={stats.universityStudents} />
+          <StatCard title="Offres disponibles" value={stats.visibleOffers} />
+          <StatCard title="Mes candidatures" value={stats.applications} />
+          <StatCard title="Entretiens à venir" value={stats.interviews} />
+          <StatCard title="Stages actifs" value={stats.internships} />
+          <StatCard title="Étudiants de l'université" value={stats.universityStudents} />
         </div>
       </div>
     </Layout>

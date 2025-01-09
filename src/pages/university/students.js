@@ -299,7 +299,7 @@ export default function StudentsManagement() {
       {showFileUploadMessage && (
         <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4" role="alert">
           <span className="block sm:inline">
-            <strong>Note:</strong> This implementation assumes that the Excel/CSV file has specific columns (<code>nom</code>, <code>prenom</code>, <code>email</code>, <code>telephone</code>, <code>motDePasse</code>, <code>codeEtu</code>, <code>statutEtudiant</code>, <code>filiereNom</code>). You may need to adjust the column names based on your actual file structure.
+            <strong>Note :</strong> Cette implémentation suppose que le fichier Excel/CSV contient des colonnes spécifiques (<code>nom</code>, <code>prenom</code>, <code>email</code>, <code>telephone</code>, <code>motDePasse</code>, <code>codeEtu</code>, <code>statutEtudiant</code>, <code>filiereNom</code>). Vous devrez peut-être ajuster les noms des colonnes en fonction de la structure de votre fichier.
           </span>
         </div>
       )}

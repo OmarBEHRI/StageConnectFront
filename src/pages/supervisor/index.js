@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import StatCard from '@/components/StatCard';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import axiosInstance from '@/axiosInstance/axiosInstance';
 
 export default function SupervisorDashboard() {
   const router = useRouter();
@@ -23,22 +23,20 @@ export default function SupervisorDashboard() {
   // Mock data - replace with actual data
   const stats = [
     // Supervisor stats
-    { title: "Ongoing Internships", value: "5" },
-    { title: "Total Internships Supervised", value: "15" },
+    { title: "Stages en cours", value: "5" },
+    { title: "Total des stages supervisés", value: "15" },
     // Company stats
-    { title: "Company Total Interns", value: "25" },
-    { title: "Company Active Internships", value: "12" }
+    { title: "Total des stagiaires de l'entreprise", value: "25" },
+    { title: "Stages actifs de l'entreprise", value: "12" }
   ];
 
   return (
-    <Layout
-      role="supervisor"
-    >
+    <Layout role="supervisor">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold mb-6">Supervisor Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">Tableau de bord du superviseur</h1>
         
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">My Statistics</h2>
+          <h2 className="text-xl font-semibold mb-4">Mes statistiques</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stats.slice(0, 2).map((stat) => (
               <StatCard key={stat.title} title={stat.title} value={stat.value} />
@@ -47,7 +45,7 @@ export default function SupervisorDashboard() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-4">Company Statistics</h2>
+          <h2 className="text-xl font-semibold mb-4">Statistiques de l'entreprise</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stats.slice(2).map((stat) => (
               <StatCard key={stat.title} title={stat.title} value={stat.value} />

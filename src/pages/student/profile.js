@@ -23,7 +23,7 @@ export default function EtudiantProfile() {
       const response = await axiosInstance.get(`/api/etudiants/${id}`);
       setEtudiant(response.data);
     } catch (error) {
-      console.error('Error fetching profile data:', error);
+      console.error('Erreur lors de la récupération des données du profil :', error);
     }
   };
 
@@ -40,28 +40,28 @@ export default function EtudiantProfile() {
       setEtudiant(response.data);
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating Etudiant:', error);
+      console.error('Erreur lors de la mise à jour de l\'étudiant :', error);
     }
   };
 
   return (
     <Layout role="student">
       <div className="p-6 font-roboto">
-        <h1 className="text-2xl font-bold mb-6 text-black">Student Profile</h1>
+        <h1 className="text-2xl font-bold mb-6 text-black">Profil de l'étudiant</h1>
 
         {/* Etudiant Information Card */}
         <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-black">Student Information</h2>
+          <h2 className="text-xl font-semibold mb-4 text-black">Informations de l'étudiant</h2>
           {etudiant && (
             <div className="space-y-2 text-black">
-              <p><strong>Name:</strong> {etudiant.nom} {etudiant.prenom}</p>
-              <p><strong>Email:</strong> {etudiant.email}</p>
-              <p><strong>Phone:</strong> {etudiant.tel}</p>
+              <p><strong>Nom :</strong> {etudiant.nom} {etudiant.prenom}</p>
+              <p><strong>Email :</strong> {etudiant.email}</p>
+              <p><strong>Téléphone :</strong> {etudiant.tel}</p>
               <button
                 onClick={() => setIsEditing(true)}
                 className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
               >
-                Edit
+                Modifier
               </button>
             </div>
           )}
@@ -75,13 +75,13 @@ export default function EtudiantProfile() {
             onSubmit={handleSave}
             fields={[
               { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text', required: true },
+              { name: 'prenom', placeholder: 'Prénom', type: 'text', required: true },
               { name: 'email', placeholder: 'Email', type: 'email', required: true },
-              { name: 'tel', placeholder: 'Phone', type: 'text' },
-              { name: 'motDePasse', placeholder: 'Mot De Passe', type: 'password', required: true },
+              { name: 'tel', placeholder: 'Téléphone', type: 'text' },
+              { name: 'motDePasse', placeholder: 'Mot de passe', type: 'password', required: true },
             ]}
-            title="Edit Student Profile"
-            submitButtonText="Save"
+            title="Modifier le profil de l'étudiant"
+            submitButtonText="Enregistrer"
             prefillData={etudiant}
           />
         )}

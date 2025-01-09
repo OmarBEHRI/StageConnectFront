@@ -102,23 +102,23 @@ export default function CompteEcoleProfile() {
   return (
     <Layout role="university">
       <div className="p-6 font-roboto">
-        <h1 className="text-2xl font-bold mb-6 text-black">University Manager Profile</h1>
+        <h1 className="text-2xl font-bold mb-6 text-black">Profil du gestionnaire de l'université</h1>
 
         {/* CompteEcole and Ecole Information Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* CompteEcole Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Compte Ecole Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Informations du compte école</h2>
             {compteEcole && (
               <div className="space-y-2 text-black">
-                <p><strong>Name:</strong> {compteEcole.nom} {compteEcole.prenom}</p>
-                <p><strong>Email:</strong> {compteEcole.email}</p>
-                <p><strong>Phone:</strong> {compteEcole.telephone}</p>
+                <p><strong>Nom :</strong> {compteEcole.nom} {compteEcole.prenom}</p>
+                <p><strong>Email :</strong> {compteEcole.email}</p>
+                <p><strong>Téléphone :</strong> {compteEcole.telephone}</p>
                 <button
                   onClick={() => setIsEditingCompteEcole(true)}
                   className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
-                  Edit
+                  Modifier
                 </button>
               </div>
             )}
@@ -126,21 +126,21 @@ export default function CompteEcoleProfile() {
 
           {/* Ecole Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4 text-black">Ecole Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black">Informations de l'école</h2>
             {ecole && (
               <div className="space-y-2 text-black">
-                <p><strong>School Name:</strong> {ecole.nomEcole}</p>
-                <p><strong>City:</strong> {ecole.villeEcole}</p>
-                <p><strong>Address:</strong> {ecole.adresseEcole}</p>
-                <p><strong>Description:</strong> {ecole.description}</p>
-                <p><strong>Fixed Phone:</strong> {ecole.telephoneFix}</p>
-                <p><strong>School Type:</strong> {ecole.typeEcole}</p>
-                <p><strong>School Domain:</strong> {ecole.domaineEcole}</p>
+                <p><strong>Nom de l'école :</strong> {ecole.nomEcole}</p>
+                <p><strong>Ville :</strong> {ecole.villeEcole}</p>
+                <p><strong>Adresse :</strong> {ecole.adresseEcole}</p>
+                <p><strong>Description :</strong> {ecole.description}</p>
+                <p><strong>Téléphone fixe :</strong> {ecole.telephoneFix}</p>
+                <p><strong>Type d'école :</strong> {ecole.typeEcole}</p>
+                <p><strong>Domaine de l'école :</strong> {ecole.domaineEcole}</p>
                 <button
                   onClick={() => setIsEditingEcole(true)}
                   className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                 >
-                  Edit
+                  Modifier
                 </button>
               </div>
             )}
@@ -150,19 +150,19 @@ export default function CompteEcoleProfile() {
         {/* Filiere Management Section */}
         <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-black">Filiere Management</h2>
+            <h2 className="text-xl font-semibold text-black">Gestion des filières</h2>
             <button
               onClick={() => setIsAddingFiliere(true)}
               className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
             >
-              Add Filiere
+              Ajouter une filière
             </button>
           </div>
           <Table
-            columns={['Name', 'Abbreviation']}
+            columns={['Nom', 'Abréviation']}
             columnKeys={['nomFiliere', 'abrvFiliere']}
             items={filieres}
-            buttons={['Edit', 'Delete']}
+            buttons={['Modifier', 'Supprimer']}
             actions={[setEditingFiliere, handleDeleteFiliere]}
             idParam="idFiliere"
           />
@@ -176,12 +176,12 @@ export default function CompteEcoleProfile() {
             onSubmit={handleSaveCompteEcole}
             fields={[
               { name: 'nom', placeholder: 'Nom', type: 'text' },
-              { name: 'prenom', placeholder: 'Prenom', type: 'text' },
+              { name: 'prenom', placeholder: 'Prénom', type: 'text' },
               { name: 'email', placeholder: 'Email', type: 'email' },
-              { name: 'telephone', placeholder: 'Phone', type: 'text' },
+              { name: 'telephone', placeholder: 'Téléphone', type: 'text' },
             ]}
-            title="Edit Compte Ecole"
-            submitButtonText="Save"
+            title="Modifier le compte école"
+            submitButtonText="Enregistrer"
             prefillData={compteEcole}
           />
         )}
@@ -192,16 +192,16 @@ export default function CompteEcoleProfile() {
             onClose={() => setIsEditingEcole(false)}
             onSubmit={handleSaveEcole}
             fields={[
-              { name: 'nomEcole', placeholder: 'School Name', type: 'text' },
-              { name: 'villeEcole', placeholder: 'City', type: 'text' },
-              { name: 'adresseEcole', placeholder: 'Address', type: 'text' },
+              { name: 'nomEcole', placeholder: 'Nom de l\'école', type: 'text' },
+              { name: 'villeEcole', placeholder: 'Ville', type: 'text' },
+              { name: 'adresseEcole', placeholder: 'Adresse', type: 'text' },
               { name: 'description', placeholder: 'Description', type: 'text' },
-              { name: 'telephoneFix', placeholder: 'Fixed Phone', type: 'text' },
-              { name: 'typeEcole', placeholder: 'School Type', type: 'text' },
-              { name: 'domaineEcole', placeholder: 'School Domain', type: 'text' },
+              { name: 'telephoneFix', placeholder: 'Téléphone fixe', type: 'text' },
+              { name: 'typeEcole', placeholder: 'Type d\'école', type: 'text' },
+              { name: 'domaineEcole', placeholder: 'Domaine de l\'école', type: 'text' },
             ]}
-            title="Edit Ecole"
-            submitButtonText="Save"
+            title="Modifier l'école"
+            submitButtonText="Enregistrer"
             prefillData={ecole}
           />
         )}
@@ -212,11 +212,11 @@ export default function CompteEcoleProfile() {
             onClose={() => setIsAddingFiliere(false)}
             onSubmit={handleAddFiliere}
             fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
+              { name: 'nomFiliere', placeholder: 'Nom de la filière', type: 'text', required: true },
+              { name: 'abrvFiliere', placeholder: 'Abréviation', type: 'text', required: true },
             ]}
-            title="Add Filiere"
-            submitButtonText="Add"
+            title="Ajouter une filière"
+            submitButtonText="Ajouter"
           />
         )}
 
@@ -226,11 +226,11 @@ export default function CompteEcoleProfile() {
             onClose={() => setEditingFiliere(null)}
             onSubmit={handleEditFiliere}
             fields={[
-              { name: 'nomFiliere', placeholder: 'Filiere Name', type: 'text', required: true },
-              { name: 'abrvFiliere', placeholder: 'Abbreviation', type: 'text', required: true },
+              { name: 'nomFiliere', placeholder: 'Nom de la filière', type: 'text', required: true },
+              { name: 'abrvFiliere', placeholder: 'Abréviation', type: 'text', required: true },
             ]}
-            title="Edit Filiere"
-            submitButtonText="Save"
+            title="Modifier la filière"
+            submitButtonText="Enregistrer"
             prefillData={filieres.find(filiere => filiere.idFiliere = editingFiliere)}
           />
         )}

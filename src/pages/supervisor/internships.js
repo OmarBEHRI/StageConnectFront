@@ -63,12 +63,12 @@ export default function SupervisorInternships() {
       setInternships(filteredUpdatedStages);
     } catch (error) {
       console.log(error);
-      setError("Failed to fetch internships. Please try again later.");
+      setError("Échec de la récupération des stages. Veuillez réessayer plus tard.");
     }
   };
 
   const handleSearch = (query) => {
-    console.log('Searching for:', query);
+    console.log('Recherche pour :', query);
     // Implement search logic here
   };
 
@@ -97,68 +97,29 @@ export default function SupervisorInternships() {
       fetchInternships(); // Refresh the list
     } catch (error) {
       console.log(error);
-      setError("Failed to submit evaluation. Please try again later.");
+      setError("Échec de la soumission de l'évaluation. Veuillez réessayer plus tard.");
     }
   };
 
   const evaluationFormFields = [
     {
       name: "performance",
-      placeholder: "Performance Rating",
+      placeholder: "Évaluation de la performance",
       type: "select",
       options: [
         { label: "Excellent", value: "Excellent" },
-        { label: "Good", value: "Good" },
-        { label: "Average", value: "Average" },
-        { label: "Below Average", value: "Below Average" }
+        { label: "Bon", value: "Good" },
+        { label: "Moyen", value: "Average" },
+        { label: "En dessous de la moyenne", value: "Below Average" }
       ],
       required: true,
     },
-    { name: "skills", placeholder: "Technical Skills Demonstrated", required: true },
-    { name: "comments", type: "textarea", placeholder: "Additional Comments", required: true }
+    { name: "skills", placeholder: "Compétences techniques démontrées", required: true },
+    { name: "comments", type: "textarea", placeholder: "Commentaires supplémentaires", required: true }
   ];
 
   return (
     <Layout role="supervisor">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Internships Management</h1>
-        {error && <p className="text-red-500">{error}</p>}
-        <div className="mb-6">
-          <SearchBar onSearch={handleSearch} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {internships.map((internship) => (
-            <Card
-              key={internship.idStage}
-              image="/default-avatar.png"
-              title={internship.titre}
-              specifications={[
-                { label: "Description", value: internship.description },
-                { label: "Start Date", value: new Date(internship.dateDebut).toLocaleDateString() },
-                { label: "End Date", value: new Date(internship.dateFin).toLocaleDateString() },
-                { label: "Status", value: internship.statut }
-              ]}
-              buttons={
-                internship.statut === "terminé"
-                  ? [{
-                      label: "Evaluate",
-                      onClick: () => handleEvaluate(internship.idStage)
-                    }]
-                  : []
-              }
-            />
-          ))}
-        </div>
-
-        <FormComponent
-          isOpen={isEvaluationFormOpen}
-          onClose={() => setIsEvaluationFormOpen(false)}
-          onSubmit={handleSubmitEvaluation}
-          fields={evaluationFormFields}
-          title="Internship Evaluation"
-        />
-      </div>
-    </Layout>
-  );
-}
+        <h1 className="text-2xl font-bold">Gestion des stages</h1>
+        {error

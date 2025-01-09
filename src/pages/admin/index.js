@@ -63,17 +63,17 @@ export default function Dashboard() {
   return (
     <Layout role="admin">
       <div>
-        <h1 className="text-3xl font-bold mb-12 mt-8">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-12 mt-8">Tableau de bord Admin</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <StatCard title="University Accounts" value={stats.universityAccounts} />
-          <StatCard title="Company Accounts" value={stats.companyAccounts} />
-          <StatCard title="Students" value={stats.students} />
-          <StatCard title="Open Offers" value={stats.openOffers} />
-          <StatCard title="Total Offers" value={stats.totalOffers} />
-          <StatCard title="Internships Created" value={stats.internships} />
-          <StatCard title="Ongoing Internships" value={stats.ongoingInternships} />
-          <StatCard title="Interviews" value={stats.interviews} />
-          <StatCard title="Total Platform Users" value={stats.totalPlatformUsers} />
+          <StatCard title="Comptes Universités" value={stats.universityAccounts} />
+          <StatCard title="Comptes Entreprises" value={stats.companyAccounts} />
+          <StatCard title="Étudiants" value={stats.students} />
+          <StatCard title="Offres Ouvertes" value={stats.openOffers} />
+          <StatCard title="Total des Offres" value={stats.totalOffers} />
+          <StatCard title="Stages Créés" value={stats.internships} />
+          <StatCard title="Stages en Cours" value={stats.ongoingInternships} />
+          <StatCard title="Entretiens" value={stats.interviews} />
+          <StatCard title="Utilisateurs Totaux" value={stats.totalPlatformUsers} />
         </div>
       </div>
     </Layout>

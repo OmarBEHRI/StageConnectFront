@@ -58,21 +58,21 @@ export default function StudentInternships() {
 
       setInternships(stagesWithEtudiant);
     } catch (error) {
-      console.error("Error fetching internships:", error);
+      console.error("Erreur lors de la récupération des stages :", error);
     }
   };
 
   const handleSearch = (query) => {
-    console.log("Searching for:", query);
+    console.log("Recherche pour :", query);
   };
 
   const handleStatusUpdate = async (stageId) => {
     try {
       const etudiantId = localStorage.getItem("id");
       await axiosInstance.put(`/stages/set-status-delete-others/${etudiantId}/${stageId}`);
-      fetchInternships(); // Refresh the list after updating status
+      fetchInternships(); // Rafraîchir la liste après la mise à jour du statut
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error("Erreur lors de la mise à jour du statut :", error);
     }
   };
 
@@ -84,7 +84,7 @@ export default function StudentInternships() {
       'refusé': 'Refusé',
       'en cours': 'En Cours',
       'terminé': "Terminé",
-      'évalué': 'Evalué',
+      'évalué': 'Évalué',
     };
     return labels[status] || 'Postuler';
   };
@@ -92,7 +92,7 @@ export default function StudentInternships() {
   return (
     <Layout role="student" onLogout={() => {}}>
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">My Internships</h1>
+        <h1 className="text-2xl font-bold mb-6">Mes stages</h1>
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
@@ -103,14 +103,14 @@ export default function StudentInternships() {
               title={internship.titre}
               specifications={[
                 { label: "Description", value: internship.description },
-                { label: "Start Date", value: internship.dateDebut },
-                { label: "End Date", value: internship.dateFin },
-                { label: "Duration", value: internship.duree },
-                { label: "Location", value: internship.localisation },
-                { label: "Amount", value: internship.montantRemuneration },
-                { label: "Status", value: internship.statut },
+                { label: "Date de début", value: internship.dateDebut },
+                { label: "Date de fin", value: internship.dateFin },
+                { label: "Durée", value: internship.duree },
+                { label: "Localisation", value: internship.localisation },
+                { label: "Montant", value: internship.montantRemuneration },
+                { label: "Statut", value: internship.statut },
                 { label: "Type", value: internship.type },
-                { label: "Student", value: `${internship.etudiant.nom} ${internship.etudiant.prenom}` }
+                { label: "Étudiant", value: `${internship.etudiant.nom} ${internship.etudiant.prenom}` }
               ]}
               buttons={[
                 {

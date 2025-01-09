@@ -37,8 +37,8 @@ export default function ComSupervisorManagement() {
       setEntrepriseId(entreId);
       fetchEncadrantAccounts(entreId);
     } catch (error) {
-      console.error('Error fetching CompteEntreprise:', error);
-      alert('Failed to fetch CompteEntreprise data.');
+      console.error('Erreur lors de la récupération du CompteEntreprise:', error);
+      alert('Échec de la récupération des données du CompteEntreprise.');
     }
   };
 
@@ -46,19 +46,19 @@ export default function ComSupervisorManagement() {
     try {
       console.log(`EntrepriseId: ${entrepriseId}`);
       const response = await axiosInstance.get(`/api/encadrants/by-entreprise/${entrepriseId}`);
-      console.log('Encadrant Accounts:', response.data); // Debugging
+      console.log('Comptes des encadrants:', response.data); // Debugging
       setAccounts(response.data);
     } catch (error) {
-      console.error('Error fetching Encadrant accounts:', error);
-      alert('Failed to fetch Encadrant accounts.');
+      console.error('Erreur lors de la récupération des comptes des encadrants:', error);
+      alert('Échec de la récupération des comptes des encadrants.');
     }
   };
 
   const formFields = [
-    { name: "nom", placeholder: "First Name", required: true },
-    { name: "prenom", placeholder: "Last Name", required: true },
+    { name: "nom", placeholder: "Prénom", required: true },
+    { name: "prenom", placeholder: "Nom", required: true },
     { name: "email", placeholder: "Email", required: true },
-    { name: "motDePasse", type: "password", placeholder: "Password", required: true },
+    { name: "motDePasse", type: "password", placeholder: "Mot de passe", required: true },
   ];
 
   const handleCreateAccount = async (data) => {
@@ -74,8 +74,8 @@ export default function ComSupervisorManagement() {
       fetchEncadrantAccounts(entrepriseId);
       setIsFormOpen(false);
     } catch (error) {
-      console.error('Error creating Encadrant account:', error);
-      alert('Failed to create Encadrant account.');
+      console.error('Erreur lors de la création du compte encadrant:', error);
+      alert('Échec de la création du compte encadrant.');
     }
   };
 
@@ -100,8 +100,8 @@ export default function ComSupervisorManagement() {
       fetchEncadrantAccounts(entrepriseId);
       setIsFormOpen(false);
     } catch (error) {
-      console.error('Error updating Encadrant account:', error);
-      alert('Failed to update Encadrant account.');
+      console.error('Erreur lors de la mise à jour du compte encadrant:', error);
+      alert('Échec de la mise à jour du compte encadrant.');
     }
   };
 
@@ -110,18 +110,18 @@ export default function ComSupervisorManagement() {
       await axiosInstance.delete(`/api/encadrants/${accountId}`);
       fetchEncadrantAccounts(entrepriseId);
     } catch (error) {
-      console.error('Error deleting Encadrant account:', error);
-      alert('Failed to delete Encadrant account.');
+      console.error('Erreur lors de la suppression du compte encadrant:', error);
+      alert('Échec de la suppression du compte encadrant.');
     }
   };
 
   return (
     <Layout role="company">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Company Supervisor Management</h1>
+        <h1 className="text-2xl font-bold">Gestion des superviseurs de l'entreprise</h1>
 
         <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Search:', query)} />
+          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
           <button
             onClick={() => {
               setIsEditMode(false);
@@ -130,15 +130,15 @@ export default function ComSupervisorManagement() {
             }}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Create New Supervisor
+            Créer un nouveau superviseur
           </button>
         </div>
 
         <Table
-          columns={["Email", "First Name", "Last Name"]}
+          columns={["Email", "Prénom", "Nom"]}
           columnKeys={["email", "nom", "prenom"]}
           items={accounts}
-          buttons={["Edit", "Delete"]}
+          buttons={["Modifier", "Supprimer"]}
           actions={[handleEdit, handleDelete]}
           idParam="idEncadrant"
         />
@@ -152,7 +152,7 @@ export default function ComSupervisorManagement() {
           }}
           onSubmit={isEditMode ? handleEditAccount : handleCreateAccount}
           fields={formFields}
-          title={isEditMode ? "Edit Supervisor" : "Create New Supervisor"}
+          title={isEditMode ? "Modifier le superviseur" : "Créer un nouveau superviseur"}
           submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedAccount}
         />

@@ -36,7 +36,7 @@ export default function ComHRManagement() {
       fetchRHAccounts(response.data.entrepriseId);
     } catch (error) {
       console.error('Error fetching CompteEntreprise:', error);
-      alert('Failed to fetch CompteEntreprise data.');
+      alert('Échec de la récupération des données du CompteEntreprise.');
     }
   };
 
@@ -46,15 +46,15 @@ export default function ComHRManagement() {
       setAccounts(response.data);
     } catch (error) {
       console.error('Error fetching RH accounts:', error);
-      alert('Failed to fetch RH accounts.');
+      alert('Échec de la récupération des comptes RH.');
     }
   };
 
   const formFields = [
-    { name: "firstname", placeholder: "First Name", required: true },
-    { name: "lastname", placeholder: "Last Name", required: true },
-    { name: "username", placeholder: "Username", required: true },
-    { name: "password", type: "password", placeholder: "Password", required: true },
+    { name: "firstname", placeholder: "Prénom", required: true },
+    { name: "lastname", placeholder: "Nom", required: true },
+    { name: "username", placeholder: "Nom d'utilisateur", required: true },
+    { name: "password", type: "password", placeholder: "Mot de passe", required: true },
   ];
 
   const handleCreateAccount = async (data) => {
@@ -71,7 +71,7 @@ export default function ComHRManagement() {
       setIsFormOpen(false);
     } catch (error) {
       console.error('Error creating RH account:', error);
-      alert('Failed to create RH account.');
+      alert('Échec de la création du compte RH.');
     }
   };
 
@@ -97,7 +97,7 @@ export default function ComHRManagement() {
       setIsFormOpen(false);
     } catch (error) {
       console.error('Error updating RH account:', error);
-      alert('Failed to update RH account.');
+      alert('Échec de la mise à jour du compte RH.');
     }
   };
 
@@ -107,17 +107,17 @@ export default function ComHRManagement() {
       fetchRHAccounts(entrepriseId);
     } catch (error) {
       console.error('Error deleting RH account:', error);
-      alert('Failed to delete RH account.');
+      alert('Échec de la suppression du compte RH.');
     }
   };
 
   return (
     <Layout role="company">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Company Accounts Management</h1>
+        <h1 className="text-2xl font-bold">Gestion des comptes de l'entreprise</h1>
 
         <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Search:', query)} />
+          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
           <button
             onClick={() => {
               setIsEditMode(false);
@@ -126,15 +126,15 @@ export default function ComHRManagement() {
             }}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Create New Account
+            Créer un nouveau compte
           </button>
         </div>
 
         <Table
-          columns={["Username", "First Name", "Last Name"]}
+          columns={["Nom d'utilisateur", "Prénom", "Nom"]}
           columnKeys={["email", "nom", "prenom"]}
           items={accounts}
-          buttons={["Edit", "Delete"]}
+          buttons={["Modifier", "Supprimer"]}
           actions={[handleEdit, handleDelete]}
           idParam="idRh"
         />
@@ -148,7 +148,7 @@ export default function ComHRManagement() {
           }}
           onSubmit={isEditMode ? handleEditAccount : handleCreateAccount}
           fields={formFields}
-          title={isEditMode ? "Edit Account" : "Create New Account"}
+          title={isEditMode ? "Modifier le compte" : "Créer un nouveau compte"}
           submitButtonText={isEditMode ? "Enregistrer" : "Créer"}
           prefillData={selectedAccount}
         />

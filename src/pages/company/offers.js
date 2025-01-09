@@ -32,8 +32,8 @@ export default function ComOffers() {
       setEntrepriseId(response.data.entrepriseId);
       fetchOffers(response.data.entrepriseId);
     } catch (error) {
-      console.error('Error fetching CompteEntreprise:', error);
-      alert('Failed to fetch CompteEntreprise data.');
+      console.error('Erreur lors de la récupération du CompteEntreprise:', error);
+      alert('Échec de la récupération des données du CompteEntreprise.');
     }
   };
 
@@ -42,25 +42,23 @@ export default function ComOffers() {
       const response = await axiosInstance.get(`/api/offres/entreprise/${entrepriseId}`);
       setOffers(response.data);
     } catch (error) {
-      console.error('Error fetching offers:', error);
-      alert('Failed to fetch offers.');
+      console.error('Erreur lors de la récupération des offres:', error);
+      alert('Échec de la récupération des offres.');
     }
   };
-
-
 
   return (
     <Layout role="company">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Company Offers</h1>
+        <h1 className="text-2xl font-bold">Offres de l'entreprise</h1>
 
         <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Search:', query)} />
+          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
         </div>
 
         <Table
-          columns={["ID Offre", "Title", "Position", "Start Date"]}
-          columnKeys={["idOffre","objetOffre", "posteOffre", "dateLancement"]}
+          columns={["ID Offre", "Titre", "Poste", "Date de début"]}
+          columnKeys={["idOffre", "objetOffre", "posteOffre", "dateLancement"]}
           items={offers}
           idParam="idOffre"
         />

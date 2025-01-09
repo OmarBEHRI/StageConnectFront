@@ -39,7 +39,7 @@ export default function HRApplicationManagement() {
       setPostulations(pendingPostulations);
       setFilteredPostulations(pendingPostulations);
     } catch (error) {
-      console.error('Error fetching postulations:', error);
+      console.error('Erreur lors de la récupération des postulations:', error);
     }
   };
 
@@ -65,7 +65,7 @@ export default function HRApplicationManagement() {
       });
       fetchPostulations(offerId); // Refresh the list
     } catch (error) {
-      console.error('Error refusing postulation:', error);
+      console.error('Erreur lors du refus de la postulation:', error);
     }
   };
 
@@ -76,7 +76,7 @@ export default function HRApplicationManagement() {
         dateEntretien: new Date(`${data.date}T${data.time}`).toISOString(),
         adresse: data.location,
         duree: data.duration,
-        etat: "Scheduled",
+        etat: "Planifié",
         resultat: "nouveau",
         lien: data.link,
         offreId: postulation.offreId,
@@ -91,7 +91,7 @@ export default function HRApplicationManagement() {
       setIsInterviewFormOpen(false);
       fetchPostulations(offerId); // Refresh the list
     } catch (error) {
-      console.error('Error creating interview:', error);
+      console.error('Erreur lors de la création de l\'entretien:', error);
     }
   };
 
@@ -100,7 +100,7 @@ export default function HRApplicationManagement() {
   return (
     <Layout role="hr">
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Applications Management</h1>
+        <h1 className="text-2xl font-bold">Gestion des candidatures</h1>
         <div className="mb-6">
           <SearchBar onSearch={handleSearch} />
         </div>
@@ -121,14 +121,14 @@ export default function HRApplicationManagement() {
           onClose={() => setIsInterviewFormOpen(false)}
           onSubmit={handleCreateInterview}
           fields={[
-            { name: "date", type: "date", placeholder: "Interview Date", required: true },
-            { name: "time", type: "time", placeholder: "Interview Time", required: true },
-            { name: "location", placeholder: "Interview Location", required: true },
-            { name: "duration", placeholder: "Duration", required: true },
-            { name: "link", placeholder: "Meeting Link", required: true },
+            { name: "date", type: "date", placeholder: "Date de l'entretien", required: true },
+            { name: "time", type: "time", placeholder: "Heure de l'entretien", required: true },
+            { name: "location", placeholder: "Lieu de l'entretien", required: true },
+            { name: "duration", placeholder: "Durée", required: true },
+            { name: "link", placeholder: "Lien de la réunion", required: true },
           ]}
-          title="Schedule Interview"
-          submitButtonText="Creer"
+          title="Planifier un entretien"
+          submitButtonText="Créer"
         />
       </div>
     </Layout>
@@ -142,11 +142,11 @@ function PostulationCard({ postulation, handleScheduleInterview, handleRefuse })
   useEffect(() => {
     axiosInstance.get(`/api/offres/${postulation.offreId}`)
       .then(response => setOffer(response.data))
-      .catch(error => console.error('Error fetching offer:', error));
+      .catch(error => console.error('Erreur lors de la récupération de l\'offre:', error));
 
     axiosInstance.get(`/api/etudiants/${postulation.etudiantId}`)
       .then(response => setStudent(response.data))
-      .catch(error => console.error('Error fetching student:', error));
+      .catch(error => console.error('Erreur lors de la récupération de l\'étudiant:', error));
   }, [postulation.offreId, postulation.etudiantId]);
 
   const handleViewPdf = async (postulationId, type) => {
@@ -169,17 +169,17 @@ function PostulationCard({ postulation, handleScheduleInterview, handleRefuse })
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
     } catch (error) {
-        console.error('Error downloading PDF:', error);
+        console.error('Erreur lors du téléchargement du PDF:', error);
     }
   };
 
-  if (!offer || !student) return <div>Loading...</div>;
+  if (!offer || !student) return <div>Chargement...</div>;
 
   return (
     <Card
       title={`Postulation #${postulation.id}`}
       specifications={[
-        { label: "Etudiant", value: `${student.nom} ${student.prenom}` },
+        { label: "Étudiant", value: `${student.nom} ${student.prenom}` },
         { label: "Offre", value: offer.objetOffre },
         { label: "État", value: postulation.etatPostulation },
       ]}

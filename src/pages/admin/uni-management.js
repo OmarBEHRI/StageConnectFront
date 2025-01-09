@@ -144,7 +144,7 @@ export default function UniversityAccountsManagement() {
     try {
       await axiosInstance.put(`/compte-ecoles/${id}/disable`, "AMAMAMA" )
       fetchAccounts() // Refresh the list
-      console.log("Account Disabled")
+      console.log("Compte désactivé")
       setError(null) // Clear any previous errors
     } catch (error) {
       console.error('Error disabling account:', error)
