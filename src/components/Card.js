@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Card = ({ title, specifications, buttons, extraContent }) => {
+const Card = ({ title, specifications, buttons, extraContent, imageSrc }) => {
   const getButtonColor = (label) => {
     const lowerLabel = label.toLowerCase();
     if (['validate', 'accept', 'apply'].includes(lowerLabel)) return 'bg-green-500 hover:bg-green-600';
@@ -12,6 +12,18 @@ const Card = ({ title, specifications, buttons, extraContent }) => {
   return (
     <div className="w-full aspect-w-5 aspect-h-4">
       <div className="bg-white rounded-lg shadow-md p-6 w-full h-full flex flex-col">
+        {/* Image container */}
+        {imageSrc && (
+          <div className="flex justify-center items-center mb-4">
+            <div className="w-16 h-16 rounded-full overflow-hidden">
+              <img
+                src={imageSrc}
+                alt="Card"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
         <h2 className="text-xl font-semibold mb-4 line-clamp-2 text-center">{title}</h2>
         <div className="grid grid-cols-2 gap-4 mb-6 flex-grow">
           {specifications.map((spec, index) => (
