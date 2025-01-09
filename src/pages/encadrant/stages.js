@@ -122,4 +122,43 @@ export default function SupervisorInternships() {
     <Layout role="supervisor">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Gestion des stages</h1>
-        {error
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="mb-6">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {internships.map((internship) => (
+            <Card
+              key={internship.idStage}
+              image="/default-avatar.png"
+              title={internship.titre}
+              specifications={[
+                { label: "Description", value: internship.description },
+                { label: "Date de début", value: new Date(internship.dateDebut).toLocaleDateString() },
+                { label: "Date de fin", value: new Date(internship.dateFin).toLocaleDateString() },
+                { label: "Statut", value: internship.statut }
+              ]}
+              buttons={
+                internship.statut === "terminé"
+                  ? [{
+                      label: "Évaluer",
+                      onClick: () => handleEvaluate(internship.idStage)
+                    }]
+                  : []
+              }
+            />
+          ))}
+        </div>
+
+        <FormComponent
+          isOpen={isEvaluationFormOpen}
+          onClose={() => setIsEvaluationFormOpen(false)}
+          onSubmit={handleSubmitEvaluation}
+          fields={evaluationFormFields}
+          title="Évaluation du stage"
+        />
+      </div>
+    </Layout>
+  );
+}
