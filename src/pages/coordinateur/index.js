@@ -28,7 +28,7 @@ export default function UniversityDashboard() {
       const idEcole = localStorage.getItem('id'); // Get the university ID from localStorage
 
       // Fetch university details to get ecoleId
-      const universityResponse = await axiosInstance.get(`/compte-ecoles/${idEcole}`);
+      const universityResponse = await axiosInstance.get(`/api/coordinateurs/${idEcole}`);
       const ecoleId = universityResponse.data.ecoleId;
 
       // Fetch total students
