@@ -74,7 +74,7 @@ export default function CoordinatorDashboard() {
         const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
         offersByMajor.push({
           filiere: filiere.nomFiliere,
-          offers: offersResponse.data.length,
+          offers: offersResponse.data,
         });
       }
 
@@ -118,7 +118,7 @@ export default function CoordinatorDashboard() {
           {offersByMajor.map((item, index) => (
             <div key={index} className="flex justify-between items-center mb-2">
               <span>{item.filiere}:</span>
-              <span>{item.offers} offres</span>
+              <span>{item.offers}</span>
             </div>
           ))}
         </div>
