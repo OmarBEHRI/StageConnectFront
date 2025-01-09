@@ -9,6 +9,10 @@ export default function CoordinatorDashboard() {
   const [stats, setStats] = useState([
     { title: 'Université', value: 'Loading...' },
     { title: 'Total des étudiants', value: 'Loading...' },
+    { title: 'Offres totales', value: 'Loading...' },
+    { title: 'Étudiants sans stage', value: 'Loading...' },
+    { title: 'Pourcentage de stages par filière', value: 'Loading...' },
+    { title: 'Offres par filière', value: 'Loading...' },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -42,10 +46,40 @@ export default function CoordinatorDashboard() {
       const totalStudentsResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students`);
       const totalStudents = totalStudentsResponse.data;
 
+      // Fetch total offers
+      const totalOffersResponse = await axiosInstance.get('/api/admins/open-offers/count');
+      const totalOffers = totalOffersResponse.data;
+
+      // Fetch students without internships
+      const studentsWithoutInternshipResponse = await axiosInstance.get(`/compte-ecoles/${ecoleId}/students-without-internship`);
+      const studentsWithoutInternship = studentsWithoutInternshipResponse.data;
+
+      // Fetch filieres by ecoleId
+      const filieresResponse = await axiosInstance.get(`/api/filieres/ecole/${ecoleId}`);
+      const filieres = filieresResponse.data;
+
+      // Fetch internship percentage by major
+      const internshipPercentageByMajor = {};
+      for (const filiere of filieres) {
+        const percentageResponse = await axiosInstance.get(`/compte-ecoles/internship-percentage/${filiere.idFiliere}`);
+        internshipPercentageByMajor[filiere.nomFiliere] = percentageResponse.data;
+      }
+
+      // Fetch offers by major
+      const offersByMajor = {};
+      for (const filiere of filieres) {
+        const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
+        offersByMajor[filiere.nomFiliere] = offersResponse.data;
+      }
+
       // Update stats state
       setStats([
         { title: 'Université', value: universityName },
         { title: 'Total des étudiants', value: totalStudents },
+        { title: 'Offres totales', value: totalOffers },
+        { title: 'Étudiants sans stage', value: studentsWithoutInternship },
+        { title: 'Pourcentage de stages par filière', value: JSON.stringify(internshipPercentageByMajor) },
+        { title: 'Offres par filière', value: JSON.stringify(offersByMajor) },
       ]);
 
       setLoading(false);
@@ -59,7 +93,7 @@ export default function CoordinatorDashboard() {
     <Layout role="coordinator">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Tableau de bord du coordinateur</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {stats.map((stat) => (
             <StatCard key={stat.title} title={stat.title} value={stat.value} />
           ))}
