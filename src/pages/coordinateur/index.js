@@ -59,17 +59,23 @@ export default function CoordinatorDashboard() {
       const filieres = filieresResponse.data;
 
       // Fetch internship percentage by major
-      const internshipPercentageByMajor = {};
+      const internshipPercentageByMajor = [];
       for (const filiere of filieres) {
         const percentageResponse = await axiosInstance.get(`/compte-ecoles/internship-percentage/${filiere.idFiliere}`);
-        internshipPercentageByMajor[filiere.nomFiliere] = percentageResponse.data;
+        internshipPercentageByMajor.push({
+          filiere: filiere.nomFiliere,
+          percentage: percentageResponse.data,
+        });
       }
 
       // Fetch offers by major
-      const offersByMajor = {};
+      const offersByMajor = [];
       for (const filiere of filieres) {
         const offersResponse = await axiosInstance.get(`/compte-ecoles/${filiere.idFiliere}/visible-offers`);
-        offersByMajor[filiere.nomFiliere] = offersResponse.data;
+        offersByMajor.push({
+          filiere: filiere.nomFiliere,
+          offers: offersResponse.data.length,
+        });
       }
 
       // Update stats state
@@ -78,8 +84,30 @@ export default function CoordinatorDashboard() {
         { title: 'Total des étudiants', value: totalStudents },
         { title: 'Offres totales', value: totalOffers },
         { title: 'Étudiants sans stage', value: studentsWithoutInternship },
-        { title: 'Pourcentage de stages par filière', value: JSON.stringify(internshipPercentageByMajor) },
-        { title: 'Offres par filière', value: JSON.stringify(offersByMajor) },
+        {
+          title: 'Pourcentage de stages par filière',
+          value: (
+            <ul>
+              {internshipPercentageByMajor.map((item, index) => (
+                <li key={index}>
+                  {item.filiere}: {item.percentage}%
+                </li>
+              ))}
+            </ul>
+          ),
+        },
+        {
+          title: 'Offres par filière',
+          value: (
+            <ul>
+              {offersByMajor.map((item, index) => (
+                <li key={index}>
+                  {item.filiere}: {item.offers} offres
+                </li>
+              ))}
+            </ul>
+          ),
+        },
       ]);
 
       setLoading(false);
@@ -94,8 +122,8 @@ export default function CoordinatorDashboard() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Tableau de bord du coordinateur</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {stats.map((stat) => (
-            <StatCard key={stat.title} title={stat.title} value={stat.value} />
+          {stats.map((stat, index) => (
+            <StatCard key={index} title={stat.title} value={stat.value} />
           ))}
         </div>
       </div>
