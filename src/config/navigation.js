@@ -1,56 +1,56 @@
 export const navConfigs = {
     admin: [
       { label: 'Dashboard', href: '/admin/' },
-      { label: 'University Management', href: '/admin/uni-management' },
-      { label: 'Company Management', href: '/admin/com-management' },
+      { label: 'GestionUniversités', href: '/admin/ecole-management' },
+      { label: 'GestionEntreprises', href: '/admin/entreprise-management' },
     ],
   
     university: [
-      { label: 'Dashboard', href: '/university' },
-      { label: 'CF', href: '/university/cf' },
-      { label: 'Coordinators', href: '/university/coordinators' },
-      { label: 'Students', href: '/university/students' },
-      { label: 'Profile', href: '/university/profile' },
+      { label: 'Dashboard', href: '/ecole' },
+      { label: 'CF', href: '/ecole/cf' },
+      { label: 'Coordinateurs', href: '/ecole/coordinateurs' },
+      { label: 'Étudiants', href: '/ecole/etudiants' },
+      { label: 'Profil', href: '/ecole/profile' },
     ],
   
     cf: [
       { label: 'Dashboard', href: '/cf' },
-      { label: 'Offers', href: '/cf/offers' },
-      { label: 'Internships' , href: '/cf/internships'},
+      { label: 'Offres', href: '/cf/offres' },
+      { label: 'Stages', href: '/cf/stages' },
     ],
   
     coordinator: [
-      { label: 'Dashboard', href: '/coordinator' },
-      { label: 'Internships Management', href: '/coordinator/internships' },
+      { label: 'Dashboard', href: '/coordinateur' },
+      { label: 'GestionStages', href: '/coordinateur/stages' },
     ],
   
     company: [
-      { label: 'Dashboard', href: '/company' },
-      { label: 'Supervisor Management', href: '/company/supervisor' },
-      { label: 'HR Management', href: '/company/hr' },
-      { label: 'Offers Management', href: '/company/offers' },
-      { label: 'Profile', href: '/company/profile' },
+      { label: 'Dashboard', href: '/entreprise' },
+      { label: 'GestionEncadrants', href: '/entreprise/encadrant' },
+      { label: 'GestionRH', href: '/entreprise/rh' },
+      { label: 'GestionOffres', href: '/entreprise/offres' },
+      { label: 'Profil', href: '/entreprise/profile' },
     ],
   
     hr: [
-      { label: 'Dashboard', href: '/hr' },
-      { label: 'Offers Management', href: '/hr/offer-management' },
-      { label: 'Interviews Management', href: '/hr/interviews' },
-      { label: 'Internships Management', href: '/hr/internships' },
+      { label: 'Dashboard', href: '/rh' },
+      { label: 'GestionOffres', href: '/rh/management-offre' },
+      { label: 'GestionEntretiens', href: '/rh/entretiens' },
+      { label: 'GestionStages', href: '/rh/stages' },
     ],
   
     supervisor: [
-      { label: 'Dashboard', href: '/supervisor' },
-      { label: 'Internships Management', href: '/supervisor/internships' },
+      { label: 'Dashboard', href: '/encadrant' },
+      { label: 'GestionStages', href: '/encadrant/stages' },
     ],
   
     student: [
-      { label: 'Dashboard', href: '/student' },
-      { label: 'Offers', href: '/student/offers' },
-      { label: 'Applications', href: '/student/applications' },
-      { label: 'Interviews', href: '/student/interviews' },
-      { label: 'Internships', href: '/student/internships' },
-      { label: 'Profile', href: '/student/profile' },
+      { label: 'Dashboard', href: '/etudiant' },
+      { label: 'Offres', href: '/etudiant/offres' },
+      { label: 'Postulations', href: '/etudiant/postulations' },
+      { label: 'Entretiens', href: '/etudiant/entretiens' },
+      { label: 'Stages', href: '/etudiant/stages' },
+      { label: 'Profil', href: '/etudiant/profile' },
     ],
   };
   

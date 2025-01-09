@@ -146,7 +146,7 @@ export default function HROfferManagement() {
   };
 
   const handlePostulations = (offerId) => {
-    router.push(`/hr/applications/${offerId}`);
+    router.push(`/hr/postulations/${offerId}`);
   };
 
   return (
