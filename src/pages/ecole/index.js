@@ -35,7 +35,7 @@ export default function UniversityDashboard() {
       const id = localStorage.getItem('id'); // Get the coordinator ID from localStorage
 
       // Fetch coordinator details to get ecoleId
-      const coordinatorResponse = await axiosInstance.get(`/api/compte-ecoles/${id}`);
+      const coordinatorResponse = await axiosInstance.get(`/compte-ecoles/${id}`);
       const ecoleId = coordinatorResponse.data.ecoleId;
 
       // Fetch university name
