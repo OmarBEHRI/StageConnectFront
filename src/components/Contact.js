@@ -1,11 +1,11 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import { useState } from 'react'; // Missing useState import
 
 export default function Contact() {
-
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    email: '', 
     message: ''
   });
 
@@ -16,9 +16,20 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axiosInstance.post(`/api/admins/send/${formData.name}/${formData.email}/${formData.message}`)
-    console.log(formData);
-  }
+    try {
+      await axiosInstance.post(`/api/admins/send/${formData.name}/${formData.email}/${formData.message}`);
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+      // Add success message/notification
+    } catch (error) {
+      console.error('Error sending message:', error);
+      // Add error handling/user feedback
+    }
+  };
   
   return (
     <section className="py-20 bg-gray-100">
@@ -83,4 +94,3 @@ export default function Contact() {
     </section>
   );
 }
-
