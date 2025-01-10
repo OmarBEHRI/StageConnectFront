@@ -51,7 +51,7 @@ export default function HRInternships() {
             etudiantNom: etudiantResponse.data.nom,
             etudiantPrenom: etudiantResponse.data.prenom,
             etudiantEmail:  etudiantResponse.data.email,
-            etudiantEmail:  etudiantResponse.data.tel,// Add Etudiant details to the internship object
+            etudiantTelephone:  etudiantResponse.data.tel,// Add Etudiant details to the internship object
             dateDebut: formatDate(internship.dateDebut), // Format start date
             dateFin: formatDate(internship.dateFin), // Format end date
           };
