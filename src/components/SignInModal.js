@@ -16,7 +16,7 @@ export default function SignInModal({ onClose }) {
     
     try {
       // Send login request
-      const response = await axios.post('http://localhost:8085/api/auth/signin', {
+      const response = await axios.post('http://localhost:8080/api/auth/signin', {
         email: email,
         password : password,
       });
