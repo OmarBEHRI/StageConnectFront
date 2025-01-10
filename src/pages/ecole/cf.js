@@ -64,11 +64,17 @@ export default function UniversityCFManagement() {
   };
 
   const fetchFilieresByEcoleId = async (ecoleId) => {
+    console.log('fetchFilieresByEcoleId called with ecoleId:', ecoleId);
     try {
+      console.log('Making API request to:', `/api/filieres/ecole/${ecoleId}`);
       const response = await axiosInstance.get(`/api/filieres/ecole/${ecoleId}`);
+      console.log('API response:', response);
+      console.log('Setting filieres with response.data:', response.data);
       setFilieres(response.data); // Set the list of filieres
     } catch (error) {
+      console.log('Error details:', error);
       console.error('Error fetching filieres:', error);
+      console.log('Setting error message');
       setError('Erreur lors de la récupération des filières. Veuillez réessayer.');
     }
   };
