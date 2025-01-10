@@ -92,13 +92,15 @@ export default function StudentsManagement() {
   const handleCreateStudent = async (studentData) => {
     try {
       const selectedFiliere = filieres.find(filiere => filiere.nomFiliere === studentData.filiereNom);
+
       if (!selectedFiliere) {
         setError('Filière non trouvée. Veuillez sélectionner une filière valide.');
         return;
       }
 
-      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
-      const response = await axiosInstance.post('/api/etudiants', {
+      await axiosInstance.post(`/api/admins/send-password/${studentData.email}/${studentData.motDePasse}`)
+      
+      const studentPayload = {
         nom: studentData.nom,
         prenom: studentData.prenom,
         email: studentData.email,
@@ -108,13 +110,19 @@ export default function StudentsManagement() {
         statutEtudiant: studentData.statutEtudiant,
         ecoleId: ecoleId,
         filiereId: selectedFiliere.idFiliere,
-      });
-      setStudents([...students, response.data]);
-      setFilteredStudents([...filteredStudents, response.data]);
+      };
+
+      const response = await axiosInstance.post('/api/etudiants', studentPayload);
+
+      const updatedStudents = [...students, response.data];
+      const updatedFilteredStudents = [...filteredStudents, response.data];
+
+      setStudents(updatedStudents);
+      setFilteredStudents(updatedFilteredStudents);
       setIsModalOpen(false);
       setError(null);
+
     } catch (error) {
-      console.error('Error creating student:', error);
       setError('Erreur lors de la création de l\'étudiant. Veuillez réessayer.');
     }
   };

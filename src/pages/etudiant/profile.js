@@ -48,6 +48,7 @@ export default function EtudiantProfile() {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération de la photo de profil :', error);
+      setProfilePictureUrl(null); // Handle null response
     }
   };
 
@@ -63,6 +64,7 @@ export default function EtudiantProfile() {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération de la photo de couverture :', error);
+      setCoverPictureUrl(null); // Handle null response
     }
   };
 
@@ -183,20 +185,45 @@ export default function EtudiantProfile() {
               <h2 className="text-xl font-semibold mb-4 text-black">Changer les photos</h2>
               <form onSubmit={(e) => { e.preventDefault(); handleSaveImages(); }}>
                 <div className="space-y-4">
+                  {/* Current Profile Picture */}
+                  {profilePictureUrl && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Photo de profil actuelle</label>
+                      <img
+                        src={profilePictureUrl}
+                        alt="Photo de profil actuelle"
+                        className="w-24 h-24 rounded-full object-cover"
+                      />
+                    </div>
+                  )}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Photo de profil</label>
+                    <label className="block text-sm font-medium text-gray-700">Nouvelle photo de profil</label>
                     <input
                       type="file"
                       onChange={(e) => setPhotoProfil(e.target.files[0])}
                       className="mt-1 block w-full"
+                      required // Make the field required
                     />
                   </div>
+
+                  {/* Current Cover Picture */}
+                  {coverPictureUrl && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Photo de couverture actuelle</label>
+                      <img
+                        src={coverPictureUrl}
+                        alt="Photo de couverture actuelle"
+                        className="w-full h-24 object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Photo de couverture</label>
+                    <label className="block text-sm font-medium text-gray-700">Nouvelle photo de couverture</label>
                     <input
                       type="file"
                       onChange={(e) => setPhotoCouverture(e.target.files[0])}
                       className="mt-1 block w-full"
+                      required // Make the field required
                     />
                   </div>
                 </div>
