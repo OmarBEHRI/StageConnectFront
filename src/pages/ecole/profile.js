@@ -14,6 +14,7 @@ export default function CompteEcoleProfile() {
   const [isEditingEcole, setIsEditingEcole] = useState(false);
   const [isAddingFiliere, setIsAddingFiliere] = useState(false);
   const [editingFiliere, setEditingFiliere] = useState(null);
+  const [logoUrl, setLogoUrl] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -34,6 +35,18 @@ export default function CompteEcoleProfile() {
 
       const filieresResponse = await axiosInstance.get(`/api/filieres/ecole/${ecoleResponse.data.idEcole}`);
       setFilieres(filieresResponse.data);
+
+      // Fetch the logo
+      if (ecoleResponse.data.idEcole) {
+        const logoResponse = await axiosInstance.get(`/api/ecoles/download/${ecoleResponse.data.idEcole}/logo`, {
+          responseType: 'blob',
+        });
+        if (logoResponse.data.size > 0) {
+          const logoBlob = new Blob([logoResponse.data], { type: 'image/jpeg' });
+          const logoUrl = URL.createObjectURL(logoBlob);
+          setLogoUrl(logoUrl);
+        }
+      }
     } catch (error) {
       console.error('Error fetching profile data:', error);
     }
@@ -71,20 +84,13 @@ export default function CompteEcoleProfile() {
 
   const handleEditFiliere = async (updatedFiliere) => {
     try {
-      console.log('Starting handleEditFiliere with updatedFiliere:', updatedFiliere);
-      console.log('Current editingFiliere:', editingFiliere);
-      console.log('Current editingFiliere.idFiliere:', editingFiliere);
-      const response = await axiosInstance.put(`/api/filieres/${editingFiliere}`, 
-        {
-          ...updatedFiliere,
-          ecoleId: ecole.idEcole,
-          idFiliere: editingFiliere,
-        });
-      console.log('Received response from server:', response.data);
+      const response = await axiosInstance.put(`/api/filieres/${editingFiliere}`, {
+        ...updatedFiliere,
+        ecoleId: ecole.idEcole,
+        idFiliere: editingFiliere,
+      });
       setFilieres(filieres.map(f => f.idFiliere === response.data.idFiliere ? response.data : f));
-      console.log('Updated filieres state:', filieres);
       setEditingFiliere(null);
-      console.log('Set editingFiliere to null');
     } catch (error) {
       console.error('Error updating filiere:', error);
     }
@@ -96,6 +102,30 @@ export default function CompteEcoleProfile() {
       setFilieres(filieres.filter(f => f.idFiliere !== id));
     } catch (error) {
       console.error('Error deleting filiere:', error);
+    }
+  };
+
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file && ecole) {
+      const formData = new FormData();
+      formData.append('logo', file);
+
+      try {
+        const response = await axiosInstance.put(`/api/ecoles/upload/${ecole.idEcole}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setEcole(response.data);
+
+        // Update the logo URL
+        const logoBlob = new Blob([file], { type: 'image/jpeg' });
+        const logoUrl = URL.createObjectURL(logoBlob);
+        setLogoUrl(logoUrl);
+      } catch (error) {
+        console.error('Error uploading logo:', error);
+      }
     }
   };
 
@@ -129,6 +159,11 @@ export default function CompteEcoleProfile() {
             <h2 className="text-xl font-semibold mb-4 text-black">Informations de l'école</h2>
             {ecole && (
               <div className="space-y-2 text-black">
+                {logoUrl && (
+                  <div className="mb-4">
+                    <img src={logoUrl} alt="Logo de l'école" className="w-32 h-32 object-cover rounded-full" />
+                  </div>
+                )}
                 <p><strong>Nom de l'école :</strong> {ecole.nomEcole}</p>
                 <p><strong>Ville :</strong> {ecole.villeEcole}</p>
                 <p><strong>Adresse :</strong> {ecole.adresseEcole}</p>
@@ -142,6 +177,18 @@ export default function CompteEcoleProfile() {
                 >
                   Modifier
                 </button>
+                <input
+                  type="file"
+                  id="logo-upload"
+                  className="hidden"
+                  onChange={handleLogoUpload}
+                />
+                <label
+                  htmlFor="logo-upload"
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  Changer la photo de profil
+                </label>
               </div>
             )}
           </div>
@@ -231,7 +278,7 @@ export default function CompteEcoleProfile() {
             ]}
             title="Modifier la filière"
             submitButtonText="Enregistrer"
-            prefillData={filieres.find(filiere => filiere.idFiliere = editingFiliere)}
+            prefillData={filieres.find(filiere => filiere.idFiliere === editingFiliere)}
           />
         )}
       </div>
