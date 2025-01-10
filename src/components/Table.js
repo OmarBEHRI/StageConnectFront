@@ -81,6 +81,11 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
         <TableMUI className="min-w-full bg-white">
           <TableHead>
             <TableRow>
+              {buttons && buttons.length > 0 && (
+                <TableCell className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+                  Actions
+                </TableCell>
+              )}
               {columns.map((column, index) => (
                 <TableCell
                   key={column}
@@ -90,11 +95,6 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                   {column}{getSortDirection(column)}
                 </TableCell>
               ))}
-              {buttons && buttons.length > 0 && (
-                <TableCell className="px-6 py-3 border-b-2 border-gray-300 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
-                  Actions
-                </TableCell>
-              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -103,17 +103,6 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                 key={itemIndex}
                 className="hover:bg-gray-100"
               >
-                {columns.map((column, colIndex) => {
-                  const key = columnKeys[colIndex]; // Get the property key for the column
-                  return (
-                    <TableCell 
-                      key={column}
-                      className="px-6 py-4 whitespace-nowrap text-center"
-                    >
-                      {item[key]}
-                    </TableCell>
-                  );
-                })}
                 {buttons && buttons.length > 0 && (
                   <TableCell className="px-6 py-4 whitespace-nowrap text-center">
                     {buttons.map((button, buttonIndex) => (
@@ -133,6 +122,17 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                     ))}
                   </TableCell>
                 )}
+                {columns.map((column, colIndex) => {
+                  const key = columnKeys[colIndex]; // Get the property key for the column
+                  return (
+                    <TableCell 
+                      key={column}
+                      className="px-6 py-4 whitespace-nowrap text-center"
+                    >
+                      {item[key]}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>
