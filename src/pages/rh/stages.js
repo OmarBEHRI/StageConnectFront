@@ -48,7 +48,10 @@ export default function HRInternships() {
           const etudiantResponse = await axiosInstance.get(`/api/etudiants/${internship.etudiantId}`);
           return {
             ...internship,
-            etudiant: etudiantResponse.data, // Add Etudiant details to the internship object
+            etudiantNom: etudiantResponse.data.nom,
+            etudiantPrenom: etudiantResponse.data.prenom,
+            etudiantEmail:  etudiantResponse.data.email,
+            etudiantEmail:  etudiantResponse.data.tel,// Add Etudiant details to the internship object
             dateDebut: formatDate(internship.dateDebut), // Format start date
             dateFin: formatDate(internship.dateFin), // Format end date
           };
@@ -88,13 +91,14 @@ export default function HRInternships() {
         <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
 
         <Table 
-          columns={["ID", "Titre", "Nom de l'étudiant", "Email", "Téléphone", "Date de début", "Date de fin", "Statut"]}
+          columns={["ID", "Titre", "Nom", "Prenom", "Email", "Téléphone", "Date de début", "Date de fin", "Statut"]}
           columnKeys={[
             "idStage", 
             "titre", 
-            "etudiant.nom", 
-            "etudiant.email", 
-            "etudiant.tel", 
+            "etudiantNom",
+            "etudiantPrenom" ,
+            "etudiantEmail", 
+            "etudiantTelephone", 
             "dateDebut", 
             "dateFin", 
             "statut"
