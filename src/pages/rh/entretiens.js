@@ -72,8 +72,12 @@ export default function HRInterviews() {
           return {
             ...interview,
             dateEntretien: formatDate(interview.dateEntretien), // Format the interview date
-            etudiant: etudiantResponse.data, // Add Etudiant details to the interview object
-            offre: offreResponse.data, // Add Offre details to the interview object
+            etudiantNom: etudiantResponse.data.nom, // Add Etudiant details to the interview object
+            etudiantPrenom: etudiantResponse.data.prenom,
+            etudiantTelephone: etudiantResponse.data.tel,
+            etudiantEmail: etudiantResponse.data.email,// Add Etudiant details to the interview object
+            offreObjet: offreResponse.data.objetOffre,
+            offreID: offreResponse.data.idOffre // Add Offre details to the interview object
           };
         })
       );
@@ -188,12 +192,14 @@ export default function HRInterviews() {
         <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
 
         <Table 
-          columns={["Nom de l'étudiant", "Email", "Téléphone", "Objet de l'offre", "Date"]}
+          columns={["Nom", "Prénom", "Email", "Téléphone", "Objet de l'offre", "ID de l'offre", "Date"]}
           columnKeys={[
-            "etudiant.nom", 
-            "etudiant.email", 
-            "etudiant.tel", 
-            "offre.objetOffre", // Display the offer object
+            "etudiantNom",
+            "etudiantPrenom",
+            "etudiantEmail", 
+            "etudiantTelephone", 
+            "offreObjet",
+            "offreID", // Display the offer object
             "dateEntretien"
           ]}
           items={interviews}

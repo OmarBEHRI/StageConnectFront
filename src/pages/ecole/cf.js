@@ -164,6 +164,9 @@ export default function UniversityCFManagement() {
     }
   };
 
+  console.log('filieres:', filieres);
+  console.log('filiere names : ', filieres.map(filiere => filiere.nomFiliere));
+
   const formFields = [
     { name: 'nom', placeholder: 'Nom', type: 'text', required: true },
     { name: 'prenom', placeholder: 'Prénom', type: 'text', required: true },
@@ -174,7 +177,10 @@ export default function UniversityCFManagement() {
       name: 'filiere',
       placeholder: 'Filière',
       type: 'select',
-      options: filieres.map(filiere => filiere.nomFiliere), // Populate options with filiere names
+      options: filieres.map(filiere => ({
+        value: filiere.nomFiliere,
+        label: filiere.nomFiliere
+      })), // Populate options with filiere names
       required: true,
     },
   ];
