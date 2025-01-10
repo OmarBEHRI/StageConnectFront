@@ -70,7 +70,7 @@ export default function ComSupervisorManagement() {
         motDePasse: data.motDePasse,
         entrepriseId: entrepriseId,
       };
-      await axiosInstance.post(`/api/admins/send-password/${formData.email}/${formData.motDePasse}`)
+      await axiosInstance.post(`/api/admins/send-password/${data.email}/${data.motDePasse}`)
       await axiosInstance.post('/api/encadrants', encadrantDTO);
       fetchEncadrantAccounts(entrepriseId);
       setIsFormOpen(false);
