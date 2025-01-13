@@ -29,7 +29,9 @@ export default function CompanyInternships() {
     try {
       console.log(`Ecole Id Collected : ${localStorage.getItem('id')}`);
       setEntrepriseId(localStorage.getItem('id'));
-      fetchInternships(localStorage.getItem('id')); // Fetch internships for the company
+      fetchInternships(localStorage.getItem('id'));
+      console.log(`Entreprise ID after function call is: ${entrepriseId}`);
+      console.log(`Internships fetched: \n ${internships}`);// Fetch internships for the company
     } catch (error) {
       console.error('Erreur lors de la récupération des détails Entreprise:', error);
       alert('Échec de la récupération des détails Entreprise.');
