@@ -40,6 +40,7 @@ export default function HRInternships() {
   // Fetch internships by entrepriseId and enrich with Etudiant details
   const fetchInternships = async (entrepriseId) => {
     try {
+      console.log(`Entreprise ID of RH: `)
       const response = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
       
       // Fetch Etudiant details for each internship
