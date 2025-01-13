@@ -5,6 +5,8 @@ import FormComponent from '@/components/FormComponent';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive'
+
 
 export default function SupervisorInternships() {
   const router = useRouter();
@@ -140,8 +142,17 @@ export default function SupervisorInternships() {
                   ? [{
                       label: "Évaluer",
                       onClick: () => handleEvaluate(internship.idStage)
+                    },
+                    {
+                      label: "Fiche Descriptive",
+                      onClick: () => getFicheDescriptiveDeStage(internship),
                     }]
-                  : []
+                  : [
+                    {
+                      label: "Fiche Descriptive",
+                      onClick: () => getFicheDescriptiveDeStage(internship),
+                    }
+                  ]
               }
             />
           ))}

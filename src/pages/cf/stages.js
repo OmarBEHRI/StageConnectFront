@@ -4,6 +4,8 @@ import Card from '@/components/Card';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive'
+
 
 export default function CFInternships() {
   const router = useRouter();
@@ -109,6 +111,8 @@ export default function CFInternships() {
               buttons={[
                 { label: 'Accepter', onClick: () => updateStageStatus(stage.idStage, 'valide') },
                 { label: 'Refuser', onClick: () => updateStageStatus(stage.idStage, 'refusé') },
+                { label: "Fiche Descriptive", onClick: () => getFicheDescriptiveDeStage(stage)}
+                
               ]}
             />
           ))}

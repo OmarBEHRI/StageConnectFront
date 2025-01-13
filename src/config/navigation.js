@@ -30,6 +30,7 @@ export const navConfigs = {
       { label: 'GestionEncadrants', href: '/entreprise/encadrant' },
       { label: 'GestionRH', href: '/entreprise/rh' },
       { label: 'GestionOffres', href: '/entreprise/offres' },
+      { label: 'Stages', href: '/entreprise/stages' },
       { label: 'Profil', href: '/entreprise/profile' },
     ],
   

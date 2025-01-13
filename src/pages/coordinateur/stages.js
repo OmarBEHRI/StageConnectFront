@@ -134,6 +134,7 @@ export default function CoordinatorInternships() {
               "dateFin": formatDate(internship.dateFin), // Format end date
               "statut": internship.statut,
             }))}
+            buttons={["Fiche Descriptive"]}
           />
         )}
       </div>

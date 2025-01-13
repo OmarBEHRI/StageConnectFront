@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Table as TableMUI, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper } from '@mui/material';
+import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive';
+import getFicheEvaluation from '@/utils/downloadFicheEvaluation';
 
 export default function Table({ columns, columnKeys, items, buttons, actions, idParam }) {
   const [sortConfig, setSortConfig] = useState({
@@ -108,7 +110,16 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                     {buttons.map((button, buttonIndex) => (
                       <button
                         key={button}
-                        onClick={() => {actions[buttonIndex](item[idParam]); console.log(`Console ID: ${item[idParam]}`)}}
+                        onClick={() => {
+                          if (button.toLowerCase() === 'fiche descriptive') {
+                            getFicheDescriptiveDeStage(item);
+                          } else if (button.toLowerCase() === "fiche d'evaluation") {
+                            getFicheEvaluation(item);
+                          } else {
+                            actions[buttonIndex](item[idParam]);
+                          }
+                          console.log(`Console ID: ${item[idParam]}`);
+                        }}
                         className={`${
                           button.toLowerCase() === 'delete' 
                             ? 'text-red-600 hover:text-red-800' 

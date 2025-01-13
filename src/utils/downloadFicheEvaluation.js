@@ -41,22 +41,30 @@ async function fetchEntreprise(entrepriseId) {
 function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, encadrant, entreprise) {
     const doc = new jsPDF();
 
+    // Set Times New Roman font
+    doc.setFont("Times", "normal");
+
     // Add the title
     doc.setFontSize(18);
+    doc.setFont("Times", "bold");
     doc.text(`Fiche d'Évaluation de Stage`, 10, 20);
 
     // Add evaluation information (emphasized)
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur l'Évaluation:`, 10, 30);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Note: ${evaluation.note}`, 10, 40);
     doc.text(`Compétences: ${evaluation.competances}`, 10, 50);
     doc.text(`Commentaire: ${evaluation.commentaire}`, 10, 60);
 
     // Add stage information
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur le Stage:`, 10, 80);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Titre du Stage: ${stage.titre}`, 10, 90);
     doc.text(`Description: ${stage.description}`, 10, 100);
     doc.text(`Date de Début: ${stage.dateDebut}`, 10, 110);
@@ -66,8 +74,10 @@ function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, en
 
     // Add student information
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur l'Étudiant:`, 10, 160);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Nom: ${etudiant.nom}`, 10, 170);
     doc.text(`Prénom: ${etudiant.prenom}`, 10, 180);
     doc.text(`Email: ${etudiant.email}`, 10, 190);
@@ -75,8 +85,10 @@ function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, en
 
     // Add school information
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur l'École:`, 10, 220);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Nom de l'École: ${ecole.nomEcole}`, 10, 230);
     doc.text(`Ville: ${ecole.villeEcole}`, 10, 240);
     doc.text(`Adresse: ${ecole.adresseEcole}`, 10, 250);
@@ -89,14 +101,16 @@ function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, en
             )}`;
             doc.addImage(logoBase64, 'PNG', 150, 220, 40, 20); // Adjust position and size
         } catch (error) {
-            console.error("Failed to add school logo:", error);
+            console.warn("Failed to add school logo. Skipping logo insertion:", error);
         }
     }
 
     // Add supervisor information
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur l'Encadrant:`, 10, 270);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Nom: ${encadrant.nom}`, 10, 280);
     doc.text(`Prénom: ${encadrant.prenom}`, 10, 290);
     doc.text(`Email: ${encadrant.email}`, 10, 300);
@@ -104,8 +118,10 @@ function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, en
 
     // Add company information
     doc.setFontSize(14);
+    doc.setFont("Times", "bold");
     doc.text(`Informations sur l'Entreprise:`, 10, 330);
     doc.setFontSize(12);
+    doc.setFont("Times", "normal");
     doc.text(`Nom de l'Entreprise: ${entreprise.nomEntreprise}`, 10, 340);
     doc.text(`Ville: ${entreprise.villeEntreprise}`, 10, 350);
     doc.text(`Adresse: ${entreprise.adresseEntreprise}`, 10, 360);
@@ -119,7 +135,7 @@ function generateAndDownloadEvaluationPdf(evaluation, stage, etudiant, ecole, en
             )}`;
             doc.addImage(logoBase64, 'PNG', 150, 330, 40, 20); // Adjust position and size
         } catch (error) {
-            console.error("Failed to add company logo:", error);
+            console.warn("Failed to add company logo. Skipping logo insertion:", error);
         }
     }
 

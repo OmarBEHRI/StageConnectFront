@@ -68,7 +68,7 @@ export default function CoordinatorInternships() {
             columns={columns}
             columnKeys={columnKeys}
             items={filteredEvaluations}
-            buttons={[]}
+            buttons={["Fiche d'evaluation"]}
             actions={[]}
             idParam="idEvaluation"
           />

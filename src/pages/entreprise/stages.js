@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 
-export default function HRInternships() {
+export default function CompanyInternships() {
   const router = useRouter();
   const [internships, setInternships] = useState([]);
   const [entrepriseId, setEntrepriseId] = useState(null);
@@ -27,13 +27,11 @@ export default function HRInternships() {
   // Fetch RH by ID to get entrepriseId
   const fetchCompteEntreprise = async () => {
     try {
-      const rhId = localStorage.getItem('id');
-      const response = await axiosInstance.get(`/api/rh/${rhId}`);
-      setEntrepriseId(response.data.entrepriseId);
-      fetchInternships(response.data.entrepriseId); // Fetch internships for the company
+      setEntrepriseId(localStorage.getItem('id'));
+      fetchInternships(localStorage.getItem('id')); // Fetch internships for the company
     } catch (error) {
-      console.error('Erreur lors de la récupération des détails RH:', error);
-      alert('Échec de la récupération des détails RH.');
+      console.error('Erreur lors de la récupération des détails Entreprise:', error);
+      alert('Échec de la récupération des détails Entreprise.');
     }
   };
 
@@ -84,7 +82,7 @@ export default function HRInternships() {
   };
 
   return (
-    <Layout role="hr">
+    <Layout role="company">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Gestion des stages</h1>
         
