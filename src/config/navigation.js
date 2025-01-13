@@ -11,6 +11,7 @@ export const navConfigs = {
       { label: 'Coordinateurs', href: '/ecole/coordinateurs' },
       { label: 'Étudiants', href: '/ecole/etudiants' },
       { label: 'Profil', href: '/ecole/profile' },
+      { label: 'Stages', href: '/ecole/stages' },
     ],
   
     cf: [
@@ -21,15 +22,15 @@ export const navConfigs = {
   
     coordinator: [
       { label: 'Dashboard', href: '/coordinateur' },
-      { label: 'GestionStages', href: '/coordinateur/stages' },
+      { label: 'Stages', href: '/coordinateur/stages' },
       { label: 'Evaluations', href: '/coordinateur/evaluations' },
     ],
   
     company: [
       { label: 'Dashboard', href: '/entreprise' },
-      { label: 'GestionEncadrants', href: '/entreprise/encadrant' },
-      { label: 'GestionRH', href: '/entreprise/rh' },
-      { label: 'GestionOffres', href: '/entreprise/offres' },
+      { label: 'Encadrants', href: '/entreprise/encadrant' },
+      { label: 'RH', href: '/entreprise/rh' },
+      { label: 'Offres', href: '/entreprise/offres' },
       { label: 'Stages', href: '/entreprise/stages' },
       { label: 'Profil', href: '/entreprise/profile' },
     ],
