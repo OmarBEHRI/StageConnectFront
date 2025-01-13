@@ -4,6 +4,7 @@ import Card from '@/components/Card';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive'
 
 export default function StudentInternships() {
   const router = useRouter();
@@ -116,6 +117,10 @@ export default function StudentInternships() {
                 {
                   label: getButtonLabel(internship.statut),
                   onClick: () => handleStatusUpdate(internship.idStage),
+                },
+                {
+                  label: "Fiche Descriptive",
+                  onClick: () => getFicheDescriptiveDeStage(),
                 }
               ]}
             />
