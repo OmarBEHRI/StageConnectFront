@@ -41,7 +41,7 @@ export default function UniversityInternships() {
   // Fetch internships by entrepriseId and enrich with Etudiant details
   const fetchInternships = async (entrepriseId) => {
     try {
-      const response = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
+      const response = await axiosInstance.get(`/stages/by-ecole/${entrepriseId}`);
       
       // Fetch Etudiant details for each internship
       const internshipsWithEtudiant = await Promise.all(
