@@ -27,6 +27,7 @@ export default function CompanyInternships() {
   // Fetch RH by ID to get entrepriseId
   const fetchCompteEntreprise = async () => {
     try {
+      console.log(`Ecole Id Collected : ${localStorage.getItem('id')}`);
       setEntrepriseId(localStorage.getItem('id'));
       fetchInternships(localStorage.getItem('id')); // Fetch internships for the company
     } catch (error) {
