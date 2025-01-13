@@ -28,7 +28,7 @@ export default function CompanyInternships() {
   const fetchCompteEntreprise = async () => {
     try {
       console.log(`Ecole Id Collected : ${localStorage.getItem('id')}`);
-      entrepriseId = localStorage.getItem('id')
+      const tempId = localStorage.getItem('id');
       setEntrepriseId(localStorage.getItem('id'));
       fetchInternships(localStorage.getItem('id'));
       console.log(`Entreprise ID after function call is: ${entrepriseId}`);
