@@ -120,7 +120,7 @@ export default function StudentInternships() {
                 },
                 {
                   label: "Fiche Descriptive",
-                  onClick: () => getFicheDescriptiveDeStage(),
+                  onClick: () => getFicheDescriptiveDeStage(internship),
                 }
               ]}
             />
