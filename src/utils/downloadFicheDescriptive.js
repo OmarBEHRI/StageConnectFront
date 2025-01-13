@@ -59,7 +59,7 @@ function generateAndDownloadPdf(stage, etudiant, ecole, encadrant, entreprise) {
     doc.text(`Adresse: ${ecole.adresseEcole}`, 10, 200);
 
     // Add school logo if it exists
-    if (ecole.logo) {
+    if (ecole.logo != null) {
         try {
             // Convert the byte array to a Base64 string
             const logoBase64 = `data:image/png;base64,${btoa(
@@ -86,7 +86,7 @@ function generateAndDownloadPdf(stage, etudiant, ecole, encadrant, entreprise) {
     doc.text(`Domaine: ${entreprise.domaineEntreprise}`, 10, 300);
 
     // Add company logo if it exists
-    if (entreprise.logo) {
+    if (entreprise.logo != null) {
         try {
             // Convert the byte array to a Base64 string
             const logoBase64 = `data:image/png;base64,${btoa(
