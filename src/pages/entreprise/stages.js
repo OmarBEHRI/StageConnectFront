@@ -29,8 +29,8 @@ export default function CompanyInternships() {
     try {
       console.log(`Ecole Id Collected : ${localStorage.getItem('id')}`);
       const tempId = localStorage.getItem('id');
-      setEntrepriseId(localStorage.getItem('id'));
-      fetchInternships(localStorage.getItem('id'));
+      setEntrepriseId(tempId);
+      fetchInternships(tempId);
       console.log(`Entreprise ID after function call is: ${entrepriseId}`);
       console.log(`Internships fetched: \n ${internships}`);// Fetch internships for the company
     } catch (error) {
