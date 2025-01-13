@@ -28,6 +28,7 @@ export default function CompanyInternships() {
   const fetchCompteEntreprise = async () => {
     try {
       console.log(`Ecole Id Collected : ${localStorage.getItem('id')}`);
+      entrepriseId = localStorage.getItem('id')
       setEntrepriseId(localStorage.getItem('id'));
       fetchInternships(localStorage.getItem('id'));
       console.log(`Entreprise ID after function call is: ${entrepriseId}`);
@@ -41,6 +42,7 @@ export default function CompanyInternships() {
   // Fetch internships by entrepriseId and enrich with Etudiant details
   const fetchInternships = async (entrepriseId) => {
     try {
+      console.log(`Entreprise ID found is: ${entrepriseId}`);
       const response = await axiosInstance.get(`/stages/by-entreprise/${entrepriseId}`);
       
       // Fetch Etudiant details for each internship
