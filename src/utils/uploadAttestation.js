@@ -23,7 +23,17 @@ async function uploadAttestation(stageId) {
     label.style.fontSize = '14px';
     label.style.color = '#333333';
 
-    // Create a file input
+    // Create a drag-and-drop area
+    const dropArea = document.createElement('div');
+    dropArea.style.border = '2px dashed #cccccc';
+    dropArea.style.borderRadius = '8px';
+    dropArea.style.padding = '20px';
+    dropArea.style.marginBottom = '16px';
+    dropArea.style.cursor = 'pointer';
+    dropArea.textContent = 'Glissez-déposez un fichier ici ou cliquez pour parcourir';
+    dropArea.style.color = '#666666';
+
+    // Create a file input (hidden)
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/pdf';
@@ -61,6 +71,7 @@ async function uploadAttestation(stageId) {
 
     // Append elements to the form container
     formContainer.appendChild(label);
+    formContainer.appendChild(dropArea);
     formContainer.appendChild(input);
     formContainer.appendChild(submitButton);
     formContainer.appendChild(errorMessage);
@@ -69,18 +80,39 @@ async function uploadAttestation(stageId) {
     // Add the form container to the document body
     document.body.appendChild(formContainer);
 
-    // Trigger file input when the label is clicked
-    label.onclick = () => input.click();
+    // Handle file selection via browsing
+    dropArea.onclick = () => input.click();
+    input.onchange = (event) => handleFile(event.target.files[0]);
 
-    // Handle file selection
-    input.onchange = (event) => {
-        const file = event.target.files[0];
+    // Handle drag-and-drop functionality
+    dropArea.ondragover = (event) => {
+        event.preventDefault();
+        dropArea.style.borderColor = '#333333';
+    };
+
+    dropArea.ondragleave = () => {
+        dropArea.style.borderColor = '#cccccc';
+    };
+
+    dropArea.ondrop = (event) => {
+        event.preventDefault();
+        dropArea.style.borderColor = '#cccccc';
+        const file = event.dataTransfer.files[0];
+        handleFile(file);
+    };
+
+    // Function to handle file validation and submission
+    const handleFile = (file) => {
         if (file) {
             // Check file size (max 4 GB)
             if (file.size > 4294967296) {
                 errorMessage.textContent = 'La taille du fichier dépasse la limite de 4 Go.';
                 errorMessage.style.display = 'block';
                 submitButton.disabled = true; // Disable submit button if file is too large
+            } else if (file.type !== 'application/pdf') {
+                errorMessage.textContent = 'Veuillez sélectionner un fichier PDF.';
+                errorMessage.style.display = 'block';
+                submitButton.disabled = true; // Disable submit button if file is not a PDF
             } else {
                 errorMessage.style.display = 'none';
                 submitButton.disabled = false; // Enable submit button if file is valid
@@ -107,6 +139,11 @@ async function uploadAttestation(stageId) {
                     errorMessage.textContent = 'Attestation de stage téléversée avec succès.';
                     errorMessage.style.color = '#00aa00';
                     errorMessage.style.display = 'block';
+
+                    // Close the form after 2 seconds
+                    setTimeout(() => {
+                        document.body.removeChild(formContainer);
+                    }, 2000);
                 } else {
                     errorMessage.textContent = 'Erreur lors du téléversement de l\'attestation de stage.';
                     errorMessage.style.display = 'block';
@@ -116,6 +153,9 @@ async function uploadAttestation(stageId) {
                 errorMessage.textContent = 'Erreur lors du téléversement de l\'attestation de stage.';
                 errorMessage.style.display = 'block';
             }
+        } else {
+            errorMessage.textContent = 'Veuillez sélectionner un fichier avant de soumettre.';
+            errorMessage.style.display = 'block';
         }
     };
 
