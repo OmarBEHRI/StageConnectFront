@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table as TableMUI, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, TextField, IconButton } from '@mui/material';
+import { Table as TableMUI, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, TextField, IconButton, Box } from '@mui/material';
 import { Edit, Delete, Upload, Download, Description, Assessment } from '@mui/icons-material';
 import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive';
 import getFicheEvaluation from '@/utils/downloadFicheEvaluation';
@@ -130,111 +130,113 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
               >
                 {buttons && buttons.length > 0 && (
                   <TableCell className="px-6 py-4 whitespace-nowrap text-center">
-                    {buttons.map((button, buttonIndex) => {
-                      const buttonText = button.toLowerCase();
-                      if (buttonText === 'modifier') {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            color="primary"
-                          >
-                            <Edit />
-                          </IconButton>
-                        );
-                      } else if (buttonText === 'désactiver') {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            color="secondary"
-                          >
-                            <Delete />
-                          </IconButton>
-                        );
-                      } else if (buttonText === 'déposer convention') {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            color="primary"
-                          >
-                            <Upload />
-                          </IconButton>
-                        );
-                      } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            color="primary"
-                          >
-                            <Download />
-                          </IconButton>
-                        );
-                      } else if (buttonText === 'fiche descriptive') {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => getFicheDescriptiveDeStage(item)}
-                            color="primary"
-                          >
-                            <Description />
-                          </IconButton>
-                        );
-                      } else if (buttonText === "fiche d'évaluation") {
-                        return (
-                          <IconButton
-                            key={button}
-                            onClick={() => getFicheEvaluation(item)}
-                            color="primary"
-                          >
-                            <Assessment />
-                          </IconButton>
-                        );
-                      } else if (buttonText === 'télecharger convention' && item["conventionDeStage"] != null) {
-                        return (
-                          <button
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            className="text-blue-600 hover:text-blue-800 normal-case"
-                          >
-                            {button}
-                          </button>
-                        );
-                      } else if (buttonText === 'télecharger attestation' && item["attestationDeStage"] != null) {
-                        return (
-                          <button
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            className="text-blue-600 hover:text-blue-800 normal-case"
-                          >
-                            {button}
-                          </button>
-                        );
-                      } else if (buttonText === 'déposer attestation') {
-                        return (
-                          <button
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            className="text-blue-600 hover:text-blue-800 normal-case"
-                          >
-                            {button}
-                          </button>
-                        );
-                      } else if (buttonText === 'déposer convention') {
-                        return (
-                          <button
-                            key={button}
-                            onClick={() => actions[buttonIndex](item[idParam])}
-                            className="text-blue-600 hover:text-blue-800 normal-case"
-                          >
-                            {button}
-                          </button>
-                        );
-                      }
-                      return null;
-                    })}
+                    <Box display="flex" gap={1} justifyContent="center">
+                      {buttons.map((button, buttonIndex) => {
+                        const buttonText = button.toLowerCase();
+                        if (buttonText === 'modifier') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <Edit />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'désactiver') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="secondary"
+                            >
+                              <Delete />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'déposer convention') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <Upload />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <Download />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'fiche descriptive') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => getFicheDescriptiveDeStage(item)}
+                              color="primary"
+                            >
+                              <Description />
+                            </IconButton>
+                          );
+                        } else if (buttonText === "fiche d'évaluation") {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => getFicheEvaluation(item)}
+                              color="primary"
+                            >
+                              <Assessment />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'télecharger convention' && item["conventionDeStage"] != null) {
+                          return (
+                            <button
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              className="text-blue-600 hover:text-blue-800 normal-case"
+                            >
+                              {button}
+                            </button>
+                          );
+                        } else if (buttonText === 'télecharger attestation' && item["attestationDeStage"] != null) {
+                          return (
+                            <button
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              className="text-blue-600 hover:text-blue-800 normal-case"
+                            >
+                              {button}
+                            </button>
+                          );
+                        } else if (buttonText === 'déposer attestation') {
+                          return (
+                            <button
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              className="text-blue-600 hover:text-blue-800 normal-case"
+                            >
+                              {button}
+                            </button>
+                          );
+                        } else if (buttonText === 'déposer convention') {
+                          return (
+                            <button
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              className="text-blue-600 hover:text-blue-800 normal-case"
+                            >
+                              {button}
+                            </button>
+                          );
+                        }
+                        return null;
+                      })}
+                    </Box>
                   </TableCell>
                 )}
                 {columns.map((column, colIndex) => {
