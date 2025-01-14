@@ -22,3 +22,5 @@ async function downloadAttestation(stageId) {
         console.error('Error:', error);
     }
 }
+
+export default downloadAttestation;

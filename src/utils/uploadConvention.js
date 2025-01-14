@@ -124,3 +124,5 @@ async function uploadConvention(stageId) {
         document.body.removeChild(formContainer);
     };
 }
+
+export default uploadConvention;

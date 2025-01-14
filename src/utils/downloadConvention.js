@@ -22,3 +22,5 @@ async function downloadConvention(stageId) {
         console.error('Error:', error);
     }
 }
+
+export default downloadConvention;

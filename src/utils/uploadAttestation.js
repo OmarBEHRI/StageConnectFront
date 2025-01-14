@@ -124,3 +124,5 @@ async function uploadAttestation(stageId) {
         document.body.removeChild(formContainer);
     };
 }
+
+export default uploadAttestation;
