@@ -4,14 +4,16 @@ import Card from '@/components/Card';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
-import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive'
-
+import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive';
+import getEntrepriseLogoUrl from '@/utils/getEntrepriseLogo';
+import getEntrepriseIdFromOffre from '@/utils/getEntrepriseIdFromOffre';
 
 export default function CFInternships() {
   const router = useRouter();
   const [stages, setStages] = useState([]); // Combined stage and student data
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // For search functionality
+  const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each stage
 
   // Fetch initial data
   useEffect(() => {
@@ -27,6 +29,23 @@ export default function CFInternships() {
       router.push('/');
     }
   }, [router]);
+
+  // Fetch logo URLs for all stages
+  useEffect(() => {
+    if (stages.length > 0) {
+      const fetchLogoUrls = async () => {
+        const urls = {};
+        for (const stage of stages) {
+          const entrepriseId = getEntrepriseIdFromOffre(stage.offreId); // Get entrepriseId from the stage
+          const url = await getEntrepriseLogoUrl(entrepriseId); // Fetch the logo URL
+          urls[stage.idStage] = url; // Store the URL with the stage ID as the key
+        }
+        setLogoUrls(urls);
+      };
+
+      fetchLogoUrls();
+    }
+  }, [stages]);
 
   // Fetch all stages and corresponding students
   const fetchData = async () => {
@@ -111,9 +130,9 @@ export default function CFInternships() {
               buttons={[
                 { label: 'Accepter', onClick: () => updateStageStatus(stage.idStage, 'valide') },
                 { label: 'Refuser', onClick: () => updateStageStatus(stage.idStage, 'refusé') },
-                { label: "Fiche Descriptive", onClick: () => getFicheDescriptiveDeStage(stage)}
-                
+                { label: 'Fiche Descriptive', onClick: () => getFicheDescriptiveDeStage(stage) },
               ]}
+              imageSrc={logoUrls[stage.idStage]} // Use the logo URL from state
             />
           ))}
         </div>

@@ -4,6 +4,8 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance'; // Corrected import
+import getEntrepriseFromOffreId from '@/utils/getEntrepriseFromOffreId';
+import getEntrepriseLogoUrl from '@/utils/getEntrepriseLogo';
 
 export default function CFOffers() {
   const router = useRouter();
@@ -14,6 +16,7 @@ export default function CFOffers() {
   const [error, setError] = useState(null); // Error state
   const [activeView, setActiveView] = useState('selectable'); // Tracks active view: 'selectable' or 'visible'
   const [searchQuery, setSearchQuery] = useState(''); // Search query state
+  const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each offer
 
   // Set authorization token and fetch ChefDeFiliere data
   useEffect(() => {
@@ -29,6 +32,23 @@ export default function CFOffers() {
       router.push('/');
     }
   }, [router]);
+
+  // Fetch logo URLs for all offers
+  useEffect(() => {
+    if (offersList.length > 0) {
+      const fetchLogoUrls = async () => {
+        const urls = {};
+        for (const offer of offersList) {
+          const entrepriseId = offer.entrepriseId; // Get entrepriseId from the offer
+          const url = await getEntrepriseLogoUrl(entrepriseId); // Fetch the logo URL
+          urls[offer.idOffre] = url; // Store the URL with the offer ID as the key
+        }
+        setLogoUrls(urls);
+      };
+
+      fetchLogoUrls();
+    }
+  }, [offersList]);
 
   // Fetch ChefDeFiliere data and set filiereId
   const fetchChefDeFiliere = async () => {
@@ -125,6 +145,7 @@ export default function CFOffers() {
                 onClick: () => handleAddOffer(offer.idOffre),
               },
             ]}
+            imageSrc={logoUrls[offer.idOffre]} // Use the logo URL from state
           />
         ));
     } else {
@@ -144,6 +165,7 @@ export default function CFOffers() {
               onClick: () => handleDeleteOffer(offer.idOffre),
             },
           ]}
+          imageSrc={logoUrls[offer.idOffre]} // Use the logo URL from state
         />
       ));
     }
