@@ -4,6 +4,7 @@ import Table from '@/components/Table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import uploadConvention from '@/utils/uploadConvention';
 
 export default function CoordinatorInternships() {
   const router = useRouter();
@@ -118,10 +119,10 @@ export default function CoordinatorInternships() {
           <p>Chargement...</p>
         ) : (
           <Table
-            columns={["Email de l'étudiant", "Description du stage", "Date de début", "Date de fin", "Statut"]}
+            columns={["Email de l'étudiant", "Titre du stage", "Date de début", "Date de fin", "Statut"]}
             columnKeys={[
               "etudiant.email", // Student email
-              "description", // Stage description
+              "titre", // Stage description
               "dateDebut", // Start date
               "dateFin", // End date
               "statut", // Stage status
@@ -134,7 +135,8 @@ export default function CoordinatorInternships() {
               "dateFin": formatDate(internship.dateFin), // Format end date
               "statut": internship.statut,
             }))}
-            buttons={["Fiche Descriptive"]}
+            buttons={["Déposer Convention", "Fiche Descriptive"]}
+            actions = {[uploadConvention]}
           />
         )}
       </div>

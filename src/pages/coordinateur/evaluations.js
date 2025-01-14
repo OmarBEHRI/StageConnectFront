@@ -4,6 +4,7 @@ import Table from '@/components/Table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import downloadAttestation from '@/utils/downloadAttestation';
 
 export default function CoordinatorInternships() {
   const router = useRouter();
@@ -68,8 +69,8 @@ export default function CoordinatorInternships() {
             columns={columns}
             columnKeys={columnKeys}
             items={filteredEvaluations}
-            buttons={["Fiche d'evaluation"]}
-            actions={[]}
+            buttons={["Télécharger Attestation", "Fiche d'evaluation"]}
+            actions={[downloadAttestation]}
             idParam="idEvaluation"
           />
         )}

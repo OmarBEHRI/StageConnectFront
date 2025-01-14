@@ -4,6 +4,8 @@ import Table from '@/components/Table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import uploadAttestation from '@/utils/uploadAttestation';
+import downloadConvention from '@/utils/downloadConvention';
 
 export default function HRInternships() {
   const router = useRouter();
@@ -105,8 +107,8 @@ export default function HRInternships() {
             "statut"
           ]}
           items={internships}
-          buttons={["Supprimer", "Fiche Descriptive"]}
-          actions={[handleDelete]}
+          buttons={["Supprimer", "Télecharger Convention", "Déposer Attéstation", "Fiche Descriptive"]}
+          actions={[handleDelete, downloadConvention, uploadAttestation]}
           idParam="idStage"
           formatData={(key, value) => {
             if (key === "dateDebut" || key === "dateFin") {
