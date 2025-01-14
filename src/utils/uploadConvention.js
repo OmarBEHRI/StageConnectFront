@@ -81,8 +81,8 @@ async function uploadConvention(stageId) {
     formContainer.appendChild(fileNameDisplay);
     formContainer.appendChild(input);
     formContainer.appendChild(submitButton);
-    formContainer.appendChild(errorMessage);
     formContainer.appendChild(closeButton);
+    formContainer.appendChild(errorMessage);
 
     // Add the form container to the document body
     document.body.appendChild(formContainer);
@@ -104,8 +104,18 @@ async function uploadConvention(stageId) {
     dropArea.ondrop = (event) => {
         event.preventDefault();
         dropArea.style.borderColor = '#cccccc';
+
+        // Get the dropped file
         const file = event.dataTransfer.files[0];
-        handleFile(file);
+        if (file) {
+            // Update the file input with the dropped file
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            input.files = dataTransfer.files;
+
+            // Handle the file
+            handleFile(file);
+        }
     };
 
     // Function to handle file validation and display file name
