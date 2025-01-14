@@ -147,6 +147,7 @@ export default function HRInterviews() {
       // Remove encadrant from data
       const { encadrant, ...updatedData } = data;
 
+
       const stageDTO = {
         ...updatedData,
         statut: "nouveau", // Set statut to "nouveau" by default
@@ -155,16 +156,13 @@ export default function HRInterviews() {
         encadrantId: selectedEncadrant.idEncadrant, // Use the idEncadrant from the selected encadrant
       };
 
-      // Console log for debugging
-      console.log('Debugging: selectedInterview object', selectedInterview);
-      console.log('Debugging: stageDTO data', data);
-      console.log('Debugging: etudiantId', selectedInterview.etudiantId);
-      console.log('Debugging: offreId', selectedInterview.offreId);
-      console.log('Debugging: encadrantId', selectedEncadrant.idEncadrant);
-      console.log('Debugging: idEntretien', selectedInterview.idEntretien);
 
       await axiosInstance.post('/stages', stageDTO);
-      const { etudiant, offre, ...updatedInterview } = selectedInterview; // Exclude etudiant and offre objects
+
+      const { etudiantEmail, etudiantNom, etudiantPrenom, etudiantTelephone, offreID, offreObjet, ...updatedInterview } = selectedInterview;
+      // Exclude etudiant and offre objects
+      console.log(`Updated interview is:`);
+      console.log(updatedInterview);
       updatedInterview.resultat = "accepté"; // Create the internship
       await axiosInstance.put(`/entretiens/${selectedInterview.idEntretien}`, updatedInterview); // Update interview result
       fetchInterviews(entrepriseId); // Refresh the interviews list
