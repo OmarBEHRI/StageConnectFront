@@ -75,7 +75,7 @@ export default function HRInterviews() {
             etudiantNom: etudiantResponse.data.nom, // Add Etudiant details to the interview object
             etudiantPrenom: etudiantResponse.data.prenom,
             etudiantTelephone: etudiantResponse.data.tel,
-            etudiantEmail: etudiantResponse.data.email,// Add Etudiant details to the interview object
+            etudiantEmail: etudiantResponse.data.email, // Add Etudiant details to the interview object
             offreObjet: offreResponse.data.objetOffre,
             offreID: offreResponse.data.idOffre // Add Offre details to the interview object
           };
@@ -89,17 +89,11 @@ export default function HRInterviews() {
     }
   };
 
+  // Updated formatDate function to use ISO 8601 format
   const formatDate = (date) => {
     if (!date) return "N/A"; // Handle null or undefined dates
     const dateObj = new Date(date);
-    const options = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    return dateObj.toLocaleDateString('fr-FR', options); // Format as "DD Month YYYY at HH:MM"
+    return dateObj.toISOString(); // Format as ISO 8601
   };
 
   const internshipFormFields = [
@@ -152,7 +146,7 @@ export default function HRInterviews() {
 
       // Remove encadrant from data
       const { encadrant, ...updatedData } = data;
-      
+
       const stageDTO = {
         ...updatedData,
         statut: "nouveau", // Set statut to "nouveau" by default
@@ -185,19 +179,19 @@ export default function HRInterviews() {
     <Layout role="hr">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Gestion des entretiens</h1>
-        
+
         {/* Display error message if any */}
         {error && <p className="text-red-500">{error}</p>}
 
         <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
 
-        <Table 
+        <Table
           columns={["Nom", "Prénom", "Email", "Téléphone", "Objet de l'offre", "ID de l'offre", "Date"]}
           columnKeys={[
             "etudiantNom",
             "etudiantPrenom",
-            "etudiantEmail", 
-            "etudiantTelephone", 
+            "etudiantEmail",
+            "etudiantTelephone",
             "offreObjet",
             "offreID", // Display the offer object
             "dateEntretien"
@@ -208,7 +202,7 @@ export default function HRInterviews() {
           idParam="idEntretien"
         />
 
-        <FormComponent 
+        <FormComponent
           isOpen={isInternshipFormOpen}
           onClose={() => setIsInternshipFormOpen(false)}
           onSubmit={handleCreateInternship}
