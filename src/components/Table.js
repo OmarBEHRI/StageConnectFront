@@ -233,8 +233,24 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               {button}
                             </button>
                           );
+                        } else {
+                          // Default button for any other button text
+                          return (
+                            <button
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              className={`${
+                                button.toLowerCase() === 'supprimer'
+                                  ? 'text-red-600 hover:text-red-800'
+                                  : 'text-blue-600 hover:text-blue-800'
+                              } ${
+                                buttonIndex < buttons.length - 1 ? 'mr-4' : ''
+                              } normal-case`}
+                            >
+                              {button}
+                            </button>
+                          );
                         }
-                        return null;
                       })}
                     </Box>
                   </TableCell>
