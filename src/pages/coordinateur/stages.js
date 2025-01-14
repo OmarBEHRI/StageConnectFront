@@ -138,6 +138,7 @@ export default function CoordinatorInternships() {
             }))}
             buttons={["Déposer Convention", "Télécharger Attestation", "Fiche Descriptive"]}
             actions = {[uploadConvention, downloadAttestation]}
+            idParam= "idStage"
           />
         )}
       </div>
