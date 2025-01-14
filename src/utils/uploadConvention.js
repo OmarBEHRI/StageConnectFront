@@ -165,7 +165,7 @@ async function uploadConvention(stageId) {
                         if (document.body.contains(formContainer)) {
                             document.body.removeChild(formContainer);
                         }
-                    }, 2000);
+                    }, 1000);
                 } else {
                     errorMessage.textContent = 'Erreur lors du téléversement de la convention de stage.';
                     errorMessage.style.display = 'block';

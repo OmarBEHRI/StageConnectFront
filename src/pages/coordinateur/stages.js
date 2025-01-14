@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 import uploadConvention from '@/utils/uploadConvention';
+import downloadAttestation from '@/utils/downloadAttestation';
 
 export default function CoordinatorInternships() {
   const router = useRouter();
@@ -135,8 +136,8 @@ export default function CoordinatorInternships() {
               "dateFin": formatDate(internship.dateFin), // Format end date
               "statut": internship.statut,
             }))}
-            buttons={["Déposer Convention", "Fiche Descriptive"]}
-            actions = {[uploadConvention]}
+            buttons={["Déposer Convention", "Télécharger Attestation", "Fiche Descriptive"]}
+            actions = {[uploadConvention, downloadAttestation]}
           />
         )}
       </div>
