@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive'
+import getEntrepriseIdFromOffre from '@/utils/getEntrepriseIdFromOffre';
+import getEntrepriseFromOffreId from '@/utils/getEntrepriseFromOffreId';
 
 export default function StudentInternships() {
   const router = useRouter();
@@ -103,6 +105,7 @@ export default function StudentInternships() {
               key={internship.idStage}
               title={internship.titre}
               specifications={[
+                { label: "Entreprise", value: getEntrepriseFromOffreId(internship.offreId).nomEntreprise},
                 { label: "Description", value: internship.description },
                 { label: "Date de début", value: internship.dateDebut },
                 { label: "Date de fin", value: internship.dateFin },
@@ -123,6 +126,7 @@ export default function StudentInternships() {
                   onClick: () => getFicheDescriptiveDeStage(internship),
                 }
               ]}
+              imageSrc={getEntrepriseIdFromOffre(internship.offreId)}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ import Card from '@/components/Card';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
 import Modal from '@/components/Modal'; // Import a Modal component
+import getEntrepriseLogoUrl from '@/utils/getEntrepriseLogo';
 
 export default function StudentOffers() {
   const router = useRouter();
@@ -174,6 +175,7 @@ export default function StudentOffers() {
                     },
                   },
                 ]}
+                imageSrc={getEntrepriseLogoUrl(offer.entrepriseId)}
               />
             ))}
           </div>

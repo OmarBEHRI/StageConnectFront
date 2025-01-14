@@ -4,6 +4,7 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import getEntrepriseIdFromOffre from '@/utils/getEntrepriseIdFromOffre';
 
 export default function StudentInterviews() {
   const router = useRouter();
@@ -104,6 +105,7 @@ export default function StudentInterviews() {
                   onClick: () => handleJoinMeeting(interview.lien),
                 },
               ]}
+              imageSrc={getEntrepriseIdFromOffre(interview.offreId)}
             >
               {errorMessage && (
                 <p className="text-red-500">{errorMessage}</p>
