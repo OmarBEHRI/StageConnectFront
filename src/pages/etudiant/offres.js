@@ -20,6 +20,7 @@ export default function StudentOffers() {
   const [cvFile, setCvFile] = useState(null); // State for CV file
   const [lettreMotivationFile, setLettreMotivationFile] = useState(null); // State for Lettre de Motivation file
   const [successMessage, setSuccessMessage] = useState(null); // State for success message
+  const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each offer
 
   // Fetch student data, visible offers, and postulations
   useEffect(() => {
@@ -35,6 +36,22 @@ export default function StudentOffers() {
       router.push('/');
     }
   }, [router]);
+
+  // Fetch logo URLs for all offers
+  useEffect(() => {
+    if (offers.length > 0) {
+      const fetchLogoUrls = async () => {
+        const urls = {};
+        for (const offer of offers) {
+          const url = await getEntrepriseLogoUrl(offer.entrepriseId);
+          urls[offer.idOffre] = url;
+        }
+        setLogoUrls(urls);
+      };
+
+      fetchLogoUrls();
+    }
+  }, [offers]);
 
   const fetchData = async () => {
     try {
@@ -175,7 +192,7 @@ export default function StudentOffers() {
                     },
                   },
                 ]}
-                imageSrc={getEntrepriseLogoUrl(offer.entrepriseId)}
+                imageSrc={logoUrls[offer.idOffre]} // Use the logo URL from state
               />
             ))}
           </div>
