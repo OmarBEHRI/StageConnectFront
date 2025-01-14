@@ -10,6 +10,7 @@ export default function CompteEntrepriseProfile() {
   const [entreprise, setEntreprise] = useState(null);
   const [isEditingCompteEntreprise, setIsEditingCompteEntreprise] = useState(false);
   const [isEditingEntreprise, setIsEditingEntreprise] = useState(false);
+  const [logoUrl, setLogoUrl] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -27,6 +28,18 @@ export default function CompteEntrepriseProfile() {
 
       const entrepriseResponse = await axiosInstance.get(`/api/entreprises/${compteEntrepriseResponse.data.entrepriseId}`);
       setEntreprise(entrepriseResponse.data);
+
+      // Fetch the logo
+      if (entrepriseResponse.data.idEntreprise) {
+        const logoResponse = await axiosInstance.get(`/api/entreprises/download/${entrepriseResponse.data.idEntreprise}/logo`, {
+          responseType: 'blob',
+        });
+        if (logoResponse.data.size > 0) {
+          const logoBlob = new Blob([logoResponse.data], { type: 'image/jpeg' });
+          const logoUrl = URL.createObjectURL(logoBlob);
+          setLogoUrl(logoUrl);
+        }
+      }
     } catch (error) {
       console.error('Erreur lors de la récupération des données du profil:', error);
     }
@@ -49,6 +62,30 @@ export default function CompteEntrepriseProfile() {
       setIsEditingEntreprise(false);
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'Entreprise:', error);
+    }
+  };
+
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file && entreprise) {
+      const formData = new FormData();
+      formData.append('logo', file);
+
+      try {
+        const response = await axiosInstance.put(`/api/entreprises/upload/${entreprise.idEntreprise}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setEntreprise(response.data);
+
+        // Update the logo URL
+        const logoBlob = new Blob([file], { type: 'image/jpeg' });
+        const logoUrl = URL.createObjectURL(logoBlob);
+        setLogoUrl(logoUrl);
+      } catch (error) {
+        console.error('Erreur lors du téléchargement du logo:', error);
+      }
     }
   };
 
@@ -82,6 +119,11 @@ export default function CompteEntrepriseProfile() {
             <h2 className="text-xl font-semibold mb-4 text-black">Informations de l'entreprise</h2>
             {entreprise && (
               <div className="space-y-2 text-black">
+                {logoUrl && (
+                  <div className="mb-4">
+                    <img src={logoUrl} alt="Logo de l'entreprise" className="w-32 h-32 object-cover rounded-full" />
+                  </div>
+                )}
                 <p><strong>Nom de l'entreprise :</strong> {entreprise.nomEntreprise}</p>
                 <p><strong>Ville :</strong> {entreprise.villeEntreprise}</p>
                 <p><strong>Adresse :</strong> {entreprise.adresseEntreprise}</p>
@@ -91,6 +133,18 @@ export default function CompteEntrepriseProfile() {
                 >
                   Modifier
                 </button>
+                <input
+                  type="file"
+                  id="logo-upload"
+                  className="hidden"
+                  onChange={handleLogoUpload}
+                />
+                <label
+                  htmlFor="logo-upload"
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  Changer la photo de profil
+                </label>
               </div>
             )}
           </div>
