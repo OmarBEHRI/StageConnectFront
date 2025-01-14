@@ -39,6 +39,12 @@ async function uploadAttestation(stageId) {
     input.accept = 'application/pdf';
     input.style.display = 'none';
 
+    // Create a file name display area
+    const fileNameDisplay = document.createElement('div');
+    fileNameDisplay.style.marginTop = '8px';
+    fileNameDisplay.style.fontSize = '12px';
+    fileNameDisplay.style.color = '#333333';
+
     // Create a submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Soumettre';
@@ -72,6 +78,7 @@ async function uploadAttestation(stageId) {
     // Append elements to the form container
     formContainer.appendChild(label);
     formContainer.appendChild(dropArea);
+    formContainer.appendChild(fileNameDisplay);
     formContainer.appendChild(input);
     formContainer.appendChild(submitButton);
     formContainer.appendChild(errorMessage);
@@ -101,9 +108,12 @@ async function uploadAttestation(stageId) {
         handleFile(file);
     };
 
-    // Function to handle file validation and submission
+    // Function to handle file validation and display file name
     const handleFile = (file) => {
         if (file) {
+            // Display the file name
+            fileNameDisplay.textContent = `Fichier sélectionné : ${file.name}`;
+
             // Check file size (max 4 GB)
             if (file.size > 4294967296) {
                 errorMessage.textContent = 'La taille du fichier dépasse la limite de 4 Go.';
@@ -142,7 +152,9 @@ async function uploadAttestation(stageId) {
 
                     // Close the form after 2 seconds
                     setTimeout(() => {
-                        document.body.removeChild(formContainer);
+                        if (document.body.contains(formContainer)) {
+                            document.body.removeChild(formContainer);
+                        }
                     }, 2000);
                 } else {
                     errorMessage.textContent = 'Erreur lors du téléversement de l\'attestation de stage.';
@@ -161,7 +173,9 @@ async function uploadAttestation(stageId) {
 
     // Close the form when the close button is clicked
     closeButton.onclick = () => {
-        document.body.removeChild(formContainer);
+        if (document.body.contains(formContainer)) {
+            document.body.removeChild(formContainer);
+        }
     };
 }
 
