@@ -9,7 +9,9 @@ async function getEntrepriseLogoUrl(entrepriseId) {
     if (logoResponse.data.size > 0) {
       const logoBlob = new Blob([logoResponse.data], { type: 'image/jpeg' });
       console.log(`URL collected for image is: ${URL.createObjectURL(logoBlob)}`);
-      return URL.createObjectURL(logoBlob);
+      
+    //   return URL.createObjectURL(logoBlob);
+    return `http://localhost:8080/api/entreprises/download/${entrepriseId}/logo`
     }
   } catch (error) {
     console.error('Error fetching entreprise logo:', error);
