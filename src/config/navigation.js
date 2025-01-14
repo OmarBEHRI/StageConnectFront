@@ -10,8 +10,9 @@ export const navConfigs = {
       { label: 'CF', href: '/ecole/cf' },
       { label: 'Coordinateurs', href: '/ecole/coordinateurs' },
       { label: 'Étudiants', href: '/ecole/etudiants' },
-      { label: 'Profil', href: '/ecole/profile' },
       { label: 'Stages', href: '/ecole/stages' },
+      { label: 'Profil', href: '/ecole/profile' },
+
     ],
   
     cf: [

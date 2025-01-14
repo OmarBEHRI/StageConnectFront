@@ -86,6 +86,13 @@ export default function CFInternships() {
     return searchString.includes(searchQuery.toLowerCase());
   });
 
+  // Format date to a human-readable format
+  const formatDate = (date) => {
+    if (!date) return "N/A"; // Handle null or undefined dates
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString(); // Format as human-readable date
+  };
+
   // Handle stage status update
   const updateStageStatus = async (idStage, newStatus) => {
     try {
@@ -120,8 +127,8 @@ export default function CFInternships() {
               title={stage.titre || 'Aucun titre'}
               specifications={[
                 { label: 'Description', value: stage.description || 'Aucune description' },
-                { label: 'Date de début', value: stage.dateDebut || 'Aucune date de début' },
-                { label: 'Date de fin', value: stage.dateFin || 'Aucune date de fin' },
+                { label: 'Date de début', value: formatDate(stage.dateDebut) || 'Aucune date de début' },
+                { label: 'Date de fin', value: formatDate(stage.dateFin) || 'Aucune date de fin' },
                 { label: 'Localisation', value: stage.localisation || 'Aucune localisation' },
                 { label: 'Étudiant', value: `${stage.etudiant?.prenom || 'Aucun prénom'} ${stage.etudiant?.nom || 'Aucun nom'}` },
                 { label: 'Email', value: stage.etudiant?.email || 'Aucun email' },
@@ -142,4 +149,5 @@ export default function CFInternships() {
       </div>
     </Layout>
   );
+
 }

@@ -38,6 +38,7 @@ export default function UniversityInternships() {
     }
   };
 
+  
   // Fetch internships by entrepriseId and enrich with Etudiant details
   const fetchInternships = async (entrepriseId) => {
     try {
