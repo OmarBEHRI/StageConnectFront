@@ -4,18 +4,19 @@ import SearchBar from '@/components/university/SearchBar';
 import Card from '@/components/Card';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
-import getEntrepriseIdFromOffre from '@/utils/getEntrepriseIdFromOffre';
+import getEntrepriseLogoUrl from '@/utils/getEntrepriseLogo'; // Import the logo fetching function
 
 export default function StudentInterviews() {
   const router = useRouter();
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each interview
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem("token");
-      const etudiantId = localStorage.getItem("id");
+      const token = localStorage.getItem('token');
+      const etudiantId = localStorage.getItem('id');
 
       if (token && etudiantId) {
         axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
@@ -28,10 +29,29 @@ export default function StudentInterviews() {
     }
   }, [router]);
 
+  // Fetch logo URLs for all interviews
+  useEffect(() => {
+    if (interviews.length > 0) {
+      const fetchLogoUrls = async () => {
+        const urls = {};
+        for (const interview of interviews) {
+          const entrepriseId = interview.offre.entrepriseId; // Get entrepriseId from the offer
+          const url = await getEntrepriseLogoUrl(entrepriseId); // Fetch the logo URL
+          urls[interview.idEntretien] = url; // Store the URL with the interview ID as the key
+        }
+        setLogoUrls(urls);
+      };
+
+      fetchLogoUrls();
+    }
+  }, [interviews]);
+
   const fetchInterviews = async (etudiantId) => {
     try {
       const response = await axiosInstance.get(`/entretiens/etudiant/${etudiantId}`);
       console.log(response.data);
+
+      // Fetch additional details for each interview
       const interviewsWithDetails = await Promise.all(
         response.data.map(async (entretien) => {
           const etudiantResponse = await axiosInstance.get(`/api/etudiants/${entretien.etudiantId}`);
@@ -63,7 +83,7 @@ export default function StudentInterviews() {
   };
 
   const handleSearch = (query) => {
-    console.log("Recherche pour :", query);
+    console.log('Recherche pour :', query);
   };
 
   const handleJoinMeeting = (meetingLink) => {
@@ -92,24 +112,22 @@ export default function StudentInterviews() {
               key={interview.idEntretien}
               title={interview.offre.objetOffre}
               specifications={[
-                { label: "Date", value: formatDate(interview.dateEntretien) },
-                { label: "Adresse", value: interview.adresse },
-                { label: "Durée", value: interview.duree },
-                { label: "Statut", value: interview.etat },
-                { label: "Résultat", value: interview.resultat },
-                { label: "Lien de réunion", value: interview.lien, isLink: true },
+                { label: 'Date', value: formatDate(interview.dateEntretien) },
+                { label: 'Adresse', value: interview.adresse },
+                { label: 'Durée', value: interview.duree },
+                { label: 'Statut', value: interview.etat },
+                { label: 'Résultat', value: interview.resultat },
+                { label: 'Lien de réunion', value: interview.lien, isLink: true },
               ]}
               buttons={[
                 {
-                  label: "Rejoindre réunion",
+                  label: 'Rejoindre réunion',
                   onClick: () => handleJoinMeeting(interview.lien),
                 },
               ]}
-              imageSrc={getEntrepriseIdFromOffre(interview.offreId)}
+              imageSrc={logoUrls[interview.idEntretien]} // Use the logo URL from state
             >
-              {errorMessage && (
-                <p className="text-red-500">{errorMessage}</p>
-              )}
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </Card>
           ))}
         </div>
