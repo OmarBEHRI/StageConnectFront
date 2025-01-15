@@ -121,7 +121,11 @@ export default function CompanyAccountsManagement() {
     try {
       console.log("FormData to change is: ");
       console.log(formData);
-      await axiosInstance.put(`/compte-entreprises/${editAccountId}`, formData)
+
+      // Remove the 'name' parameter from formData
+      const { name, ...updatedFormData } = formData;
+      
+      await axiosInstance.put(`/compte-entreprises/${editAccountId}`, updatedFormData)
       setShowEditForm(false)
       setFormData({})
       setEditAccountId(null)
