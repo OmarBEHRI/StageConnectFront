@@ -54,7 +54,7 @@ export default function StudentInternships() {
 
       const updatedStages = await Promise.all(
         stages.map(async (stage) => {
-          if (stage.statut !== 'terminé' && stage.statut !== 'évalué' && stage.statut !== 'nouveau') {
+          if (stage.statut !== 'terminé' && stage.statut !== 'évalué' && stage.statut !== 'nouveau' && stage.statut !== 'refusé' && stage.statut !== 'refusé temporairement' ) {
             const currentDate = new Date();
             const dateFin = new Date(stage.dateFin);
             const dateDebut = new Date(stage.dateDebut);
