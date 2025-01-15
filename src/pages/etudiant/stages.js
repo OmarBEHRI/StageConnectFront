@@ -121,7 +121,7 @@ export default function StudentInternships() {
     const response = await getEntrepriseFromOffreId(offerId);
     console.log(`Response Entreprise is:`);
     console.log(response);
-    return response;
+    return response.nomEntreprise;
   };
 
   return (
@@ -133,13 +133,13 @@ export default function StudentInternships() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {internships.map((internship) => {
-            const entreprise = getEntreprise(internship.offreId); // Get entreprise details
+            const entrepriseNom = getEntreprise(internship.offreId); // Get entreprise details
             return (
               <Card
                 key={internship.idStage}
                 title={internship.titre}
                 specifications={[
-                  { label: 'Entreprise', value: (entreprise != null)? entreprise.nomEntreprise : 'N/A' },
+                  { label: 'Entreprise', value: entrepriseNom },
                   { label: 'Description', value: internship.description },
                   { label: 'Date de début', value: internship.dateDebut },
                   { label: 'Date de fin', value: internship.dateFin },
