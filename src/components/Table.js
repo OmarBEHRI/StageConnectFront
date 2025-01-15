@@ -175,7 +175,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Upload />
                             </IconButton>
                           );
-                        } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
+                        } else if (buttonText === 'télécharger attéstation' && item["attestationDeStage"] != null) {
                           return (
                             <IconButton {...commonProps} color="primary">
                               <Download />
@@ -194,12 +194,6 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                             </IconButton>
                           );
                         } else if (buttonText === 'télecharger convention' && item["conventionDeStage"] != null) {
-                          return (
-                            <IconButton {...commonProps} color="primary">
-                              <Download />
-                            </IconButton>
-                          );
-                        } else if (buttonText === 'télecharger attestation') {
                           return (
                             <IconButton {...commonProps} color="primary">
                               <Download />
@@ -242,6 +236,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                             </IconButton>
                           );
                         } else {
+                          if (buttonText === "télecharger convention" || buttonText === "télecharger attéstation") return null;
                           // Default button for any other button text
                           return (
                             <button
