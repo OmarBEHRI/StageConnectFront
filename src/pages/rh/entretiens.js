@@ -181,8 +181,6 @@ export default function HRInterviews() {
         {/* Display error message if any */}
         {error && <p className="text-red-500">{error}</p>}
 
-        <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
-
         <Table
           columns={["Nom", "Prénom", "Email", "Téléphone", "Objet de l'offre", "ID de l'offre", "Date"]}
           columnKeys={[

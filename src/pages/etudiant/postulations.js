@@ -112,9 +112,6 @@ export default function StudentApplications() {
     <Layout role="student">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">Mes candidatures</h1>
-        <div className="mb-6">
-          <SearchBar onSearch={handleSearch} />
-        </div>
         <div className="overflow-x-auto">
           <Table
             columns={applications.columns}

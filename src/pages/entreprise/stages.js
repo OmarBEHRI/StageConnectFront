@@ -89,8 +89,7 @@ export default function CompanyInternships() {
     <Layout role="company">
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Gestion des stages</h1>
-        
-        <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
+      
 
         <Table 
           columns={["ID", "Titre", "Nom", "Prenom", "Email", "Téléphone", "Date de début", "Date de fin", "Statut"]}

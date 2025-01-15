@@ -189,7 +189,6 @@ export default function UniversityCFManagement() {
     <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">Gestion des Chefs de Filière</h1>
       <div className="flex justify-between items-center mb-6">
-        <SearchBar onSearch={handleSearch} />
         <button
           onClick={() => {
             setFormData({});

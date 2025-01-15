@@ -18,14 +18,14 @@ import {
 export default function HRDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState([
-    { title: 'Offres ouvertes', value: 'Chargement...', icon: <FaBriefcase /> },
-    { title: 'Total des offres', value: 'Chargement...', icon: <FaClipboardList /> },
-    { title: 'Total des entretiens', value: 'Chargement...', icon: <FaCalendarAlt /> },
-    { title: 'Total des RH', value: 'Chargement...', icon: <FaUserTie /> },
-    { title: 'Total des superviseurs', value: 'Chargement...', icon: <FaUserGraduate /> },
-    { title: 'Stages confirmés', value: 'Chargement...', icon: <FaChartLine /> },
-    { title: 'Total des offres de stages', value: 'Chargement...', icon: <FaUsers /> },
-    { title: 'Total des candidatures', value: 'Chargement...', icon: <FaBuilding /> },
+    { title: 'Offres ouvertes', value: 'Chargement...', iconCard: <FaBriefcase /> },
+    { title: 'Total des offres', value: 'Chargement...', iconCard: <FaClipboardList /> },
+    { title: 'Total des entretiens', value: 'Chargement...', iconCard: <FaCalendarAlt /> },
+    { title: 'Total des RH', value: 'Chargement...', iconCard: <FaUserTie /> },
+    { title: 'Total des superviseurs', value: 'Chargement...', iconCard: <FaUserGraduate /> },
+    { title: 'Stages confirmés', value: 'Chargement...', iconCard: <FaChartLine /> },
+    { title: 'Total des offres de stages', value: 'Chargement...', iconCard: <FaUsers /> },
+    { title: 'Total des candidatures', value: 'Chargement...', iconCard: <FaBuilding /> },
   ]);
   const [loading, setLoading] = useState(true);
 

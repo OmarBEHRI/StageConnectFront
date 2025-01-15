@@ -52,10 +52,6 @@ export default function ComOffers() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Offres de l'entreprise</h1>
 
-        <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
-        </div>
-
         <Table
           columns={["ID Offre", "Titre", "Poste", "Date de début"]}
           columnKeys={["idOffre", "objetOffre", "posteOffre", "dateLancement"]}

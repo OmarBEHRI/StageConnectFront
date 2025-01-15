@@ -122,7 +122,6 @@ export default function ComSupervisorManagement() {
         <h1 className="text-2xl font-bold">Gestion des superviseurs de l'entreprise</h1>
 
         <div className="flex justify-between items-center">
-          <SearchBar onSearch={(query) => console.log('Recherche:', query)} />
           <button
             onClick={() => {
               setIsEditMode(false);

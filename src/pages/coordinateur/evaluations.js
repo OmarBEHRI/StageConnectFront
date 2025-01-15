@@ -59,7 +59,6 @@ export default function CoordinatorInternships() {
   return (
     <Layout role="coordinator">
       <div className="p-4">
-        <SearchBar onSearch={handleSearch} />
         {isLoading ? (
           <p>Loading...</p>
         ) : error ? (
