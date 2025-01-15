@@ -1,11 +1,13 @@
-import Layout from '@/components/Layout'
-import StatCard from '@/components/StatCard'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import axiosInstance from '@/axiosInstance/axiosInstance'
+import Layout from '@/components/Layout';
+import StatCard from '@/components/StatCard';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import axiosInstance from '@/axiosInstance/axiosInstance';
+import { motion } from 'framer-motion';
+import { FaUniversity, FaBuilding, FaUsers, FaBriefcase, FaUserGraduate, FaClipboardList, FaCalendarAlt, FaChartLine } from 'react-icons/fa';
 
 export default function Dashboard() {
-  const router = useRouter()
+  const router = useRouter();
   const [stats, setStats] = useState({
     universityAccounts: 0,
     companyAccounts: 0,
@@ -16,21 +18,23 @@ export default function Dashboard() {
     ongoingInternships: 0,
     interviews: 0,
     totalPlatformUsers: 0,
-  })
+  });
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (token) {
-        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`
-        fetchStats()
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        fetchStats();
       } else {
-        router.push('/')
+        router.push('/');
       }
     } else {
-      router.push('/')
+      router.push('/');
     }
-  }, [router])
+  }, [router]);
 
   const fetchStats = async () => {
     try {
@@ -54,28 +58,84 @@ export default function Dashboard() {
         ongoingInternships: ongoingInternshipsRes.data,
         interviews: interviewsRes.data,
         totalPlatformUsers: totalPlatformUsersRes.data,
-      })
+      });
+      setLoading(false);
     } catch (error) {
-      console.error('Error fetching stats:', error)
+      console.error('Error fetching stats:', error);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Layout role="admin">
-      <div>
+      <div className="space-y-6">
         <h1 className="text-3xl font-bold mb-12 mt-8">Tableau de bord Admin</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <StatCard title="Comptes Universités" value={stats.universityAccounts} />
-          <StatCard title="Comptes Entreprises" value={stats.companyAccounts} />
-          <StatCard title="Étudiants" value={stats.students} />
-          <StatCard title="Offres Ouvertes" value={stats.openOffers} />
-          <StatCard title="Total des Offres" value={stats.totalOffers} />
-          <StatCard title="Stages Créés" value={stats.internships} />
-          <StatCard title="Stages en Cours" value={stats.ongoingInternships} />
-          <StatCard title="Entretiens" value={stats.interviews} />
-          <StatCard title="Utilisateurs Totaux" value={stats.totalPlatformUsers} />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <StatCard title="Comptes Universités" value={stats.universityAccounts} iconCard={<FaUniversity />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <StatCard title="Comptes Entreprises" value={stats.companyAccounts} iconCard={<FaBuilding />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <StatCard title="Étudiants" value={stats.students} iconCard={<FaUsers />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <StatCard title="Offres Ouvertes" value={stats.openOffers} iconCard={<FaBriefcase />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <StatCard title="Total des Offres" value={stats.totalOffers} iconCard={<FaClipboardList />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <StatCard title="Stages Créés" value={stats.internships} iconCard={<FaUserGraduate />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <StatCard title="Stages en Cours" value={stats.ongoingInternships} iconCard={<FaCalendarAlt />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <StatCard title="Entretiens" value={stats.interviews} iconCard={<FaChartLine />} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+          >
+            <StatCard title="Utilisateurs Totaux" value={stats.totalPlatformUsers} iconCard={<FaUsers />} />
+          </motion.div>
         </div>
       </div>
     </Layout>
-  )
+  );
 }

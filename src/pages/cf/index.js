@@ -3,14 +3,16 @@ import StatCard from '@/components/StatCard';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import { motion } from 'framer-motion';
+import { FaUsers, FaUserCheck, FaBriefcase, FaClipboardCheck } from 'react-icons/fa';
 
 export default function CFDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState([
-    { title: 'Étudiants dans la filière', value: 'Chargement...' },
-    { title: 'Étudiants avec stages', value: 'Chargement...' },
-    { title: 'Offres visibles', value: 'Chargement...' },
-    { title: 'Stages trouvés', value: 'Chargement...' },
+    { title: 'Étudiants dans la filière', value: 'Chargement...', icon: <FaUsers /> },
+    { title: 'Étudiants avec stages', value: 'Chargement...', icon: <FaUserCheck /> },
+    { title: 'Offres visibles', value: 'Chargement...', icon: <FaBriefcase /> },
+    { title: 'Stages trouvés', value: 'Chargement...', icon: <FaClipboardCheck /> },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -54,10 +56,10 @@ export default function CFDashboard() {
 
       // Update stats state
       setStats([
-        { title: 'Étudiants dans la filière', value: totalStudents },
-        { title: 'Étudiants avec stages', value: studentsWithInternships },
-        { title: 'Offres visibles', value: visibleOffers },
-        { title: 'Stages trouvés', value: internshipsFound },
+        { title: 'Étudiants dans la filière', value: totalStudents, icon: <FaUsers /> },
+        { title: 'Étudiants avec stages', value: studentsWithInternships, icon: <FaUserCheck /> },
+        { title: 'Offres visibles', value: visibleOffers, icon: <FaBriefcase /> },
+        { title: 'Stages trouvés', value: internshipsFound, icon: <FaClipboardCheck /> },
       ]);
 
       setLoading(false);
@@ -72,8 +74,15 @@ export default function CFDashboard() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold mb-6">Tableau de bord du chef de filière</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat) => (
-            <StatCard key={stat.title} title={stat.title} value={stat.value} />
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <StatCard title={stat.title} value={stat.value} iconCard={stat.icon} />
+            </motion.div>
           ))}
         </div>
       </div>

@@ -3,14 +3,16 @@ import StatCard from '@/components/StatCard';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/axiosInstance/axiosInstance';
+import { motion } from 'framer-motion';
+import { FaClipboardList, FaUserGraduate, FaBuilding, FaChartLine } from 'react-icons/fa';
 
 export default function SupervisorDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState([
-    { title: 'Stages en cours', value: 'Loading...' },
-    { title: 'Total des stages supervisés', value: 'Loading...' },
-    { title: 'Total des stagiaires de l\'entreprise', value: 'Loading...' },
-    { title: 'Stages actifs de l\'entreprise', value: 'Loading...' },
+    { title: 'Stages en cours', value: 'Chargement...', icon: <FaClipboardList /> },
+    { title: 'Total des stages supervisés', value: 'Chargement...', icon: <FaUserGraduate /> },
+    { title: 'Total des stagiaires de l\'entreprise', value: 'Chargement...', icon: <FaBuilding /> },
+    { title: 'Stages actifs de l\'entreprise', value: 'Chargement...', icon: <FaChartLine /> },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -54,15 +56,15 @@ export default function SupervisorDashboard() {
 
       // Update stats state
       setStats([
-        { title: 'Stages en cours', value: ongoingInternships },
-        { title: 'Total des stages supervisés', value: totalInternships },
-        { title: 'Total des stagiaires de l\'entreprise', value: companyTotalInterns },
-        { title: 'Stages actifs de l\'entreprise', value: companyActiveInternships },
+        { title: 'Stages en cours', value: ongoingInternships, icon: <FaClipboardList /> },
+        { title: 'Total des stages supervisés', value: totalInternships, icon: <FaUserGraduate /> },
+        { title: 'Total des stagiaires de l\'entreprise', value: companyTotalInterns, icon: <FaBuilding /> },
+        { title: 'Stages actifs de l\'entreprise', value: companyActiveInternships, icon: <FaChartLine /> },
       ]);
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.error('Erreur lors de la récupération des statistiques:', error);
       setLoading(false);
     }
   };
@@ -76,7 +78,14 @@ export default function SupervisorDashboard() {
           <h2 className="text-xl font-semibold mb-4">Mes statistiques</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stats.slice(0, 2).map((stat, index) => (
-              <StatCard key={index} title={stat.title} value={stat.value} />
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <StatCard title={stat.title} value={stat.value} iconCard={stat.icon} />
+              </motion.div>
             ))}
           </div>
         </div>
@@ -85,7 +94,14 @@ export default function SupervisorDashboard() {
           <h2 className="text-xl font-semibold mb-4">Statistiques de l'entreprise</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stats.slice(2).map((stat, index) => (
-              <StatCard key={index} title={stat.title} value={stat.value} />
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: (index + 2) * 0.2 }}
+              >
+                <StatCard title={stat.title} value={stat.value} iconCard={stat.icon} />
+              </motion.div>
             ))}
           </div>
         </div>
