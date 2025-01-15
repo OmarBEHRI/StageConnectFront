@@ -134,19 +134,19 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                       {buttons.map((button, buttonIndex) => {
                         const buttonText = button.toLowerCase();
                         const tooltipText = {
-                          'modifier': 'Edit the item',
-                          'désactiver': 'Deactivate the item',
-                          'déposer convention': 'Upload the convention',
-                          'télécharger attestation': 'Download the attestation',
-                          'fiche descriptive': 'View descriptive sheet',
-                          "fiche d'évaluation": 'View evaluation sheet',
-                          'télecharger convention': 'Download the convention',
-                          'déposer attéstation': 'Upload the attestation',
-                          'supprimer': 'Delete the item',
-                          'accepter': 'Accept the item',
-                          'refuser': 'Reject the item',
-                          'postulations': 'View applications'
-                        }[buttonText] || 'Perform action';
+                          'modifier': 'Modifier l\'élément',
+                          'désactiver': 'Désactiver l\'élément',
+                          'déposer convention': 'Déposer la convention',
+                          'télécharger attestation': 'Télécharger l\'attestation',
+                          'fiche descriptive': 'Voir la fiche descriptive',
+                          "fiche d'évaluation": 'Voir la fiche d\'évaluation',
+                          'télecharger convention': 'Télécharger la convention',
+                          'déposer attéstation': 'Déposer l\'attestation',
+                          'supprimer': 'Supprimer l\'élément',
+                          'accepter': 'Accepter l\'élément',
+                          'refuser': 'Refuser l\'élément',
+                          'postulations': 'Voir les postulations'
+                        }[buttonText] || 'Effectuer une action';
 
                         if (buttonText === 'modifier') {
                           return (
