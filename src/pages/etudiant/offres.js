@@ -20,7 +20,8 @@ export default function StudentOffers() {
   const [cvFile, setCvFile] = useState(null); // State for CV file
   const [lettreMotivationFile, setLettreMotivationFile] = useState(null); // State for Lettre de Motivation file
   const [successMessage, setSuccessMessage] = useState(null); // State for success message
-  const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each offer
+  const [logoUrls, setLogoUrls] = useState({});
+  const [entrepriseNames, setEntrepriseNames] = useState({}); // State to store logo URLs for each offer
 
   // Fetch student data, visible offers, and postulations
   useEffect(() => {
@@ -99,7 +100,8 @@ export default function StudentOffers() {
     setSearchQuery(query);
     const filtered = offers.filter((offer) =>
       offer.objetOffre.toLowerCase().includes(query.toLowerCase()) ||
-      offer.descriptionOffre.toLowerCase().includes(query.toLowerCase())
+      offer.descriptionOffre.toLowerCase().includes(query.toLowerCase()) ||
+      (entrepriseNames[offer.idOffre] && entrepriseNames[offer.idOffre].toLowerCase().includes(query.toLowerCase()))
     );
     setFilteredOffers(filtered);
   };
@@ -156,6 +158,19 @@ export default function StudentOffers() {
     setLettreMotivationFile(null); // Reset Lettre de Motivation file
   };
 
+  useEffect(() => {
+    const fetchEntreprises = async () => {
+      const entrepriseNames = {};
+      for (const offer of offers) {
+        const response = await getEntrepriseFromOffreId(offer.idOffre);
+        entrepriseNames[offer.idOffre] = response.nomEntreprise;
+      }
+      setEntrepriseNames(entrepriseNames);
+    };
+  
+    fetchEntreprises();
+  }, [internships]);
+
   return (
     <Layout role="student">
       <div className="p-6">
@@ -178,6 +193,7 @@ export default function StudentOffers() {
                 key={offer.idOffre}
                 title={offer.objetOffre}
                 specifications={[
+                  { label: 'Entreprise', value: entrepriseNames[offer.idOffre] },
                   { label: 'Description', value: offer.descriptionOffre },
                   { label: 'Poste', value: offer.posteOffre },
                   { label: 'Durée', value: offer.dureeStage },
