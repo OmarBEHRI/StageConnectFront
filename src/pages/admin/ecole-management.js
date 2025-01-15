@@ -165,7 +165,7 @@ const formFields = [
     <Layout role="admin">
       <div className="p-6">
         <h1 className="text-3xl font-bold mb-8">Gestion des comptes universitaires</h1>
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-4 flex justify-end items-center">
           <button
             className="bg-black text-white px-4 py-2 rounded"
             onClick={() => {

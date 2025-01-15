@@ -282,7 +282,7 @@ export default function StudentsManagement() {
   return (
     <Layout role="university">
       <h1 className="text-3xl font-bold mb-12 mt-12">Gestion des Étudiants</h1>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-end items-center mb-6">
         <div className="flex gap-4">
           <label className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer">
             Choisir un fichier Excel

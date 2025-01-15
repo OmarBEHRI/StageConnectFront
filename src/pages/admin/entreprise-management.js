@@ -119,6 +119,8 @@ export default function CompanyAccountsManagement() {
 
   const handleSaveEdit = async (formData) => {
     try {
+      console.log("FormData to change is: ");
+      console.log(formData);
       await axiosInstance.put(`/compte-entreprises/${editAccountId}`, formData)
       setShowEditForm(false)
       setFormData({})

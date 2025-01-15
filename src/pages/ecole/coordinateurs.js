@@ -130,7 +130,7 @@ export default function UniversityCoordinatorsManagement() {
   return (
     <Layout role="university">
       <h1 className="text-3xl font-bold mb-6">Gestion des Coordinateurs de Stage</h1>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-end items-center mb-6">
         <button
           onClick={() => {
             setFormData({});
