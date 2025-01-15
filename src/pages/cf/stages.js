@@ -140,8 +140,8 @@ export default function CFInternships() {
                 { label: 'Statut', value: stage.statut || 'Aucun statut' },
               ]}
               buttons={[
-                { label: 'Accepter', onClick: () => accepterStageStatus(stage.etudiantId, stage.idStage) },
-                { label: 'Refuser', onClick: () => refuserStageStatus(stage.etudiantId, stage.idStage) },
+                { label: 'Accepter', onClick: () => accepterStageStatus(stage.idStage, stage.etudiantId) },
+                { label: 'Refuser', onClick: () => refuserStageStatus(stage.idStage, stage.etudiantId) },
                 { label: 'Fiche Descriptive', onClick: () => getFicheDescriptiveDeStage(stage) },
               ]}
               imageSrc={logoUrls[stage.idStage]} // Use the logo URL from state
