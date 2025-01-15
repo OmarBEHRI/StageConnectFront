@@ -148,157 +148,94 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                           'postulations': 'Voir les postulations'
                         }[buttonText] || 'Effectuer une action';
 
+                        const commonProps = {
+                          key: button,
+                          onClick: () => actions[buttonIndex](item[idParam]),
+                          title: tooltipText,
+                          'data-tooltip-delay': '0' // Make the title pop up faster
+                        };
+
                         if (buttonText === 'modifier') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Edit />
                             </IconButton>
                           );
                         } else if (buttonText === 'désactiver') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="secondary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="secondary">
                               <Delete />
                             </IconButton>
                           );
                         } else if (buttonText === 'déposer convention') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Upload />
                             </IconButton>
                           );
                         } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Download />
                             </IconButton>
                           );
                         } else if (buttonText === 'fiche descriptive') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => getFicheDescriptiveDeStage(item)}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary" onClick={() => getFicheDescriptiveDeStage(item)}>
                               <Description />
                             </IconButton>
                           );
                         } else if (buttonText === "fiche d'évaluation") {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => getFicheEvaluation(item)}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary" onClick={() => getFicheEvaluation(item)}>
                               <Assessment />
                             </IconButton>
                           );
                         } else if (buttonText === 'télecharger convention') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Download />
                             </IconButton>
                           );
                         } else if (buttonText === 'télecharger attestation') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Download />
                             </IconButton>
                           );
                         } else if (buttonText === 'déposer attéstation') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Upload />
                             </IconButton>
                           );
                         } else if (buttonText === 'déposer convention') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Upload />
                             </IconButton>
                           );
                         } else if (buttonText === 'supprimer') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="secondary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="secondary">
                               <Delete />
                             </IconButton>
                           );
                         } else if (buttonText === 'accepter') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <CheckCircle />
                             </IconButton>
                           );
                         } else if (buttonText === 'refuser') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Cancel />
                             </IconButton>
                           );
                         } else if (buttonText === 'postulations') {
                           return (
-                            <IconButton
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
-                              color="primary"
-                              title={tooltipText}
-                            >
+                            <IconButton {...commonProps} color="primary">
                               <Assignment />
                             </IconButton>
                           );
@@ -306,12 +243,10 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                           // Default button for any other button text
                           return (
                             <button
-                              key={button}
-                              onClick={() => actions[buttonIndex](item[idParam])}
+                              {...commonProps}
                               className={`${
                                 buttonIndex < buttons.length - 1 ? 'mr-4' : ''
                               } normal-case text-blue-600 hover:text-blue-800`}
-                              title={tooltipText}
                             >
                               {button}
                             </button>
