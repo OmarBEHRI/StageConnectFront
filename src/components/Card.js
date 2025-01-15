@@ -52,6 +52,7 @@ const Card = ({ title, specifications, buttons, extraContent, imageSrc }) => {
               switch (lowerLabel) {
                 case 'postuler':
                 case 'valider':
+                case 'validé':
                 case 'rejoindre réunion':
                 case 'évaluer':
                   buttonColor = 'bg-green-500 hover:bg-green-600';
@@ -61,9 +62,11 @@ const Card = ({ title, specifications, buttons, extraContent, imageSrc }) => {
                   buttonColor = 'bg-gray-500 hover:bg-gray-600';
                   break;
                 case 'demande en attente':
+                case 'refusé temporairement':
                   buttonColor = 'bg-orange-500 hover:bg-orange-600';
                   break;
                 case 'refuser':
+                case 'refusé':
                   buttonColor = 'bg-red-500 hover:bg-red-600';
                   break;
                 default:
