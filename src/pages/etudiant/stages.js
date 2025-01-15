@@ -13,6 +13,7 @@ export default function StudentInternships() {
   const [internships, setInternships] = useState([]);
   const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each internship
   const [entrepriseNames, setEntrepriseNames] = useState({}); // State to store entreprise names for each internship
+  const [searchQuery, setSearchQuery] = useState(''); // State to store search query
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -77,85 +78,98 @@ export default function StudentInternships() {
         })
       );
 
-      const stagesWithEtudiant = await Promise.all(
-        updatedStages.map(async (stage) => {
-          const etudiantResponse = await axiosInstance.get(`/api/etudiants/${stage.etudiantId}`);
-          return { ...stage, etudiant: etudiantResponse.data };
-        })
-      );
+const formatDate = (date) => {
+  if (!date) return "N/A"; // Handle null or undefined dates
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString(); // Format as human-readable date
+};
 
-      setInternships(stagesWithEtudiant);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des stages :', error);
+const stagesWithEtudiant = await Promise.all(
+  updatedStages.map(async (stage) => {
+    const etudiantResponse = await axiosInstance.get(`/api/etudiants/${stage.etudiantId}`);
+    return { ...stage, etudiant: etudiantResponse.data };
+  })
+);
+
+setInternships(stagesWithEtudiant);
+} catch (error) {
+  console.error('Erreur lors de la récupération des stages :', error);
+}
+};
+
+const handleSearch = (query) => {
+  setSearchQuery(query.toLowerCase());
+};
+
+const handleStatusUpdate = async (stageId) => {
+  try {
+    const etudiantId = localStorage.getItem('id');
+    await axiosInstance.put(`/stages/set-status-delete-others/${etudiantId}/${stageId}`);
+    fetchInternships(); // Refresh the list after updating the status
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du statut :', error);
+  }
+};
+
+const getButtonLabel = (status) => {
+  const labels = {
+    nouveau: 'Valider',
+    'a valider': 'Demande en attente',
+    valide: 'Validé',
+    refusé: 'Refusé',
+    'en cours': 'En Cours',
+    terminé: 'Terminé',
+    évalué: 'Évalué',
+    'refusé temporairement' : 'Refusé Temporairement'
+  };
+  return labels[status] || 'Postuler';
+};
+useEffect(() => {
+  const fetchEntreprises = async () => {
+    const entrepriseNames = {};
+    for (const internship of internships) {
+      const response = await getEntrepriseFromOffreId(internship.offreId);
+      entrepriseNames[internship.offreId] = response.nomEntreprise;
     }
+    setEntrepriseNames(entrepriseNames);
   };
 
-  const handleSearch = (query) => {
-    console.log('Recherche pour :', query);
-  };
+  fetchEntreprises();
+}, [internships]);
 
-  const handleStatusUpdate = async (stageId) => {
-    try {
-      const etudiantId = localStorage.getItem('id');
-      await axiosInstance.put(`/stages/set-status-delete-others/${etudiantId}/${stageId}`);
-      fetchInternships(); // Refresh the list after updating the status
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut :', error);
-    }
-  };
+const filteredInternships = internships.filter((internship) => {
+  if (!searchQuery) return true; // If search query is empty, return all internships
+  const entrepriseNom = entrepriseNames[internship.offreId] || '';
+  const searchString = `${internship.titre} ${entrepriseNom} ${internship.description} ${formatDate(internship.dateDebut)} ${formatDate(internship.dateFin)} ${internship.duree} ${internship.localisation} ${internship.montantRemuneration} ${internship.statut} ${internship.type} ${internship.etudiant.nom} ${internship.etudiant.prenom}`.toLowerCase();
+  return searchString.includes(searchQuery);
+});
 
-  const getButtonLabel = (status) => {
-    const labels = {
-      nouveau: 'Valider',
-      'a valider': 'Demande en attente',
-      valide: 'Validé',
-      refusé: 'Refusé',
-      'en cours': 'En Cours',
-      terminé: 'Terminé',
-      évalué: 'Évalué',
-      'refusé temporairement' : 'Refusé Temporairement'
-    };
-    return labels[status] || 'Postuler';
-  };
-  useEffect(() => {
-    const fetchEntreprises = async () => {
-      const entrepriseNames = {};
-      for (const internship of internships) {
-        const response = await getEntrepriseFromOffreId(internship.offreId);
-        entrepriseNames[internship.offreId] = response.nomEntreprise;
-      }
-      setEntrepriseNames(entrepriseNames);
-    };
-
-    fetchEntreprises();
-  }, [internships]);
-
-  return (
-    <Layout role="student" onLogout={() => {}}>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Mes stages</h1>
-        <div className="mb-6">
-          <SearchBar onSearch={handleSearch} />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {internships.map((internship) => {
-            const entrepriseNom = entrepriseNames[internship.offreId]; // Get entreprise details
-            return (
-              <Card
-                key={internship.idStage}
-                title={internship.titre}
-                specifications={[
-                  { label: 'Entreprise', value: entrepriseNom },
-                  { label: 'Description', value: internship.description },
-                  { label: 'Date de début', value: internship.dateDebut },
-                  { label: 'Date de fin', value: internship.dateFin },
-                  { label: 'Durée', value: internship.duree },
-                  { label: 'Localisation', value: internship.localisation },
-                  { label: 'Montant', value: internship.montantRemuneration },
-                  { label: 'Statut', value: internship.statut },
-                  { label: 'Type', value: internship.type },
-                  { label: 'Étudiant', value: `${internship.etudiant.nom} ${internship.etudiant.prenom}` },
-                ]}
+return (
+  <Layout role="student" onLogout={() => {}}>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Mes stages</h1>
+      <div className="mb-6">
+        <SearchBar onSearch={handleSearch} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {filteredInternships.map((internship) => {
+          const entrepriseNom = entrepriseNames[internship.offreId]; // Get entreprise details
+          return (
+            <Card
+              key={internship.idStage}
+              title={internship.titre}
+              specifications={[
+                { label: 'Entreprise', value: entrepriseNom },
+                { label: 'Description', value: internship.description },
+                { label: 'Date de début', value: formatDate(internship.dateDebut) },
+                { label: 'Date de fin', value: formatDate(internship.dateFin) },
+                { label: 'Durée', value: internship.duree },
+                { label: 'Localisation', value: internship.localisation },
+                { label: 'Montant', value: internship.montantRemuneration },
+                { label: 'Statut', value: internship.statut },
+                { label: 'Type', value: internship.type },
+                { label: 'Étudiant', value: `${internship.etudiant.nom} ${internship.etudiant.prenom}` },
+              ]}
                 buttons={[
                   {
                     label: getButtonLabel(internship.statut),
