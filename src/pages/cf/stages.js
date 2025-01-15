@@ -36,7 +36,7 @@ export default function CFInternships() {
       const fetchLogoUrls = async () => {
         const urls = {};
         for (const stage of stages) {
-          const entrepriseId = getEntrepriseIdFromOffre(stage.offreId); // Get entrepriseId from the stage
+          const entrepriseId = await getEntrepriseIdFromOffre(stage.offreId); // Get entrepriseId from the stage
           const url = await getEntrepriseLogoUrl(entrepriseId); // Fetch the logo URL
           urls[stage.idStage] = url; // Store the URL with the stage ID as the key
         }
@@ -97,7 +97,7 @@ export default function CFInternships() {
   const accepterStageStatus = async (idStage, idEtudiant) => {
     try {
       await axiosInstance.put(`/set-status/${idEtudiant}/${idStage}`);
-      
+
       await fetchData();
     } catch (error) {
       console.error('Erreur lors de la mise à jour du statut du stage:', error);
