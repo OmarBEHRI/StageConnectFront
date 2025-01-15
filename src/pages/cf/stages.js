@@ -94,18 +94,21 @@ export default function CFInternships() {
   };
 
   // Handle stage status update
-  const updateStageStatus = async (idStage, newStatus) => {
+  const accepterStageStatus = async (idStage, idEtudiant) => {
     try {
-      await axiosInstance.put(`/stages/${idStage}/status`, null, {
-        params: { newStatus },
-      });
+      await axiosInstance.put(`/set-status/${idEtudiant}/${idStage}`);
+      
+      await fetchData();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du statut du stage:', error);
+    }
+  };
 
-      // Update the stage status in the local state
-      setStages((prevStages) =>
-        prevStages.map((stage) =>
-          stage.idStage === idStage ? { ...stage, statut: newStatus } : stage
-        )
-      );
+  const refuserStageStatus = async (idStage, idEtudiant) => {
+    try {
+      await axiosInstance.put(`/set-status-cf/${idEtudiant}/${idStage}`);
+
+      await fetchData();
     } catch (error) {
       console.error('Erreur lors de la mise à jour du statut du stage:', error);
     }
@@ -135,8 +138,8 @@ export default function CFInternships() {
                 { label: 'Statut', value: stage.statut || 'Aucun statut' },
               ]}
               buttons={[
-                { label: 'Accepter', onClick: () => updateStageStatus(stage.idStage, 'valide') },
-                { label: 'Refuser', onClick: () => updateStageStatus(stage.idStage, 'refusé') },
+                { label: 'Accepter', onClick: () => accepterStageStatus(stage.etudiantId, stage.idStage) },
+                { label: 'Refuser', onClick: () => refuserStageStatus(stage.etudiantId, stage.idStage) },
                 { label: 'Fiche Descriptive', onClick: () => getFicheDescriptiveDeStage(stage) },
               ]}
               imageSrc={logoUrls[stage.idStage]} // Use the logo URL from state
