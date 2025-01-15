@@ -130,11 +130,11 @@ export default function CompteEcoleProfile() {
 
   return (
     <Layout role="university">
-      <div className="p-6 font-roboto">
+      <div className="p-4 font-roboto">
         <h1 className="text-2xl font-bold mb-6 text-black">Profil du gestionnaire de l'université</h1>
 
         {/* CompteEcole and Ecole Information Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {/* CompteEcole Information Card */}
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4 text-black">Informations du compte école</h2>
@@ -145,7 +145,7 @@ export default function CompteEcoleProfile() {
                 <p><strong>Téléphone :</strong> {compteEcole.telephone}</p>
                 <button
                   onClick={() => setIsEditingCompteEcole(true)}
-                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors mt-4"
                 >
                   Modifier
                 </button>
@@ -170,24 +170,20 @@ export default function CompteEcoleProfile() {
                 <p><strong>Téléphone fixe :</strong> {ecole.telephoneFix}</p>
                 <p><strong>Type d'école :</strong> {ecole.typeEcole}</p>
                 <p><strong>Domaine de l'école :</strong> {ecole.domaineEcole}</p>
-                <button
-                  onClick={() => setIsEditingEcole(true)}
-                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                  Modifier
-                </button>
-                <input
-                  type="file"
-                  id="logo-upload"
-                  className="hidden"
-                  onChange={handleLogoUpload}
-                />
-                <label
-                  htmlFor="logo-upload"
-                  className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                >
-                  Changer la photo de profil
-                </label>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => setIsEditingEcole(true)}
+                    className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors mr-2"
+                  >
+                    Modifier
+                  </button>
+                  <label
+                    htmlFor="logo-upload"
+                    className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                  >
+                    Changer la photo de profil
+                  </label>
+                </div>
               </div>
             )}
           </div>
@@ -205,6 +201,7 @@ export default function CompteEcoleProfile() {
             </button>
           </div>
           <Table
+            className="mt-4"
             columns={['Nom', 'Abréviation']}
             columnKeys={['nomFiliere', 'abrvFiliere']}
             items={filieres}
@@ -229,6 +226,7 @@ export default function CompteEcoleProfile() {
             title="Modifier le compte école"
             submitButtonText="Enregistrer"
             prefillData={compteEcole}
+            className="space-y-4"
           />
         )}
 
