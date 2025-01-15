@@ -139,7 +139,7 @@ export default function StudentInternships() {
                 key={internship.idStage}
                 title={internship.titre}
                 specifications={[
-                  { label: 'Entreprise', value: entreprise?.nomEntreprise || 'N/A' },
+                  { label: 'Entreprise', value: (entreprise != null)? entreprise.nomEntreprise : 'N/A' },
                   { label: 'Description', value: internship.description },
                   { label: 'Date de début', value: internship.dateDebut },
                   { label: 'Date de fin', value: internship.dateFin },
