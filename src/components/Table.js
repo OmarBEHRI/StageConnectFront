@@ -263,7 +263,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Cancel />
                             </IconButton>
                           );
-                        } else if (buttonText === 'postulation') {
+                        } else if (buttonText === 'postulations') {
                           return (
                             <IconButton
                               key={button}
