@@ -169,7 +169,7 @@ export default function StudentOffers() {
     };
   
     fetchEntreprises();
-  }, [internships]);
+  }, [offers]);
 
   return (
     <Layout role="student">
