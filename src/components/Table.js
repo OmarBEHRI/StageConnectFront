@@ -175,7 +175,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Upload />
                             </IconButton>
                           );
-                        } else if (buttonText === 'télécharger attestation') {
+                        } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
                           return (
                             <IconButton {...commonProps} color="primary">
                               <Download />
@@ -193,7 +193,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Assessment />
                             </IconButton>
                           );
-                        } else if (buttonText === 'télecharger convention') {
+                        } else if (buttonText === 'télecharger convention' && item["conventionDeStage"] != null) {
                           return (
                             <IconButton {...commonProps} color="primary">
                               <Download />
