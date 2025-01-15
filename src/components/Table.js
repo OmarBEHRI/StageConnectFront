@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table as TableMUI, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, TextField, IconButton, Box } from '@mui/material';
-import { Edit, Delete, Upload, Download, Description, Assessment } from '@mui/icons-material';
+import { Edit, Delete, Upload, Download, Description, Assessment, Assignment, CheckCircle, Cancel } from '@mui/icons-material';
 import getFicheDescriptiveDeStage from '@/utils/downloadFicheDescriptive';
 import getFicheEvaluation from '@/utils/downloadFicheEvaluation';
 
