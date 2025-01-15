@@ -112,6 +112,7 @@ export default function StudentInternships() {
       'en cours': 'En Cours',
       terminé: 'Terminé',
       évalué: 'Évalué',
+      'refusé temporairement' : 'Refusé Temporairement'
     };
     return labels[status] || 'Postuler';
   };
