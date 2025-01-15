@@ -12,6 +12,7 @@ export default function StudentInternships() {
   const router = useRouter();
   const [internships, setInternships] = useState([]);
   const [logoUrls, setLogoUrls] = useState({}); // State to store logo URLs for each internship
+  const [entrepriseNames, setEntrepriseNames] = useState({}); // State to store entreprise names for each internship
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -116,13 +117,18 @@ export default function StudentInternships() {
     };
     return labels[status] || 'Postuler';
   };
-  const getEntreprise = async (offerId) => {
-    console.log(`offer Id is: ${offerId}`);
-    const response = await getEntrepriseFromOffreId(offerId);
-    console.log(`Response Entreprise is:`);
-    console.log(response);
-    return response.nomEntreprise;
-  };
+  useEffect(() => {
+    const fetchEntreprises = async () => {
+      const entrepriseNames = {};
+      for (const internship of internships) {
+        const response = await getEntrepriseFromOffreId(internship.offreId);
+        entrepriseNames[internship.offreId] = response.nomEntreprise;
+      }
+      setEntrepriseNames(entrepriseNames);
+    };
+
+    fetchEntreprises();
+  }, [internships]);
 
   return (
     <Layout role="student" onLogout={() => {}}>
@@ -133,7 +139,7 @@ export default function StudentInternships() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {internships.map((internship) => {
-            const entrepriseNom = getEntreprise(internship.offreId); // Get entreprise details
+            const entrepriseNom = entrepriseNames[internship.offreId]; // Get entreprise details
             return (
               <Card
                 key={internship.idStage}
