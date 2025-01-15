@@ -177,6 +177,12 @@ export default function CompteEcoleProfile() {
                   >
                     Modifier
                   </button>
+                  <input
+                    type="file"
+                    id="logo-upload"
+                    className="hidden"
+                    onChange={handleLogoUpload}
+                  />
                   <label
                     htmlFor="logo-upload"
                     className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
