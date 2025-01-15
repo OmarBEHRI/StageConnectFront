@@ -78,11 +78,6 @@ export default function StudentInternships() {
         })
       );
 
-const formatDate = (date) => {
-  if (!date) return "N/A"; // Handle null or undefined dates
-  const dateObj = new Date(date);
-  return dateObj.toLocaleDateString(); // Format as human-readable date
-};
 
 const stagesWithEtudiant = await Promise.all(
   updatedStages.map(async (stage) => {
@@ -95,6 +90,12 @@ setInternships(stagesWithEtudiant);
 } catch (error) {
   console.error('Erreur lors de la récupération des stages :', error);
 }
+};
+
+const formatDate = (date) => {
+  if (!date) return "N/A"; // Handle null or undefined dates
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString(); // Format as human-readable date
 };
 
 const handleSearch = (query) => {
