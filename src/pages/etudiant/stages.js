@@ -117,7 +117,10 @@ export default function StudentInternships() {
     return labels[status] || 'Postuler';
   };
   const getEntreprise = async (offerId) => {
-    return await getEntrepriseFromOffreId(offerId);
+    console.log(`offer Id is: ${offerId}`);
+    response = await getEntrepriseFromOffreId(offerId);
+    console.log(`Response Entreprise is: ${response}`);
+    return response;
   };
 
   return (
