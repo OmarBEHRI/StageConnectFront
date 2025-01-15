@@ -117,7 +117,6 @@ export default function CompteEcoleProfile() {
             'Content-Type': 'multipart/form-data',
           },
         });
-        setEcole(response.data);
 
         // Update the logo URL
         const logoBlob = new Blob([file], { type: 'image/jpeg' });
