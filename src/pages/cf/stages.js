@@ -96,7 +96,7 @@ export default function CFInternships() {
   // Handle stage status update
   const accepterStageStatus = async (idStage, idEtudiant) => {
     try {
-      await axiosInstance.put(`/set-status/${idEtudiant}/${idStage}`);
+      await axiosInstance.put(`/stages/set-status/${idEtudiant}/${idStage}`);
 
       await fetchData();
     } catch (error) {
@@ -106,7 +106,7 @@ export default function CFInternships() {
 
   const refuserStageStatus = async (idStage, idEtudiant) => {
     try {
-      await axiosInstance.put(`/set-status-cf/${idEtudiant}/${idStage}`);
+      await axiosInstance.put(`/stages/set-status-cf/${idEtudiant}/${idStage}`);
 
       await fetchData();
     } catch (error) {
