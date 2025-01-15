@@ -133,7 +133,8 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                     <Box display="flex" gap={1} justifyContent="center">
                       {buttons.map((button, buttonIndex) => {
                         const buttonText = button.toLowerCase();
-                        console.log(`Item collected in table inside button function is: ${item}`);
+                        console.log(`Item collected in table inside button function is:`);
+                        console.log(item);
                         const tooltipText = {
                           'modifier': 'Modifier l\'élément',
                           'désactiver': 'Désactiver l\'élément',
