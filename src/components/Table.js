@@ -133,12 +133,28 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                     <Box display="flex" gap={1} justifyContent="center">
                       {buttons.map((button, buttonIndex) => {
                         const buttonText = button.toLowerCase();
+                        const tooltipText = {
+                          'modifier': 'Edit the item',
+                          'désactiver': 'Deactivate the item',
+                          'déposer convention': 'Upload the convention',
+                          'télécharger attestation': 'Download the attestation',
+                          'fiche descriptive': 'View descriptive sheet',
+                          "fiche d'évaluation": 'View evaluation sheet',
+                          'télecharger convention': 'Download the convention',
+                          'déposer attéstation': 'Upload the attestation',
+                          'supprimer': 'Delete the item',
+                          'accepter': 'Accept the item',
+                          'refuser': 'Reject the item',
+                          'postulations': 'View applications'
+                        }[buttonText] || 'Perform action';
+
                         if (buttonText === 'modifier') {
                           return (
                             <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Edit />
                             </IconButton>
@@ -149,6 +165,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="secondary"
+                              title={tooltipText}
                             >
                               <Delete />
                             </IconButton>
@@ -159,6 +176,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Upload />
                             </IconButton>
@@ -169,6 +187,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Download />
                             </IconButton>
@@ -179,6 +198,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => getFicheDescriptiveDeStage(item)}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Description />
                             </IconButton>
@@ -189,6 +209,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => getFicheEvaluation(item)}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Assessment />
                             </IconButton>
@@ -199,6 +220,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Download />
                             </IconButton>
@@ -209,16 +231,18 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Download />
                             </IconButton>
                           );
-                        } else if (buttonText === 'déposer attestation') {
+                        } else if (buttonText === 'déposer attéstation') {
                           return (
                             <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Upload />
                             </IconButton>
@@ -229,6 +253,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Upload />
                             </IconButton>
@@ -239,6 +264,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="secondary"
+                              title={tooltipText}
                             >
                               <Delete />
                             </IconButton>
@@ -249,6 +275,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <CheckCircle />
                             </IconButton>
@@ -259,6 +286,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Cancel />
                             </IconButton>
@@ -269,6 +297,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               color="primary"
+                              title={tooltipText}
                             >
                               <Assignment />
                             </IconButton>
@@ -282,6 +311,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               className={`${
                                 buttonIndex < buttons.length - 1 ? 'mr-4' : ''
                               } normal-case text-blue-600 hover:text-blue-800`}
+                              title={tooltipText}
                             >
                               {button}
                             </button>
