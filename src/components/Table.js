@@ -193,45 +193,85 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Assessment />
                             </IconButton>
                           );
-                        } else if (buttonText === 'télecharger convention' && item["conventionDeStage"] != null) {
+                        } else if (buttonText === 'télecharger convention') {
                           return (
-                            <button
+                            <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
-                              className="text-blue-600 hover:text-blue-800 normal-case"
+                              color="primary"
                             >
-                              {button}
-                            </button>
+                              <Download />
+                            </IconButton>
                           );
-                        } else if (buttonText === 'télecharger attestation' && item["attestationDeStage"] != null) {
+                        } else if (buttonText === 'télecharger attestation') {
                           return (
-                            <button
+                            <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
-                              className="text-blue-600 hover:text-blue-800 normal-case"
+                              color="primary"
                             >
-                              {button}
-                            </button>
+                              <Download />
+                            </IconButton>
                           );
                         } else if (buttonText === 'déposer attestation') {
                           return (
-                            <button
+                            <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
-                              className="text-blue-600 hover:text-blue-800 normal-case"
+                              color="primary"
                             >
-                              {button}
-                            </button>
+                              <Upload />
+                            </IconButton>
                           );
                         } else if (buttonText === 'déposer convention') {
                           return (
-                            <button
+                            <IconButton
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
-                              className="text-blue-600 hover:text-blue-800 normal-case"
+                              color="primary"
                             >
-                              {button}
-                            </button>
+                              <Upload />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'supprimer') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="secondary"
+                            >
+                              <Delete />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'accepter') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <CheckCircle />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'refuser') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <Cancel />
+                            </IconButton>
+                          );
+                        } else if (buttonText === 'postulation') {
+                          return (
+                            <IconButton
+                              key={button}
+                              onClick={() => actions[buttonIndex](item[idParam])}
+                              color="primary"
+                            >
+                              <Assignment />
+                            </IconButton>
                           );
                         } else {
                           // Default button for any other button text
@@ -240,12 +280,8 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               key={button}
                               onClick={() => actions[buttonIndex](item[idParam])}
                               className={`${
-                                button.toLowerCase() === 'supprimer'
-                                  ? 'text-red-600 hover:text-red-800'
-                                  : 'text-blue-600 hover:text-blue-800'
-                              } ${
                                 buttonIndex < buttons.length - 1 ? 'mr-4' : ''
-                              } normal-case`}
+                              } normal-case text-blue-600 hover:text-blue-800`}
                             >
                               {button}
                             </button>
