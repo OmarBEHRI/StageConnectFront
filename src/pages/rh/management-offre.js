@@ -154,7 +154,7 @@ export default function HROfferManagement() {
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">Offres de l'entreprise</h1>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-end items-center">
           <button
             onClick={() => {
               setIsEditMode(false);
