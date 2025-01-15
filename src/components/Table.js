@@ -175,7 +175,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                               <Upload />
                             </IconButton>
                           );
-                        } else if (buttonText === 'télécharger attéstation' && item["attestationDeStage"] != null) {
+                        } else if (buttonText === 'télécharger attestation' && item["attestationDeStage"] != null) {
                           return (
                             <IconButton {...commonProps} color="primary">
                               <Download />
@@ -236,7 +236,7 @@ export default function Table({ columns, columnKeys, items, buttons, actions, id
                             </IconButton>
                           );
                         } else {
-                          if (buttonText === "télecharger convention" || buttonText === "télecharger attéstation") return null;
+                          if (buttonText === "télecharger convention" || buttonText === "télecharger attestation") return null;
                           // Default button for any other button text
                           return (
                             <button
