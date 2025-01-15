@@ -119,7 +119,8 @@ export default function StudentInternships() {
   const getEntreprise = async (offerId) => {
     console.log(`offer Id is: ${offerId}`);
     const response = await getEntrepriseFromOffreId(offerId);
-    console.log(`Response Entreprise is: ${response}`);
+    console.log(`Response Entreprise is:`);
+    console.log(response);
     return response;
   };
 
